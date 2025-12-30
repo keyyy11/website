@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – Aeronas Aerocraft</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark theme-about">
+    <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
+
+    <!-- Header (Otto-style navigation) -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="brand-mark">
+        <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo" />
+                <span class="brand-text">Aeronas Aerocraft</span>
+    </a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="aircraft.html">Aircraft</a>
+            <a href="about.html" class="active">Company</a>
+            <a href="services.html">Careers</a>
+            <a href="news.html">News</a>
+    </nav>
+
+        <div class="header-right">
+            <a href="contact.html" class="nav-cta">Contact Us</a>
+        </div>
+  </header>
+
+    <!-- Main Content -->
+    <main class="about-main-full">
+        <!-- 4-Panel Layout -->
+        <section class="four-panel-section">
+            <div class="four-panel-grid">
+                <!-- Left Panel: Text -->
+                <div class="panel-text">
+                    <h2 class="panel-text-line">We.</h2>
+                    <h2 class="panel-text-line">Are.</h2>
+                    <h2 class="panel-text-line">One.</h2>
+                    <div class="gradient-accent-line"></div>
+        </div>
+
+                <!-- Panel 1 -->
+                <div class="panel-number" style="background-image: url('assets/images/download.jpeg');">
+                    <div class="panel-number-content">
+                        <h3 class="panel-hashtag">#Pointone</h3>
+                        <div class="gradient-number" data-number="1">1</div>
+                        <p class="panel-description">
+                            AERONAS represents Malaysia's pioneering spirit in aerospace manufacturing, 
+                            combining engineering excellence with innovative design to create world-class aircraft.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Panel 2 -->
+                <div class="panel-number" style="background-image: url('assets/images/ʟᴏᴠᴇ°°° ғ𝟷_ 😘____.jpeg');">
+                    <div class="panel-number-content">
+                        <h3 class="panel-hashtag">#Pointtwo</h3>
+                        <div class="gradient-number" data-number="2">2</div>
+                        <p class="panel-description">
+                            Driven by passion and perseverance, we are building the future of aerospace 
+                            technology, one innovation at a time.
+            </p>
+                    </div>
+                </div>
+
+                <!-- Panel 3 -->
+                <div class="panel-number" style="background-image: url('assets/images/download.jpeg');">
+                    <div class="panel-number-content">
+                        <h3 class="panel-hashtag">#Pointthree</h3>
+                        <div class="gradient-number" data-number="3">3</div>
+                        <p class="panel-description">
+                            Trusted by operators and partners across the region, Aeronas Aerocraft 
+                            is changing the game in aircraft manufacturing and engineering support.
+            </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-contact">
+            <div class="footer-col">
+                <h4>TEL</h4>
+                <p>07-4450444</p>
+            </div>
+            <div class="footer-col">
+                <h4>E-MAIL</h4>
+                <p>admin@aeronasgrp.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+        <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll effect: background gets darker as you scroll down
+        const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+            
+            // Calculate opacity: 0 at top, up to 0.6 at bottom
+            const opacity = Math.min(scrollPercentage * 0.6, 0.6);
+            scrollDarkOverlay.style.opacity = opacity;
+        });
+    </script>
+</body>
+</html>

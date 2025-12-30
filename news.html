@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News – Aeronas Aerocraft</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Header (Otto-style navigation) -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="brand-mark">
+                <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo" />
+                <span class="brand-text">Aeronas Aerocraft</span>
+            </a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="aircraft.html">Aircraft</a>
+            <a href="about.html">Company</a>
+            <a href="services.html">Careers</a>
+            <a href="news.html" class="active">News</a>
+        </nav>
+
+        <div class="header-right">
+            <a href="contact.html" class="nav-cta">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="news-page-main" id="newsPageMain">
+        <div class="news-background-wrapper" id="newsBackground">
+            <section class="news-hero-section">
+                <div class="news-hero-content">
+                    <p class="news-hero-label">ALL FIELDS OF APPLICATION</p>
+                    <h1 class="news-hero-title">INDUSTRIAL APPLICATIONS</h1>
+                    <a href="#" class="news-hero-cta">ALL APPLICATIONS ></a>
+                </div>
+            </section>
+
+            <section class="news-categories-section">
+                <div class="news-categories-grid">
+                    <div class="news-category-card" data-bg="assets/images/01.jpeg">
+                        <h3>AUTOMOTIVE AND MOBILITY</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                    <div class="news-category-card active" data-bg="assets/images/02.jpeg">
+                        <h3>AEROSPACE INDUSTRY</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                    <div class="news-category-card" data-bg="assets/images/service1.jpg">
+                        <h3>HOME APPLIANCE</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                    <div class="news-category-card" data-bg="assets/images/background 1.jpeg">
+                        <h3>ENERGY, OIL AND GAS</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                    <div class="news-category-card" data-bg="assets/images/background2.jpeg">
+                        <h3>AIR CONDITIONING</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                    <div class="news-category-card" data-bg="assets/images/twst3.jpeg">
+                        <h3>OTHER INDUSTRIAL APPLICATIONS</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-contact">
+            <div class="footer-col">
+                <h4>TEL</h4>
+                <p>07-4450444</p>
+            </div>
+            <div class="footer-col">
+                <h4>E-MAIL</h4>
+                <p>admin@aeronasgrp.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dynamic background image change on hover
+        const newsBackground = document.getElementById('newsBackground');
+        const categoryCards = document.querySelectorAll('.news-category-card');
+        
+        // Function to update background image
+        function updateBackground(imagePath) {
+            if (newsBackground) {
+                // Create or update style element for background
+                let style = document.getElementById('news-bg-dynamic');
+                if (!style) {
+                    style = document.createElement('style');
+                    style.id = 'news-bg-dynamic';
+                    document.head.appendChild(style);
+                }
+                style.textContent = `.news-background-wrapper::after { background-image: url('${imagePath}') !important; }`;
+            }
+        }
+        
+        // Set initial background
+        const defaultBg = 'assets/images/02.jpeg';
+        updateBackground(defaultBg);
+
+        categoryCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const bgImage = card.getAttribute('data-bg');
+                if (bgImage) {
+                    updateBackground(bgImage);
+                }
+                // Remove active class from all cards
+                categoryCards.forEach(c => c.classList.remove('active'));
+                // Add active class to hovered card
+                card.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
