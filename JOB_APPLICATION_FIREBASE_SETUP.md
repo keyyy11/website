@@ -149,3 +149,4 @@ Jika masih ada masalah selepas setup, check:
 2. Firebase Console > Firestore > Usage untuk lihat requests
 3. Firebase Console > Firestore > Rules untuk verify rules sudah betul
 
+

@@ -63,3 +63,4 @@
 - Password mesti sekurang-kurangnya 6 characters
 - Jika masih tidak boleh, check Firebase Console untuk melihat jika user sudah dibuat
 
+
