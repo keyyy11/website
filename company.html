@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company – Aeronas Aerocraft</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark theme-about">
+    <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="brand-mark">
+                <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo" />
+                <span class="brand-text">Aeronas Aerocraft</span>
+            </a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="aircraft.html">Aircraft</a>
+            <a href="about.html" class="active">About</a>
+            <a href="services.html">Careers</a>
+            <a href="news.html">News</a>
+        </nav>
+
+        <div class="header-right">
+            <a href="contact.html" class="nav-cta">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Sub-navigation -->
+    <nav class="sub-nav">
+        <div class="sub-nav-container">
+            <div class="sub-nav-links">
+                <a href="company.html" class="sub-nav-link active">Company</a>
+                <a href="heritage.html" class="sub-nav-link">Our heritage</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="company-main">
+        <section class="company-hero-section">
+            <div class="company-content-wrapper">
+                <div class="company-heading">
+                    <h1 class="company-title">Company</h1>
+                </div>
+                <div class="company-description">
+                    <p class="company-text">
+                        From the very outset, Aeronas Aerocraft has been a brand for people who care about the world we live in and the people around us. We have made it our mission to make life easier, better and safer for everyone through innovative aerospace engineering and manufacturing excellence.
+                    </p>
+                    <p class="company-text">
+                        As Malaysia's first small aircraft manufacturer, we are committed to building a globally competitive aerospace company engineered to international certification, performance, and safety standards. Our team operates with industrial discipline across advanced aeronautical engineering, R&D, and manufacturing.
+                    </p>
+                    <p class="company-text">
+                        We move fast, make data-driven decisions, and challenge legacy aerospace models to deliver efficient, reliable, and commercially scalable aircraft while establishing national aerospace capability that competes on a global level.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-contact">
+            <div class="footer-col">
+                <h4>TEL</h4>
+                <p>07-4450444</p>
+            </div>
+            <div class="footer-col">
+                <h4>E-MAIL</h4>
+                <p>admin@aeronasgrp.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll effect: background gets darker as you scroll down
+        const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+            
+            // Calculate opacity: 0 at top, up to 0.6 at bottom
+            const opacity = Math.min(scrollPercentage * 0.6, 0.6);
+            scrollDarkOverlay.style.opacity = opacity;
+        });
+    </script>
+</body>
+</html>
+

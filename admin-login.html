@@ -37,29 +37,84 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { firebaseConfig } from './assets/js/firebase-config.js';
+        
+        // Firebase Configuration (inline to avoid module issues)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+            authDomain: "aeronas-aerocraft.firebaseapp.com",
+            projectId: "aeronas-aerocraft",
+            storageBucket: "aeronas-aerocraft.firebasestorage.app",
+            messagingSenderId: "576218545628",
+            appId: "1:576218545628:web:6e7483b743b4c2e0336319",
+            measurementId: "G-CC8VQY3RCN"
+        };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        let app, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            alert('Firebase initialization failed. Please check console for details.');
+        }
 
         // Handle login form submission
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            if (!auth) {
+                alert('Firebase not initialized. Please refresh the page.');
+                return;
+            }
+            
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
             
             submitBtn.textContent = 'Signing in...';
             submitBtn.disabled = true;
 
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful:', userCredential.user.email);
                 // Redirect to dashboard
                 window.location.href = 'admin-dashboard.html';
             } catch (error) {
-                alert('Login failed: ' + error.message);
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. ';
+                
+                // User-friendly error messages
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage += 'No account found with this email.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage += 'Incorrect password.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage += 'Invalid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage += 'This account has been disabled.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage += 'Too many failed attempts. Please try again later.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage += 'Network error. Please check your connection.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                alert(errorMessage);
                 submitBtn.textContent = 'Sign In';
                 submitBtn.disabled = false;
             }
@@ -67,6 +122,7 @@
     </script>
 </body>
 </html>
+
 
 
 

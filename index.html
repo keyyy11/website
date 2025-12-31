@@ -40,8 +40,7 @@
                     Powerful, data-driven tools and engineering capabilities to design, build, and support modern aircraft from anywhere in the world.
                 </p>
                 <div class="hero-actions">
-                    <a href="contact.html" class="primary-cta">Get started</a>
-                    <a href="#" class="secondary-cta">Watch demo</a>
+                    <a href="#video-section" class="primary-cta" id="getStartedBtn">Get started</a>
                 </div>
                 <p class="hero-caption">Trusted by operators and partners across the region.</p>
             </div>
@@ -68,13 +67,22 @@
                 </div>
             </div>
             <div class="social-icons-text">
-                <h2>SOCIAL MEDIA ICONS</h2>
-                <p>Engage with our aerospace community through our social media channels. Stay updated with the latest innovations, aircraft developments, and industry insights from Aeronas Aerocraft.</p>
-            </div>
+                <h2>Malaysia’s First Aircraft Manufacturer Starts Here</h2>
+                <p> Aeronas Aerocraft is Malaysia’s first small aircraft manufacturer, executing a focused strategy to build a globally competitive aerospace company engineered to international certification, performance, and safety standards. We operate with industrial discipline across advanced aeronautical engineering, R&D, and manufacturing, moving fast, making data-driven decisions, and challenging legacy aerospace models. Our objective is clear: deliver efficient, reliable, and commercially scalable aircraft while establishing national aerospace capability that competes on a global level.
         </section>
 
         <!-- Design Mockups Grid (News Section) -->
         <section class="mockups-section">
+            <div class="news-video-container" id="video-section">
+                <video id="newsVideo" autoplay muted loop playsinline class="news-video">
+                    <source src="assets/images/Media1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button class="video-mute-btn" id="videoMuteBtn" aria-label="Toggle sound">
+                    <span class="mute-icon">🔇</span>
+                    <span class="unmute-icon" style="display: none;">🔊</span>
+                </button>
+            </div>
             <div class="mockups-grid">
                 <!-- Card 1: LATEST NEWS (Red sidebar) -->
                 <a href="news.html" class="mockup-card card-latest-news">
@@ -197,6 +205,115 @@
             const opacity = Math.min(scrollPercentage * 0.6, 0.6);
             scrollDarkOverlay.style.opacity = opacity;
         });
+
+        // Smooth scroll to video section and popup effect
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const videoSection = document.getElementById('video-section');
+        
+        if (getStartedBtn && videoSection) {
+            getStartedBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Smooth scroll to video section
+                videoSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Add popup effect after scroll
+                setTimeout(() => {
+                    videoSection.classList.add('video-popup');
+                    setTimeout(() => {
+                        videoSection.classList.remove('video-popup');
+                    }, 1000);
+                }, 500);
+            });
+        }
+
+        // Video mute/unmute toggle
+        const newsVideo = document.getElementById('newsVideo');
+        const videoMuteBtn = document.getElementById('videoMuteBtn');
+        const muteIcon = videoMuteBtn.querySelector('.mute-icon');
+        const unmuteIcon = videoMuteBtn.querySelector('.unmute-icon');
+
+        videoMuteBtn.addEventListener('click', () => {
+            if (newsVideo.muted) {
+                newsVideo.muted = false;
+                muteIcon.style.display = 'none';
+                unmuteIcon.style.display = 'inline';
+            } else {
+                newsVideo.muted = true;
+                muteIcon.style.display = 'inline';
+                unmuteIcon.style.display = 'none';
+            }
+        });
+
+        // Parallax transition effect between video and other structures
+        const videoContainer = document.querySelector('.news-video-container');
+        const mockupsSection = document.querySelector('.mockups-section');
+        const mockupsGrid = document.querySelector('.mockups-grid');
+        
+        if (videoContainer && newsVideo && mockupsGrid) {
+            window.addEventListener('scroll', () => {
+                const videoRect = videoContainer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const videoHeight = videoRect.height;
+                
+                // Parallax effect: video moves slower than scroll
+                if (videoRect.top < windowHeight && videoRect.bottom > 0) {
+                    const scrolled = windowHeight - videoRect.top;
+                    const parallaxOffset = (scrolled / windowHeight) * 30;
+                    newsVideo.style.transform = `translateY(${parallaxOffset * 0.3}px) scale(1.05)`;
+                }
+                
+                // Fade out video only when it's scrolling out of viewport (bottom part)
+                let videoOpacity = 1;
+                
+                if (videoRect.bottom < windowHeight && videoRect.bottom > 0) {
+                    // Video bottom is in viewport, start fading when bottom reaches 60% of viewport
+                    const fadeStartPoint = windowHeight * 0.6;
+                    if (videoRect.bottom < fadeStartPoint) {
+                        const fadeProgress = (fadeStartPoint - videoRect.bottom) / fadeStartPoint;
+                        videoOpacity = Math.max(0.3, 1 - fadeProgress * 0.7); // Keep at least 30% opacity
+                    }
+                } else if (videoRect.bottom <= 0) {
+                    // Video has completely scrolled past
+                    videoOpacity = 0;
+                } else {
+                    // Video is fully visible
+                    videoOpacity = 1;
+                }
+                
+                videoContainer.style.opacity = videoOpacity;
+                
+                // Smooth transition effect for mockups grid - slide up as video fades out
+                if (videoRect.bottom < windowHeight && videoRect.bottom > 0) {
+                    // When video bottom is in viewport, start transitioning mockups grid
+                    const fadeStartPoint = windowHeight * 0.6;
+                    let mockupsOpacity = 0;
+                    let mockupsTranslateY = 50; // Start 50px below
+                    
+                    if (videoRect.bottom < fadeStartPoint) {
+                        // Calculate transition progress based on video fade
+                        const fadeProgress = (fadeStartPoint - videoRect.bottom) / fadeStartPoint;
+                        mockupsOpacity = Math.min(1, fadeProgress * 1.2); // Fade in faster
+                        mockupsTranslateY = 50 * (1 - fadeProgress); // Slide up from 50px to 0
+                    }
+                    
+                    mockupsGrid.style.opacity = mockupsOpacity;
+                    mockupsGrid.style.transform = `translateY(${mockupsTranslateY}px)`;
+                } else if (videoRect.bottom <= 0) {
+                    // Video completely scrolled past, mockups fully visible
+                    mockupsGrid.style.opacity = '1';
+                    mockupsGrid.style.transform = 'translateY(0)';
+                } else {
+                    // Video still fully visible, mockups hidden below
+                    mockupsGrid.style.opacity = '0';
+                    mockupsGrid.style.transform = 'translateY(50px)';
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

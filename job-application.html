@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application – Aeronas Aerocraft</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="brand-mark">
+                <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo" />
+                <span class="brand-text">Aeronas Aerocraft</span>
+            </a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="aircraft.html">Aircraft</a>
+            <a href="about.html">About</a>
+            <a href="services.html" class="active">Careers</a>
+            <a href="news.html">News</a>
+        </nav>
+
+        <div class="header-right">
+            <a href="contact.html" class="nav-cta">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="job-application-main">
+        <section class="job-application-hero">
+            <div class="job-application-container">
+                <a href="services.html" class="back-link">← Back to Careers</a>
+                <h1 class="job-application-title">Job Application</h1>
+                <p class="job-application-subtitle" id="jobTitle">Position: <span id="positionName"></span></p>
+            </div>
+        </section>
+
+        <section class="job-application-form-section">
+            <div class="job-application-form-container">
+                <form class="job-application-form" id="jobApplicationForm">
+                    <div class="form-section">
+                        <h2 class="form-section-title">Personal Information</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" name="address" class="form-input form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Professional Information</h2>
+                        
+                        <div class="form-group">
+                            <label for="position">Position Applied For *</label>
+                            <input type="text" id="position" name="position" class="form-input" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">Years of Experience *</label>
+                            <select id="experience" name="experience" class="form-input" required>
+                                <option value="">Select experience</option>
+                                <option value="0-1">0-1 years</option>
+                                <option value="2-3">2-3 years</option>
+                                <option value="4-5">4-5 years</option>
+                                <option value="6-10">6-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="education">Education Level *</label>
+                            <select id="education" name="education" class="form-input" required>
+                                <option value="">Select education level</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="bachelor">Bachelor's Degree</option>
+                                <option value="master">Master's Degree</option>
+                                <option value="phd">PhD</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="coverLetter">Cover Letter *</label>
+                            <textarea id="coverLetter" name="coverLetter" class="form-input form-textarea" rows="6" required placeholder="Tell us why you're interested in this position and what makes you a great fit..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Resume Upload</h2>
+                        
+                        <div class="form-group">
+                            <label for="resume">Upload Resume (PDF, DOC, DOCX) *</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="resume" name="resume" class="file-input" accept=".pdf,.doc,.docx" required>
+                                <label for="resume" class="file-upload-label">
+                                    <span class="file-upload-text">Choose file or drag and drop</span>
+                                    <span class="file-upload-button">Browse</span>
+                                </label>
+                                <div class="file-name" id="fileName">No file chosen</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <span>I agree to the terms and conditions and privacy policy *</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button">Submit Application</button>
+                        <a href="services.html" class="cancel-button">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-contact">
+            <div class="footer-col">
+                <h4>TEL</h4>
+                <p>07-4450444</p>
+            </div>
+            <div class="footer-col">
+                <h4>E-MAIL</h4>
+                <p>admin@aeronasgrp.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll effect: background gets darker as you scroll down
+        const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+            
+            const opacity = Math.min(scrollPercentage * 0.6, 0.6);
+            scrollDarkOverlay.style.opacity = opacity;
+        });
+
+        // Get job position from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const position = urlParams.get('position') || 'Position';
+        document.getElementById('positionName').textContent = position;
+        document.getElementById('position').value = position;
+
+        // File upload display
+        const fileInput = document.getElementById('resume');
+        const fileName = document.getElementById('fileName');
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+            } else {
+                fileName.textContent = 'No file chosen';
+            }
+        });
+
+        // Form submission - Save to Firebase
+        document.getElementById('jobApplicationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            try {
+                console.log('Starting form submission...');
+                
+                // Import Firebase
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getFirestore, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                
+                console.log('Firebase modules imported');
+                
+                // Firebase Config
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+                    authDomain: "aeronas-aerocraft.firebaseapp.com",
+                    projectId: "aeronas-aerocraft",
+                    storageBucket: "aeronas-aerocraft.firebasestorage.app",
+                    messagingSenderId: "576218545628",
+                    appId: "1:576218545628:web:6e7483b743b4c2e0336319",
+                    measurementId: "G-CC8VQY3RCN"
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                console.log('Firebase initialized');
+
+                // Get form data
+                const formData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    position: document.getElementById('position').value,
+                    experience: document.getElementById('experience').value,
+                    education: document.getElementById('education').value,
+                    coverLetter: document.getElementById('coverLetter').value,
+                    submittedAt: new Date(),
+                    status: 'pending'
+                };
+
+                // Handle resume file (store filename only for now, can upload to storage later)
+                const resumeFile = fileInput.files[0];
+                if (resumeFile) {
+                    formData.resumeFileName = resumeFile.name;
+                    formData.resumeFileSize = resumeFile.size;
+                    formData.resumeFileType = resumeFile.type;
+                    // Note: File upload to Storage can be added later if needed
+                }
+
+                console.log('Saving to Firestore...', formData);
+
+                // Save to Firestore
+                await addDoc(collection(db, 'jobApplications'), formData);
+                
+                console.log('Application saved successfully');
+                
+                // Show success message
+                alert('Thank you for your application! We will review your resume and get back to you soon.');
+                
+                // Reset form
+                document.getElementById('jobApplicationForm').reset();
+                fileName.textContent = 'No file chosen';
+                
+                // Redirect back to careers page
+                setTimeout(() => {
+                    window.location.href = 'services.html';
+                }, 500);
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                console.error('Error details:', {
+                    code: error.code,
+                    message: error.message,
+                    stack: error.stack
+                });
+                
+                let errorMessage = 'Error submitting application. ';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Permission denied. Please check Firebase security rules.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage += 'Service unavailable. Please check your internet connection.';
+                } else {
+                    errorMessage += error.message || 'Please try again or contact us directly.';
+                }
+                
+                alert(errorMessage);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
+

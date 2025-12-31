@@ -22,6 +22,10 @@
                 <span class="nav-icon">📰</span>
                 News
             </a>
+            <a href="#" class="admin-nav-item" data-section="applications">
+                <span class="nav-icon">📋</span>
+                Job Applications
+            </a>
             <a href="#" class="admin-nav-item" data-section="settings">
                 <span class="nav-icon">⚙️</span>
                 Settings
@@ -56,6 +60,14 @@
                         <div class="stat-label">Total articles</div>
                     </div>
                 </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-content">
+                        <h3>Job Applications</h3>
+                        <div class="stat-number" id="applicationsCount">0</div>
+                        <div class="stat-label">Total applications</div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -68,6 +80,27 @@
                 </div>
                 <div class="admin-news-grid" id="newsGrid">
                     <!-- News articles will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section class="admin-section" id="applications">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Job Applications</h2>
+                    <div class="admin-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 24px;">
+                        <div class="admin-stat-card">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-content">
+                                <h3>Total Applications</h3>
+                                <div class="stat-number" id="totalApplications">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-applications-list" id="applicationsList">
+                    <!-- Applications will be loaded here -->
                 </div>
             </div>
         </section>
@@ -131,29 +164,61 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { firebaseConfig } from './assets/js/firebase-config.js';
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Firebase Configuration (inline to avoid module issues)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+            authDomain: "aeronas-aerocraft.firebaseapp.com",
+            projectId: "aeronas-aerocraft",
+            storageBucket: "aeronas-aerocraft.firebasestorage.app",
+            messagingSenderId: "576218545628",
+            appId: "1:576218545628:web:6e7483b743b4c2e0336319",
+            measurementId: "G-CC8VQY3RCN"
+        };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            alert('Firebase initialization failed. Please check console for details.');
+        }
 
         // Check authentication
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = 'admin-login.html';
-            } else {
-                document.getElementById('adminUser').textContent = user.email;
-                loadNews();
-            }
-        });
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('No user authenticated, redirecting to login');
+                    window.location.href = 'admin-login.html';
+                } else {
+                    console.log('User authenticated:', user.email);
+                    document.getElementById('adminUser').textContent = user.email;
+                    loadNews();
+                    loadApplications();
+                }
+            });
+        } else {
+            console.error('Auth not initialized, redirecting to login');
+            window.location.href = 'admin-login.html';
+        }
 
         // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await signOut(auth);
-            window.location.href = 'admin-login.html';
-        });
+        if (auth) {
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'admin-login.html';
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('Logout failed: ' + error.message);
+                }
+            });
+        }
 
         // Navigation
         document.querySelectorAll('.admin-nav-item[data-section]').forEach(item => {
@@ -176,6 +241,11 @@
 
         // Load news articles
         async function loadNews() {
+            if (!db) {
+                console.error('Firestore not initialized');
+                return;
+            }
+            
             const grid = document.getElementById('newsGrid');
             grid.innerHTML = '';
 
@@ -236,6 +306,11 @@
         document.getElementById('newsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if (!db) {
+                alert('Database not initialized. Please refresh the page.');
+                return;
+            }
+            
             const title = document.getElementById('newsTitle').value;
             const content = document.getElementById('newsContent').value;
             const imageUrl = document.getElementById('newsImageUrl').value;
@@ -252,6 +327,7 @@
                 document.getElementById('newsModal').style.display = 'none';
                 loadNews();
             } catch (error) {
+                console.error('Error adding article:', error);
                 alert('Error adding article: ' + error.message);
             }
         });
@@ -260,9 +336,224 @@
         document.getElementById('saveSettingsBtn').addEventListener('click', () => {
             alert('Settings saved! (Note: This would save to Firestore in a full implementation)');
         });
+
+        // Load job applications
+        async function loadApplications() {
+            if (!db) {
+                console.error('Firestore not initialized');
+                return;
+            }
+            
+            const list = document.getElementById('applicationsList');
+            list.innerHTML = '';
+
+            try {
+                const applicationsRef = collection(db, 'jobApplications');
+                const q = query(applicationsRef, orderBy('submittedAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                // Update counts
+                const totalCount = querySnapshot.size;
+                document.getElementById('totalApplications').textContent = totalCount;
+                document.getElementById('applicationsCount').textContent = totalCount;
+
+                if (totalCount === 0) {
+                    list.innerHTML = '<p style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">No applications yet.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((docItem) => {
+                    const app = docItem.data();
+                    const appCard = document.createElement('div');
+                    appCard.className = 'admin-application-item';
+                    appCard.innerHTML = `
+                        <div class="application-header">
+                            <div>
+                                <h3>${app.firstName} ${app.lastName}</h3>
+                                <p class="application-position">${app.position || 'N/A'}</p>
+                            </div>
+                            <div class="application-date">
+                                ${app.submittedAt ? new Date(app.submittedAt.seconds * 1000).toLocaleDateString() : 'N/A'}
+                            </div>
+                        </div>
+                        <div class="application-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span>${app.email || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Phone:</span>
+                                <span>${app.phone || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Experience:</span>
+                                <span>${app.experience || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Education:</span>
+                                <span>${app.education || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="status-badge status-${app.status || 'pending'}">${(app.status || 'pending').toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <div class="application-actions">
+                            <button class="admin-btn-small generate-pdf-btn" data-id="${docItem.id}">Generate PDF</button>
+                            <button class="admin-btn-small view-details-btn" data-id="${docItem.id}">View Details</button>
+                            <button class="admin-btn-small delete-application" data-id="${docItem.id}">Delete</button>
+                        </div>
+                    `;
+                    list.appendChild(appCard);
+                });
+
+                // Event handlers
+                document.querySelectorAll('.generate-pdf-btn').forEach(btn => {
+                    btn.addEventListener('click', () => generatePDF(btn.dataset.id));
+                });
+
+                document.querySelectorAll('.view-details-btn').forEach(btn => {
+                    btn.addEventListener('click', () => viewApplicationDetails(btn.dataset.id));
+                });
+
+                document.querySelectorAll('.delete-application').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        if (confirm('Are you sure you want to delete this application?')) {
+                            await deleteDoc(doc(db, 'jobApplications', btn.dataset.id));
+                            loadApplications();
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading applications:', error);
+            }
+        }
+
+        // Generate PDF for application
+        async function generatePDF(applicationId) {
+            if (!db) {
+                alert('Database not initialized');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'jobApplications', applicationId);
+                const docSnap = await getDoc(docRef);
+                
+                if (!docSnap.exists()) {
+                    alert('Application not found');
+                    return;
+                }
+
+                const app = docSnap.data();
+                
+                // Create PDF content
+                const pdfContent = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Job Application - ${app.firstName} ${app.lastName}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 40px; }
+                            h1 { color: #333; border-bottom: 2px solid #4fc3f7; padding-bottom: 10px; }
+                            .section { margin: 20px 0; }
+                            .label { font-weight: bold; color: #666; }
+                            .value { margin-left: 10px; }
+                            .row { margin: 10px 0; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Job Application</h1>
+                        <div class="section">
+                            <h2>Personal Information</h2>
+                            <div class="row"><span class="label">Name:</span><span class="value">${app.firstName} ${app.lastName}</span></div>
+                            <div class="row"><span class="label">Email:</span><span class="value">${app.email || 'N/A'}</span></div>
+                            <div class="row"><span class="label">Phone:</span><span class="value">${app.phone || 'N/A'}</span></div>
+                            <div class="row"><span class="label">Address:</span><span class="value">${app.address || 'N/A'}</span></div>
+                        </div>
+                        <div class="section">
+                            <h2>Professional Information</h2>
+                            <div class="row"><span class="label">Position:</span><span class="value">${app.position || 'N/A'}</span></div>
+                            <div class="row"><span class="label">Experience:</span><span class="value">${app.experience || 'N/A'}</span></div>
+                            <div class="row"><span class="label">Education:</span><span class="value">${app.education || 'N/A'}</span></div>
+                        </div>
+                        <div class="section">
+                            <h2>Cover Letter</h2>
+                            <p>${app.coverLetter || 'N/A'}</p>
+                        </div>
+                        <div class="section">
+                            <div class="row"><span class="label">Submitted:</span><span class="value">${app.submittedAt ? new Date(app.submittedAt.seconds * 1000).toLocaleString() : 'N/A'}</span></div>
+                            <div class="row"><span class="label">Status:</span><span class="value">${(app.status || 'pending').toUpperCase()}</span></div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+
+                // Open in new window and print
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(pdfContent);
+                printWindow.document.close();
+                
+                // Wait for content to load then print
+                printWindow.onload = () => {
+                    setTimeout(() => {
+                        printWindow.print();
+                    }, 250);
+                };
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF: ' + error.message);
+            }
+        }
+
+        // View application details
+        async function viewApplicationDetails(applicationId) {
+            if (!db) {
+                alert('Database not initialized');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'jobApplications', applicationId);
+                const docSnap = await getDoc(docRef);
+                
+                if (!docSnap.exists()) {
+                    alert('Application not found');
+                    return;
+                }
+
+                const app = docSnap.data();
+                const details = `
+Application Details:
+
+Name: ${app.firstName} ${app.lastName}
+Email: ${app.email || 'N/A'}
+Phone: ${app.phone || 'N/A'}
+Address: ${app.address || 'N/A'}
+
+Position: ${app.position || 'N/A'}
+Experience: ${app.experience || 'N/A'}
+Education: ${app.education || 'N/A'}
+
+Cover Letter:
+${app.coverLetter || 'N/A'}
+
+Resume: ${app.resumeFileName || 'No file uploaded'}
+
+Submitted: ${app.submittedAt ? new Date(app.submittedAt.seconds * 1000).toLocaleString() : 'N/A'}
+Status: ${(app.status || 'pending').toUpperCase()}
+                `;
+                
+                alert(details);
+            } catch (error) {
+                console.error('Error viewing details:', error);
+                alert('Error loading details: ' + error.message);
+            }
+        }
     </script>
 </body>
 </html>
+
 
 
 
