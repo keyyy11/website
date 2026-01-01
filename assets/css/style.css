@@ -862,7 +862,7 @@ footer {
 }
 
 .panel-text-line {
-  font-size: 64px;
+  font-size: 40px;
   font-weight: 800;
   color: #f5f5f7;
   line-height: 1.2;
@@ -872,7 +872,7 @@ footer {
 }
 
 .panel-text-description {
-  font-size: 18px;
+  font-size: 30px;
   color: rgba(245, 245, 247, 0.8);
   line-height: 1.6;
   margin: 20px 0 0 0;
@@ -3549,7 +3549,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../images/01.jpeg');
+  background-image: url('../images/UTEM.jpeg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -3569,13 +3569,13 @@ footer {
 }
 
 .card-news-updates {
-  background-image: url('../images/02.jpeg');
+  background-image: url('../images/UTHM.jpeg');
   background-size: cover;
   background-position: center;
 }
 
 .card-aerospace-news {
-  background-image: url('../images/02.jpeg');
+  background-image: url('../images/GMI.jpeg');
   background-size: cover;
   background-position: center;
   position: relative;
@@ -3605,7 +3605,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../images/01.jpeg');
+  background-image: url('../images/KKTM.jpeg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -3670,7 +3670,7 @@ footer {
 
 .mockup-split-top {
   flex: 2;
-  background-image: url('../images/02.jpeg');
+  background-image: url('../images/07.png');
   background-size: cover;
   background-position: center;
   position: relative;
