@@ -19,10 +19,19 @@
         </div>
 
         <nav class="header-nav">
-            <a href="aircraft.html">Aircraft</a>
+            <a href="index.html">Home</a>
+            <div class="nav-dropdown">
+                <a href="aircraft.html">Aircraft</a>
+                <div class="dropdown-menu">
+                    <a href="aircraft.html#manufacturing">Manufacturing</a>
+                    <a href="technology.html">Technology</a>
+                    <a href="compliance.html">Compliance</a>
+                </div>
+            </div>
             <a href="about.html">About</a>
             <a href="services.html">Careers</a>
             <a href="news.html">News</a>
+            <a href="event.html">Event</a>
         </nav>
 
         <div class="header-right">
@@ -47,7 +56,7 @@
         </section>
 
         <!-- Social Media Icons Section -->
-        <section class="social-icons-section">
+        <section class="social-icons-section" id="socialIconsSection">
             <div class="social-icons-grid">
                 <div class="social-icon-item">
                     <div class="icon-box icon-first-malaysia"></div>
@@ -86,93 +95,19 @@
         <!-- Design Mockups Grid (News Section) -->
         <section class="mockups-section">
             <div class="news-video-container" id="video-section">
+                <div class="video-top-line" id="videoTopLine"></div>
                 <video id="newsVideo" autoplay muted loop playsinline class="news-video">
                     <source src="assets/images/Media1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+                <div class="video-dark-overlay" id="videoDarkOverlay"></div>
                 <button class="video-mute-btn" id="videoMuteBtn" aria-label="Toggle sound">
                     <span class="mute-icon">🔇</span>
                     <span class="unmute-icon" style="display: none;">🔊</span>
                 </button>
             </div>
-            <div class="mockups-grid">
-                <!-- Card 1: LATEST NEWS (Red sidebar) -->
-                <a href="news.html" class="mockup-card card-latest-news">
-                    <div class="mockup-sidebar red-sidebar">
-                        <p class="sidebar-text vertical">AERONAS.COM</p>
-                        <p class="sidebar-text-bottom">NEWS</p>
-                    </div>
-                    <div class="mockup-content">
-                        <div class="mockup-overlay">
-                            <h3>LATEST NEWS</h3>
-                            <div class="mockup-brand">
-                                <span class="brand-aeronas">AERONAS</span>
-                                <span class="brand-aerocraft">AEROCRAFT</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 2: NEWS UPDATES EVENTS -->
-                <a href="news.html" class="mockup-card card-news-updates">
-                    <div class="mockup-overlay-full">
-                        <h3>NEWS<br>UPDATES<br>EVENTS</h3>
-                        <div class="mockup-brand">
-                            <span class="brand-aeronas">AERONAS</span>
-                            <span class="brand-aerocraft">AEROCRAFT</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 3: INDUSTRY NEWS (Blue sidebar) -->
-                <a href="news.html" class="mockup-card card-industry-news">
-                    <div class="mockup-sidebar blue-sidebar">
-                        <p class="sidebar-text vertical">AERONAS.COM</p>
-                        <p class="sidebar-text-bottom">NEWS</p>
-                    </div>
-                    <div class="mockup-content">
-                        <div class="mockup-overlay">
-                            <h3>INDUSTRY<br>NEWS</h3>
-                            <div class="mockup-brand">
-                                <span class="brand-aeronas">AERONAS</span>
-                                <span class="brand-aerocraft">AEROCRAFT</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 4: AEROSPACE NEWS -->
-                <a href="news.html" class="mockup-card card-aerospace-news">
-                    <div class="mockup-overlay-full">
-                        <h3>AEROSPACE NEWS</h3>
-                        <div class="mockup-brand">
-                            <span class="brand-aerocraft">AEROCRAFT</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 5: NEWS UPDATES (Dark with AC) -->
-                <a href="news.html" class="mockup-card card-news-ac">
-                    <div class="mockup-overlay-split">
-                        <span class="text-left">NEWS</span>
-                        <span class="text-right">UPDATES</span>
-                        <span class="text-ac">AC</span>
-                    </div>
-                </a>
-
-                <!-- Card 6: LATEST NEWS. STAY UPDATED. -->
-                <a href="news.html" class="mockup-card card-latest-split">
-                    <div class="mockup-split-top"></div>
-                    <div class="mockup-split-bottom">
-                        <div class="split-left-red">
-                            <h3>LATEST NEWS.<br>STAY UPDATED.</h3>
-                            <p>AERONAS.COM</p>
-                        </div>
-                        <div class="split-right-blue">
-                            <h3>NEWS</h3>
-                        </div>
-                    </div>
-                </a>
+            <div class="mockups-grid" id="newsCardsGrid">
+                <!-- News cards will be dynamically loaded here -->
             </div>
         </section>
 
@@ -203,6 +138,284 @@
         </div>
     </footer>
 
+    <script type="module">
+        // Import Firebase functions
+        import { loadNewsFromFirestore } from './assets/js/news-firebase.js';
+        import { newsData } from './assets/js/news-data.js';
+        
+        // News card templates
+        const cardTemplates = [
+            {
+                type: 'latest-news',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-latest-news" data-news-id="${news.id}">
+                        <div class="mockup-sidebar red-sidebar">
+                            <p class="sidebar-text vertical">AERONAS.COM</p>
+                            <p class="sidebar-text-bottom">NEWS</p>
+                        </div>
+                        <div class="mockup-content">
+                            <div class="mockup-overlay">
+                                <h3>LATEST NEWS</h3>
+                                <div class="mockup-brand">
+                                    <span class="brand-aeronas">AERONAS</span>
+                                    <span class="brand-aerocraft">AEROCRAFT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `
+            },
+            {
+                type: 'news-updates',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-news-updates" data-news-id="${news.id}">
+                        <div class="mockup-overlay-full">
+                            <h3>NEWS<br>UPDATES<br>EVENTS</h3>
+                            <div class="mockup-brand">
+                                <span class="brand-aeronas">AERONAS</span>
+                                <span class="brand-aerocraft">AEROCRAFT</span>
+                            </div>
+                        </div>
+                    </a>
+                `
+            },
+            {
+                type: 'industry-news',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-industry-news" data-news-id="${news.id}">
+                        <div class="mockup-sidebar blue-sidebar">
+                            <p class="sidebar-text vertical">AERONAS.COM</p>
+                            <p class="sidebar-text-bottom">NEWS</p>
+                        </div>
+                        <div class="mockup-content">
+                            <div class="mockup-overlay">
+                                <h3>INDUSTRY<br>NEWS</h3>
+                                <div class="mockup-brand">
+                                    <span class="brand-aeronas">AERONAS</span>
+                                    <span class="brand-aerocraft">AEROCRAFT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `
+            },
+            {
+                type: 'aerospace-news',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-aerospace-news" data-news-id="${news.id}">
+                        <div class="mockup-overlay-full">
+                            <h3>AEROSPACE NEWS</h3>
+                            <div class="mockup-brand">
+                                <span class="brand-aerocraft">AEROCRAFT</span>
+                            </div>
+                        </div>
+                    </a>
+                `
+            },
+            {
+                type: 'news-ac',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-news-ac" data-news-id="${news.id}">
+                        <div class="mockup-overlay-split">
+                            <span class="text-left">NEWS</span>
+                            <span class="text-right">UPDATES</span>
+                            <span class="text-ac">AC</span>
+                        </div>
+                    </a>
+                `
+            },
+            {
+                type: 'latest-split',
+                html: (news) => `
+                    <a href="news.html?news=${news.id}" class="mockup-card card-latest-split" data-news-id="${news.id}">
+                        <div class="mockup-split-top"></div>
+                        <div class="mockup-split-bottom">
+                            <div class="split-left-red">
+                                <h3>LATEST NEWS.<br>STAY UPDATED.</h3>
+                                <p>AERONAS.COM</p>
+                            </div>
+                            <div class="split-right-blue">
+                                <h3>NEWS</h3>
+                            </div>
+                        </div>
+                    </a>
+                `
+            }
+        ];
+        
+        // Function to render news cards with images
+        function renderNewsCards(newsArray) {
+            const grid = document.getElementById('newsCardsGrid');
+            if (!grid) return;
+            
+            // Sort by date (newest first)
+            const sortedNews = [...newsArray].sort((a, b) => {
+                return new Date(b.dateSort) - new Date(a.dateSort);
+            });
+            
+            // Clear grid
+            grid.innerHTML = '';
+            
+            // Render cards (max 6 cards)
+            const newsToShow = sortedNews.slice(0, 6);
+            
+            // Create style element for dynamic background images
+            let styleElement = document.getElementById('dynamic-news-images');
+            if (!styleElement) {
+                styleElement = document.createElement('style');
+                styleElement.id = 'dynamic-news-images';
+                document.head.appendChild(styleElement);
+            }
+            
+            let styleContent = '';
+            
+            newsToShow.forEach((news, index) => {
+                // Fix image path - convert absolute Windows path to relative path
+                let imagePath = news.image || news.imageUrl || '';
+                
+                // Map filename to correct image file (always use UTEM.jpeg, not UTeM-Aeronas.jpeg)
+                const imageMap = {
+                    'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                    'UTeM-Aeronas': 'UTEM.jpeg',
+                    'UTEM.jpeg': 'UTEM.jpeg',
+                    'KKTM.jpeg': 'KKTM.jpeg',
+                    'USIM.jpeg': 'USIM.jpeg',
+                    'UTHM.jpeg': 'UTHM.jpeg',
+                    'GMI.jpeg': 'GMI.jpeg',
+                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                };
+                
+                // Extract filename from path (handle both absolute and relative paths)
+                let filename = '';
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                    // Absolute Windows path
+                    filename = imagePath.split(/[/\\]/).pop();
+                } else if (imagePath.includes('/')) {
+                    // Relative path with directory
+                    filename = imagePath.split('/').pop();
+                } else {
+                    // Just filename
+                    filename = imagePath;
+                }
+                
+                // Apply mapping to get correct filename
+                const correctFilename = imageMap[filename] || filename;
+                
+                // Rebuild path with correct filename
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                    // Absolute path - convert to relative
+                    imagePath = `assets/images/${correctFilename}`;
+                    if (filename !== correctFilename) {
+                        console.log(`Index - News ${news.id}: Converted "${filename}" to "${correctFilename}"`);
+                    }
+                } else if (imagePath.includes('/')) {
+                    // Relative path - replace filename
+                    imagePath = imagePath.replace(filename, correctFilename);
+                    if (filename !== correctFilename) {
+                        console.log(`Index - News ${news.id}: Fixed "${filename}" to "${correctFilename}"`);
+                    }
+                } else {
+                    // Just filename - add path prefix
+                    imagePath = `assets/images/${correctFilename}`;
+                    if (filename !== correctFilename) {
+                        console.log(`Index - News ${news.id}: Fixed "${filename}" to "${correctFilename}"`);
+                    }
+                }
+                
+                // Final replacement for any remaining UTeM-Aeronas references (safety check)
+                if (imagePath && imagePath.includes('UTeM-Aeronas')) {
+                    imagePath = imagePath.replace(/UTeM-Aeronas\.jpeg?/g, 'UTEM.jpeg');
+                    console.log(`Index - News ${news.id}: Final safety fix - replaced UTeM-Aeronas with UTEM`);
+                }
+                
+                // Remove URL encoding and clean path
+                imagePath = imagePath.replace(/%22/g, '').replace(/%20/g, ' ').replace(/['"]/g, '').trim();
+                
+                // Ensure path is relative (final check)
+                if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http')) {
+                    const finalFilename = imagePath.split(/[/\\]/).pop();
+                    const finalCorrectFilename = imageMap[finalFilename] || finalFilename;
+                    imagePath = `assets/images/${finalCorrectFilename}`;
+                }
+                
+                // Final validation - ensure no encoding issues
+                if (imagePath.includes('%')) {
+                    imagePath = decodeURIComponent(imagePath);
+                    console.log(`Index - News ${news.id}: Decoded URL encoding in path`);
+                }
+                
+                const template = cardTemplates[index % cardTemplates.length];
+                const cardHtml = template.html(news);
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+                
+                // Set background image for the card
+                const card = grid.querySelector(`[data-news-id="${news.id}"]`);
+                if (card) {
+                    // Clean imagePath - remove any quotes, encoding, or special characters
+                    let cleanImagePath = imagePath.replace(/['"]/g, '').trim();
+                    // Remove URL encoding
+                    cleanImagePath = cleanImagePath.replace(/%22/g, '').replace(/%20/g, ' ');
+                    // Ensure it's a valid relative path
+                    if (!cleanImagePath.startsWith('assets/')) {
+                        cleanImagePath = `assets/images/${cleanImagePath.split(/[/\\]/).pop()}`;
+                    }
+                    
+                    // Escape single quotes for CSS
+                    const escapedPath = cleanImagePath.replace(/'/g, "\\'");
+                    
+                    // Set background image based on card type
+                    if (template.type === 'latest-news' || template.type === 'industry-news') {
+                        // For cards with ::after pseudo-element
+                        styleContent += `
+                            .card-latest-news[data-news-id="${news.id}"]::after,
+                            .card-industry-news[data-news-id="${news.id}"]::after {
+                                background-image: url('${escapedPath}') !important;
+                            }
+                        `;
+                    } else {
+                        // Direct background image for other cards
+                        styleContent += `
+                            .card-news-updates[data-news-id="${news.id}"],
+                            .card-aerospace-news[data-news-id="${news.id}"],
+                            .card-news-ac[data-news-id="${news.id}"],
+                            .card-latest-split[data-news-id="${news.id}"] {
+                                background-image: url('${escapedPath}') !important;
+                                background-size: cover !important;
+                                background-position: center !important;
+                            }
+                        `;
+                    }
+                    
+                    // Debug log
+                    console.log(`Index - News ${news.id}: Final image path: ${cleanImagePath}`);
+                }
+            });
+            
+            // Apply all styles at once
+            styleElement.textContent = styleContent;
+        }
+        
+        // Load news from Firestore or use local data
+        async function loadNews() {
+            try {
+                const news = await loadNewsFromFirestore();
+                if (news && news.length > 0) {
+                    renderNewsCards(news);
+                } else {
+                    // Fallback to local data
+                    renderNewsCards(newsData);
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                // Fallback to local data
+                renderNewsCards(newsData);
+            }
+        }
+        
+        // Initialize news cards
+        loadNews();
+    </script>
+    
     <script>
         // Scroll effect: background gets darker as you scroll down
         const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
@@ -264,64 +477,116 @@
         const videoContainer = document.querySelector('.news-video-container');
         const mockupsSection = document.querySelector('.mockups-section');
         const mockupsGrid = document.querySelector('.mockups-grid');
+        const socialIconsSection = document.getElementById('socialIconsSection');
         
         if (videoContainer && newsVideo && mockupsGrid) {
+            // Initialize scroll position tracking
+            window.lastScrollY = window.scrollY;
+            
             window.addEventListener('scroll', () => {
                 const videoRect = videoContainer.getBoundingClientRect();
                 const windowHeight = window.innerHeight;
                 const videoHeight = videoRect.height;
                 
-                // Parallax effect: video moves slower than scroll
-                if (videoRect.top < windowHeight && videoRect.bottom > 0) {
-                    const scrolled = windowHeight - videoRect.top;
-                    const parallaxOffset = (scrolled / windowHeight) * 30;
-                    newsVideo.style.transform = `translateY(${parallaxOffset * 0.3}px) scale(1.05)`;
-                }
-                
-                // Fade out video only when it's scrolling out of viewport (bottom part)
+                // Video fade effect - HANYA pada video element, DENGAN transition
+                // Video tidak hilang sepenuhnya, hanya fade sedikit
                 let videoOpacity = 1;
+                let darkOverlayOpacity = 0;
+                let topLineOpacity = 1;
                 
-                if (videoRect.bottom < windowHeight && videoRect.bottom > 0) {
-                    // Video bottom is in viewport, start fading when bottom reaches 60% of viewport
-                    const fadeStartPoint = windowHeight * 0.6;
-                    if (videoRect.bottom < fadeStartPoint) {
-                        const fadeProgress = (fadeStartPoint - videoRect.bottom) / fadeStartPoint;
-                        videoOpacity = Math.max(0.3, 1 - fadeProgress * 0.7); // Keep at least 30% opacity
+                // Check scroll direction dan position
+                const scrollDirection = window.scrollY > (window.lastScrollY || 0) ? 'down' : 'up';
+                window.lastScrollY = window.scrollY;
+                
+                // Check if video is in viewport
+                const isVideoInViewport = videoRect.top < windowHeight && videoRect.bottom > 0;
+                
+                if (!isVideoInViewport) {
+                    // Video belum masuk atau sudah keluar viewport
+                    if (videoRect.bottom <= 0) {
+                        // Video completely scrolled past - fade out sedikit sahaja (tidak hilang sepenuhnya)
+                        videoOpacity = 0.3; // Tetap visible sedikit
+                        darkOverlayOpacity = 0.5;
+                        topLineOpacity = 0;
+                    } else {
+                        // Video belum masuk viewport
+                        videoOpacity = 0;
+                        topLineOpacity = 0;
                     }
-                } else if (videoRect.bottom <= 0) {
-                    // Video has completely scrolled past
-                    videoOpacity = 0;
                 } else {
-                    // Video is fully visible
-                    videoOpacity = 1;
+                    // Video is in viewport
+                    if (scrollDirection === 'down') {
+                        // Scroll down - video fade out sedikit sahaja (tidak hilang sepenuhnya)
+                        if (videoRect.top < windowHeight * 0.5) {
+                            // Video sudah melepasi tengah viewport, fade out sedikit
+                            const fadeProgress = 1 - (videoRect.top / (windowHeight * 0.5));
+                            videoOpacity = Math.max(0.3, 1 - (fadeProgress * 0.7)); // Minimum 0.3 opacity
+                            topLineOpacity = Math.max(0, 1 - fadeProgress);
+                            darkOverlayOpacity = Math.min(0.5, fadeProgress * 0.5); // Maximum 0.5 overlay
+                        } else {
+                            // Video masih di atas, fully visible
+                            videoOpacity = 1;
+                            topLineOpacity = 1;
+                            darkOverlayOpacity = 0;
+                        }
+                    } else {
+                        // Scroll up - video fade in balik dengan transition
+                        if (videoRect.top < windowHeight * 0.5) {
+                            // Video dalam viewport, fade in
+                            const fadeProgress = 1 - (videoRect.top / (windowHeight * 0.5));
+                            videoOpacity = Math.min(1, fadeProgress);
+                            topLineOpacity = Math.min(1, fadeProgress);
+                            darkOverlayOpacity = Math.max(0, 0.5 - (fadeProgress * 0.5));
+                        } else {
+                            // Video di atas, fully visible
+                            videoOpacity = 1;
+                            topLineOpacity = 1;
+                            darkOverlayOpacity = 0;
+                        }
+                    }
                 }
                 
-                videoContainer.style.opacity = videoOpacity;
+                // Apply opacity HANYA pada video element, DENGAN transition
+                newsVideo.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                newsVideo.style.opacity = videoOpacity;
+                // Container tetap visible untuk structure
+                videoContainer.style.opacity = 1;
                 
-                // Smooth transition effect for mockups grid - slide up as video fades out
-                if (videoRect.bottom < windowHeight && videoRect.bottom > 0) {
-                    // When video bottom is in viewport, start transitioning mockups grid
-                    const fadeStartPoint = windowHeight * 0.6;
-                    let mockupsOpacity = 0;
-                    let mockupsTranslateY = 50; // Start 50px below
+                // Apply dark overlay
+                const videoDarkOverlay = document.getElementById('videoDarkOverlay');
+                if (videoDarkOverlay) {
+                    videoDarkOverlay.style.background = `rgba(0, 0, 0, ${darkOverlayOpacity})`;
+                }
+                
+                // Apply top line opacity
+                const videoTopLine = document.getElementById('videoTopLine');
+                if (videoTopLine) {
+                    videoTopLine.style.opacity = topLineOpacity;
+                }
+                
+                // News layout popup effect - smooth popup bila video melepasi separuh
+                const mockupsRect = mockupsGrid.getBoundingClientRect();
+                
+                // Check jika video sudah melepasi separuh (50% dari windowHeight)
+                const videoHalfPoint = windowHeight * 0.5;
+                const videoPassedHalf = videoRect.top < videoHalfPoint;
+                
+                if (videoPassedHalf) {
+                    // Video sudah melepasi separuh - news layout popup dengan smooth animation
+                    // Calculate progress untuk smooth transition
+                    const progress = Math.min(1, (videoHalfPoint - videoRect.top) / (videoHalfPoint * 0.3));
+                    const translateY = (1 - progress) * 60;
+                    const scale = 0.9 + (progress * 0.1);
+                    const opacity = Math.min(1, progress);
                     
-                    if (videoRect.bottom < fadeStartPoint) {
-                        // Calculate transition progress based on video fade
-                        const fadeProgress = (fadeStartPoint - videoRect.bottom) / fadeStartPoint;
-                        mockupsOpacity = Math.min(1, fadeProgress * 1.2); // Fade in faster
-                        mockupsTranslateY = 50 * (1 - fadeProgress); // Slide up from 50px to 0
-                    }
-                    
-                    mockupsGrid.style.opacity = mockupsOpacity;
-                    mockupsGrid.style.transform = `translateY(${mockupsTranslateY}px)`;
-                } else if (videoRect.bottom <= 0) {
-                    // Video completely scrolled past, mockups fully visible
-                    mockupsGrid.style.opacity = '1';
-                    mockupsGrid.style.transform = 'translateY(0)';
+                    mockupsGrid.style.opacity = opacity;
+                    mockupsGrid.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                    mockupsGrid.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                 } else {
-                    // Video still fully visible, mockups hidden below
+                    // Video belum melepasi separuh - news layout hidden dengan smooth
                     mockupsGrid.style.opacity = '0';
-                    mockupsGrid.style.transform = 'translateY(50px)';
+                    mockupsGrid.style.transform = 'translateY(60px) scale(0.9)';
+                    mockupsGrid.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                 }
             });
         }

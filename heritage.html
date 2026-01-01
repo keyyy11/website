@@ -6,7 +6,7 @@
     <title>Our Heritage – Aeronas Aerocraft</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="theme-dark theme-about">
+<body class="theme-dark theme-about theme-heritage">
     <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
 
     <!-- Header -->
@@ -19,10 +19,19 @@
         </div>
 
         <nav class="header-nav">
-            <a href="aircraft.html">Aircraft</a>
+            <a href="index.html">Home</a>
+            <div class="nav-dropdown">
+                <a href="aircraft.html">Aircraft</a>
+                <div class="dropdown-menu">
+                    <a href="aircraft.html#manufacturing">Manufacturing</a>
+                    <a href="technology.html">Technology</a>
+                    <a href="compliance.html">Compliance</a>
+                </div>
+            </div>
             <a href="about.html" class="active">About</a>
             <a href="services.html">Careers</a>
             <a href="news.html">News</a>
+            <a href="event.html">Event</a>
         </nav>
 
         <div class="header-right">
@@ -46,40 +55,79 @@
             <div class="company-content-wrapper">
                 <div class="company-heading">
                     <h1 class="company-title">Our Heritage</h1>
+                    <div class="heritage-popup-image" id="heritagePopupImage"></div>
                 </div>
                 <div class="company-description">
                     <p class="company-text">
                         Aeronas Aerocraft represents a historic milestone in Malaysia's aerospace journey. As the nation's first small aircraft manufacturer, we carry forward a legacy of innovation, engineering excellence, and national pride. Our heritage is built on the foundation of Malaysian ingenuity and the vision to establish a world-class aerospace industry.
                     </p>
-                    <div class="heritage-section">
-                        <h2 class="section-subtitle">A Vision Born from Ambition</h2>
-                        <p class="company-text">
-                            The journey of Aeronas Aerocraft began with a bold vision: to create a Malaysian aerospace company that could compete on the global stage. Rooted in the rich industrial heritage of Malaysia, we combine traditional craftsmanship values with cutting-edge aerospace technology.
-                        </p>
-                    </div>
-                    <div class="heritage-section">
-                        <h2 class="section-subtitle">Engineering Excellence</h2>
-                        <p class="company-text">
-                            Our heritage is defined by our commitment to engineering excellence. Every aircraft we design and build reflects our dedication to meeting and exceeding international certification standards. We honor the legacy of aerospace pioneers while pushing the boundaries of what's possible in small aircraft manufacturing.
-                        </p>
-                    </div>
-                    <div class="heritage-section">
-                        <h2 class="section-subtitle">National Pride</h2>
-                        <p class="company-text">
-                            As a Malaysian company, we take pride in representing our nation on the global aerospace stage. Our heritage is intertwined with Malaysia's aspirations to become a recognized leader in advanced manufacturing and technology. We are building not just aircraft, but a legacy for future generations of Malaysian aerospace engineers and manufacturers.
-                        </p>
-                    </div>
-                    <div class="heritage-section">
-                        <h2 class="section-subtitle">Innovation Legacy</h2>
-                        <p class="company-text">
-                            Innovation is at the heart of our heritage. From the very beginning, we have challenged conventional aerospace models, embraced data-driven decision making, and leveraged advanced manufacturing technologies. This innovative spirit continues to drive us forward as we build aircraft that are efficient, reliable, and commercially scalable.
-                        </p>
-                    </div>
-                    <div class="heritage-section">
-                        <h2 class="section-subtitle">Building for the Future</h2>
-                        <p class="company-text">
-                            Our heritage is not just about where we've come from, but where we're going. We are establishing a foundation that will support Malaysia's aerospace industry for decades to come. Every milestone we achieve, every aircraft we build, and every standard we set becomes part of our enduring heritage—a testament to Malaysian capability and ambition in the global aerospace arena.
-                        </p>
+                    <!-- Interactive Timeline -->
+                    <div class="heritage-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2018</div>
+                            <div class="timeline-details">
+                                <div class="timeline-image-container">
+                                    <img src="assets/images/011.jpeg" alt="Foundation" class="timeline-image">
+                                </div>
+                                <h3 class="timeline-title">Foundation</h3>
+                                <p class="timeline-description">Aeronas Aerocraft was founded with a bold vision to establish Malaysia's first small aircraft manufacturer. The journey began with a small team of passionate aerospace engineers and a clear mission to compete on the global stage.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2019</div>
+                            <div class="timeline-details">
+                                <div class="timeline-image-container">
+                                    <img src="assets/images/009 (1).jpeg" alt="First Design Phase" class="timeline-image">
+                                </div>
+                                <h3 class="timeline-title">First Design Phase</h3>
+                                <p class="timeline-description">Our engineering team completed the initial design phase for our first aircraft model. We established partnerships with international certification bodies and began the rigorous process of meeting global aerospace standards.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2020</div>
+                            <div class="timeline-details">
+                                <div class="timeline-image-container">
+                                    <img src="assets/images/010.jpeg" alt="Manufacturing Facility" class="timeline-image">
+                                </div>
+                                <h3 class="timeline-title">Manufacturing Facility</h3>
+                                <p class="timeline-description">We established our state-of-the-art manufacturing facility in Malaysia, equipped with advanced aeronautical engineering capabilities. This marked a significant milestone in building national aerospace infrastructure.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2021</div>
+                            <div class="timeline-details">
+                                <h3 class="timeline-title">Prototype Development</h3>
+                                <p class="timeline-description">The first prototype of our aircraft entered development. Our R&D team worked tirelessly to integrate cutting-edge technology while maintaining the highest standards of safety and performance.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2022</div>
+                            <div class="timeline-details">
+                                <h3 class="timeline-title">International Recognition</h3>
+                                <p class="timeline-description">Aeronas Aerocraft gained international recognition as Malaysia's premier aerospace manufacturer. We participated in global aviation exhibitions and established our presence in the competitive aerospace market.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2023</div>
+                            <div class="timeline-details">
+                                <h3 class="timeline-title">Certification Milestone</h3>
+                                <p class="timeline-description">We achieved major certification milestones, bringing us closer to commercial production. Our commitment to international standards and safety protocols was validated by leading aviation authorities.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2024</div>
+                            <div class="timeline-details">
+                                <h3 class="timeline-title">Production Readiness</h3>
+                                <p class="timeline-description">Our manufacturing processes reached full production readiness. We implemented data-driven decision making and advanced manufacturing technologies to ensure efficient, reliable, and scalable production.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-details">
+                                <h3 class="timeline-title">Global Expansion</h3>
+                                <p class="timeline-description">Aeronas Aerocraft continues to expand globally, establishing partnerships and delivering aircraft that meet the highest international standards. We are building a legacy for future generations of Malaysian aerospace professionals.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,6 +164,40 @@
             // Calculate opacity: 0 at top, up to 0.6 at bottom
             const opacity = Math.min(scrollPercentage * 0.6, 0.6);
             scrollDarkOverlay.style.opacity = opacity;
+        });
+
+        // Heritage popup image - show gambar bila hover pada tahun
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const popupImage = document.getElementById('heritagePopupImage');
+        
+        // Map tahun dengan gambar
+        const yearImages = {
+            '2018': 'assets/images/011.jpeg',
+            '2019': 'assets/images/009 (1).jpeg',
+            '2020': 'assets/images/010.jpeg'
+        };
+
+        timelineItems.forEach(item => {
+            const yearElement = item.querySelector('.timeline-year');
+            if (yearElement) {
+                const year = yearElement.textContent.trim();
+                const imagePath = yearImages[year];
+
+                if (imagePath) {
+                    item.addEventListener('mouseenter', () => {
+                        if (popupImage) {
+                            popupImage.innerHTML = `<img src="${imagePath}" alt="Heritage ${year}">`;
+                            popupImage.classList.add('active');
+                        }
+                    });
+
+                    item.addEventListener('mouseleave', () => {
+                        if (popupImage) {
+                            popupImage.classList.remove('active');
+                        }
+                    });
+                }
+            }
         });
     </script>
 </body>

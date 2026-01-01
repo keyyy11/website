@@ -17,10 +17,19 @@
         </div>
 
         <nav class="header-nav">
-            <a href="aircraft.html">Aircraft</a>
+            <a href="index.html">Home</a>
+            <div class="nav-dropdown">
+                <a href="aircraft.html">Aircraft</a>
+                <div class="dropdown-menu">
+                    <a href="aircraft.html#manufacturing">Manufacturing</a>
+                    <a href="technology.html">Technology</a>
+                    <a href="compliance.html">Compliance</a>
+                </div>
+            </div>
             <a href="about.html">About</a>
             <a href="services.html">Careers</a>
             <a href="news.html" class="active">News</a>
+            <a href="event.html">Event</a>
         </nav>
 
         <div class="header-right">
@@ -31,42 +40,32 @@
     <!-- Main Content -->
     <main class="news-page-main" id="newsPageMain">
         <div class="news-background-wrapper" id="newsBackground">
-            <section class="news-hero-section">
+            <section class="news-hero-section" id="newsHeroSection">
                 <div class="news-hero-content">
                     <p class="news-hero-label">ALL FIELDS OF APPLICATION</p>
-                    <h1 class="news-hero-title">NEWS</h1>
-                    <a href="#" class="news-hero-cta">ALL APPLICATIONS ></a>
+                    <h1 class="news-hero-title" id="newsHeroTitle">NEWS</h1>
                 </div>
             </section>
 
-            <section class="news-categories-section">
-                <div class="news-categories-grid">
-                    <div class="news-category-card" data-bg="assets/images/UTEM.jpeg">
-                        <h3>UTeM - Aeronas Aerocraft</h3>
-                        <p>Date : 17 DECEMBER 2025</p>
-                    </div>
-                    <div class="news-category-card active" data-bg="assets/images/UTHM.jpeg">
-                        <h3>Aeronas Aerocraft - UTHM</h3>
-                        <p>Date : 1 DECEMBER 2025</p>
-                    </div>
-                    <div class="news-category-card" data-bg="assets/images/CHEMTRON.jpeg">
-                        <h3>CHEMTRON PTE LTD & ARISS - AERONAS AEROCRAFT</h3>
-                        <p>Date : 17 OCTOBER 2025</p>
-                    </div>
-                    <div class="news-category-card" data-bg="assets/images/GMI.jpeg">
-                        <h3>GMI - AERONAS AEROCRAFT</h3>
-                        <p>Date : 28 OCTOBER 2025</p>
-                    </div>
-                    <div class="news-category-card" data-bg="assets/images/KKTM.jpeg">
-                        <h3>AERONAS AEROCRAFT - KKTM</h3>
-                        <p>Date : 23 DECEMBER 2025</p>
-                    </div>
-                    <div class="news-category-card" data-bg="assets/images/USIM.jpeg">
-                        <h3>USIM - AERONAS AEROCRAFT</h3>
-                        <p>Date : 10 DECEMBER 2025</p>
+            <section class="news-categories-section" id="newsCategoriesSection">
+                <div class="news-categories-grid" id="newsCategoriesGrid">
+                    <!-- News cards will be loaded dynamically from Firestore or local data -->
+                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
+                        Loading news...
                     </div>
                 </div>
             </section>
+            
+            <!-- Fullscreen News View -->
+            <div class="news-fullscreen-view" id="newsFullscreenView">
+                <button class="news-close-btn" id="newsCloseBtn">×</button>
+                <div class="news-fullscreen-content">
+                    <div class="news-fullscreen-image" id="newsFullscreenImage"></div>
+                    <div class="news-fullscreen-text-wrapper">
+                        <div class="news-fullscreen-text" id="newsFullscreenText"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -87,14 +86,32 @@
         </div>
     </footer>
 
-    <script>
+    <script type="module">
+        // Import Firebase functions
+        import { loadNewsFromFirestore } from './assets/js/news-firebase.js';
+        import { newsData } from './assets/js/news-data.js';
+        
         // Dynamic background image change on hover
         const newsBackground = document.getElementById('newsBackground');
-        const categoryCards = document.querySelectorAll('.news-category-card');
+        const newsCategoriesGrid = document.querySelector('.news-categories-grid');
         
         // Function to update background image
         function updateBackground(imagePath) {
-            if (newsBackground) {
+            if (newsBackground && imagePath) {
+                // Clean image path
+                let cleanPath = imagePath.trim();
+                // Remove quotes if present
+                cleanPath = cleanPath.replace(/['"]/g, '');
+                // Remove URL encoding
+                cleanPath = cleanPath.replace(/%22/g, '').replace(/%20/g, ' ');
+                if (cleanPath.includes('%')) {
+                    try {
+                        cleanPath = decodeURIComponent(cleanPath);
+                    } catch (e) {
+                        console.warn('Failed to decode image path:', cleanPath);
+                    }
+                }
+                
                 // Create or update style element for background
                 let style = document.getElementById('news-bg-dynamic');
                 if (!style) {
@@ -102,26 +119,260 @@
                     style.id = 'news-bg-dynamic';
                     document.head.appendChild(style);
                 }
-                style.textContent = `.news-background-wrapper::after { background-image: url('${imagePath}') !important; }`;
+                // Escape single quotes in path
+                const escapedPath = cleanPath.replace(/'/g, "\\'");
+                style.textContent = `.news-background-wrapper::after { background-image: url('${escapedPath}') !important; background-size: cover !important; background-position: center !important; transition: background-image 0.5s ease !important; }`;
+                console.log('Background updated to:', cleanPath);
             }
         }
         
-        // Set initial background
-        const defaultBg = 'assets/images/02.jpeg';
-        updateBackground(defaultBg);
-
-        categoryCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                const bgImage = card.getAttribute('data-bg');
-                if (bgImage) {
-                    updateBackground(bgImage);
-                }
-                // Remove active class from all cards
-                categoryCards.forEach(c => c.classList.remove('active'));
-                // Add active class to hovered card
-                card.classList.add('active');
+        // Function to render news cards
+        function renderNewsCards(newsArray) {
+            if (!newsCategoriesGrid) {
+                console.error('News categories grid not found');
+                return;
+            }
+            
+            if (!newsArray || newsArray.length === 0) {
+                newsCategoriesGrid.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1 / -1;">
+                        <p>No news articles found.</p>
+                        <p style="font-size: 14px; margin-top: 10px;">Please add news articles through the admin dashboard.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear existing cards
+            newsCategoriesGrid.innerHTML = '';
+            
+            // Sort by date (newest first)
+            const sortedNews = [...newsArray].sort((a, b) => {
+                return new Date(b.dateSort) - new Date(a.dateSort);
             });
-        });
+            
+            // Render cards
+            sortedNews.forEach((news, index) => {
+                const isActive = index === 0; // First card is active by default
+                const card = document.createElement('div');
+                // Fix image path - convert absolute Windows path to relative path
+                let imagePath = news.image || news.imageUrl || '';
+                
+                // If path contains Windows absolute path, convert to relative
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                    // Extract filename from absolute path
+                    const filename = imagePath.split(/[/\\]/).pop();
+                    
+                    // Map filename to correct image file
+                    const imageMap = {
+                        'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                        'UTEM.jpeg': 'UTEM.jpeg',
+                        'KKTM.jpeg': 'KKTM.jpeg',
+                        'USIM.jpeg': 'USIM.jpeg',
+                        'UTHM.jpeg': 'UTHM.jpeg',
+                        'GMI.jpeg': 'GMI.jpeg',
+                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                    };
+                    
+                    const correctFilename = imageMap[filename] || filename;
+                    imagePath = `assets/images/${correctFilename}`;
+                    console.warn(`News ${news.id}: Converted absolute path to relative: ${imagePath}`);
+                }
+                
+                // Ensure path is relative (starts with assets/)
+                if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http')) {
+                    // If just filename, add assets/images/ prefix
+                    if (!imagePath.includes('/')) {
+                        imagePath = `assets/images/${imagePath}`;
+                    }
+                }
+                
+                card.className = `news-category-card ${isActive ? 'active' : ''}`;
+                card.id = `news-${news.id}`;
+                card.setAttribute('data-bg', imagePath);
+                card.setAttribute('data-date', news.dateSort || news.date || '');
+                card.setAttribute('data-title', news.title || 'Untitled');
+                card.setAttribute('data-description', news.description || news.content || 'No description available');
+                card.setAttribute('data-image', imagePath);
+                
+                card.innerHTML = `
+                    <h3>${news.title || 'Untitled'}</h3>
+                    <p>Date : ${news.date || 'No date'}</p>
+                    <div class="news-popup-content">
+                        <div class="news-popup-image">
+                            <img src="${imagePath}" alt="${news.title || 'News image'}" onerror="console.error('Failed to load image:', '${imagePath}'); this.style.display='none';">
+                        </div>
+                        <div class="news-popup-text">
+                            <p>${news.description || news.content || 'No description available'}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Debug: Log image path
+                if (imagePath) {
+                    console.log(`News ${news.id}: Image path = ${imagePath}`);
+                } else {
+                    console.warn(`News ${news.id}: No image path found!`);
+                }
+                
+                newsCategoriesGrid.appendChild(card);
+            });
+            
+            // Set initial background
+            if (sortedNews.length > 0 && sortedNews[0].image) {
+                updateBackground(sortedNews[0].image);
+            }
+            
+            // Setup event listeners for cards
+            setupCardListeners();
+            
+            // Handle URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsId = urlParams.get('news');
+            
+            if (newsId) {
+                setTimeout(() => {
+                    const targetCard = document.getElementById(`news-${newsId}`);
+                    if (targetCard) {
+                        // Remove active from all cards
+                        document.querySelectorAll('.news-category-card').forEach(c => c.classList.remove('active'));
+                        // Add active to target card
+                        targetCard.classList.add('active');
+                        // Update background
+                        const bgImage = targetCard.getAttribute('data-bg');
+                        if (bgImage) {
+                            updateBackground(bgImage);
+                        }
+                        // Scroll to card
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 300);
+            }
+        }
+        
+        // Setup card event listeners
+        function setupCardListeners() {
+            const categoryCards = document.querySelectorAll('.news-category-card');
+            const newsHeroSection = document.getElementById('newsHeroSection');
+            const newsCategoriesSection = document.getElementById('newsCategoriesSection');
+            const newsFullscreenView = document.getElementById('newsFullscreenView');
+            const newsCloseBtn = document.getElementById('newsCloseBtn');
+            const newsFullscreenImage = document.getElementById('newsFullscreenImage');
+            const newsFullscreenText = document.getElementById('newsFullscreenText');
+
+            categoryCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const bgImage = card.getAttribute('data-bg');
+                    if (bgImage) {
+                        updateBackground(bgImage);
+                    }
+                    // Remove active class from all cards
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    // Add active class to hovered card
+                    card.classList.add('active');
+                    
+                    // Get news data from card attributes
+                    const cardTitle = card.getAttribute('data-title') || '';
+                    const cardDescription = card.getAttribute('data-description') || '';
+                    const cardImage = card.getAttribute('data-image') || '';
+                    
+                    // Update news hero title dengan smooth transition
+                    const newsHeroTitle = document.getElementById('newsHeroTitle');
+                    if (newsHeroTitle && cardTitle) {
+                        newsHeroTitle.style.transition = 'opacity 0.3s ease';
+                        newsHeroTitle.style.opacity = '0';
+                        setTimeout(() => {
+                            newsHeroTitle.textContent = cardTitle.toUpperCase();
+                            newsHeroTitle.style.opacity = '1';
+                        }, 200);
+                    }
+                    
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    // Reset news hero title
+                    const newsHeroTitle = document.getElementById('newsHeroTitle');
+                    if (newsHeroTitle) {
+                        newsHeroTitle.style.transition = 'opacity 0.3s ease';
+                        newsHeroTitle.style.opacity = '0';
+                        setTimeout(() => {
+                            newsHeroTitle.textContent = 'NEWS';
+                            newsHeroTitle.style.opacity = '1';
+                        }, 200);
+                    }
+                });
+
+                // Click handler untuk fullscreen view
+                card.addEventListener('click', () => {
+                    // Get news data from card attributes
+                    const cardTitle = card.getAttribute('data-title') || '';
+                    const cardDescription = card.getAttribute('data-description') || '';
+                    const cardImage = card.getAttribute('data-image') || card.getAttribute('data-bg') || '';
+                    const cardDate = card.querySelector('p') ? card.querySelector('p').textContent : '';
+                    
+                    if (cardImage) {
+                        // Move title to side
+                        newsHeroSection.classList.add('moved-to-side');
+                        
+                        // Move categories down
+                        newsCategoriesSection.classList.add('moved-down');
+                        
+                        // Show fullscreen view dengan layout: image kiri, text kanan
+                        newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="this.style.display='none';">`;
+                        newsFullscreenText.innerHTML = `
+                            <h2 class="news-fullscreen-title">${cardTitle}</h2>
+                            ${cardDate ? `<p class="news-fullscreen-date">${cardDate}</p>` : ''}
+                            <div class="news-fullscreen-description">${cardDescription}</div>
+                        `;
+                        newsFullscreenView.classList.add('active');
+                        
+                        // Prevent scroll on body
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+
+            // Close fullscreen view
+            if (newsCloseBtn) {
+                newsCloseBtn.addEventListener('click', () => {
+                    newsFullscreenView.classList.remove('active');
+                    newsHeroSection.classList.remove('moved-to-side');
+                    newsCategoriesSection.classList.remove('moved-down');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && newsFullscreenView.classList.contains('active')) {
+                    newsFullscreenView.classList.remove('active');
+                    newsHeroSection.classList.remove('moved-to-side');
+                    newsCategoriesSection.classList.remove('moved-down');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+        }
+        
+        // Load news from Firestore or use local data
+        async function loadNews() {
+            try {
+                const news = await loadNewsFromFirestore();
+                if (news && news.length > 0) {
+                    renderNewsCards(news);
+                } else {
+                    // Fallback to local data
+                    renderNewsCards(newsData);
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                // Fallback to local data
+                renderNewsCards(newsData);
+            }
+        }
+        
+        // Initialize
+        loadNews();
     </script>
 </body>
 </html>
