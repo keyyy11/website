@@ -35,6 +35,13 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow update, delete: if request.auth != null;
     }
+    
+    // Contact Messages collection
+    match /contactMessages/{document=**} {
+      allow create: if true;  // ✅ Semua orang boleh submit contact messages
+      allow read: if request.auth != null;  // ✅ Hanya admin boleh baca
+      allow update, delete: if request.auth != null;  // ✅ Hanya admin boleh update/delete
+    }
   }
 }
 ```

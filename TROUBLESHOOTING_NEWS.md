@@ -189,3 +189,5 @@ Jika masih tidak berfungsi selepas semua steps di atas:
 - **Check Firestore rules** - pastikan allow read: if true
 - **Verify data structure** - pastikan fields dalam Firestore match dengan code
 
+
+

@@ -137,11 +137,85 @@
     </footer>
 
     <script>
-        // Form submission handler
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // Form submission handler - Save to Firebase
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            this.reset();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            try {
+                console.log('Starting contact form submission...');
+                
+                // Import Firebase
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getFirestore, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                
+                console.log('Firebase modules imported');
+                
+                // Firebase Config
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+                    authDomain: "aeronas-aerocraft.firebaseapp.com",
+                    projectId: "aeronas-aerocraft",
+                    storageBucket: "aeronas-aerocraft.firebasestorage.app",
+                    messagingSenderId: "576218545628",
+                    appId: "1:576218545628:web:6e7483b743b4c2e0336319",
+                    measurementId: "G-CC8VQY3RCN"
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                console.log('Firebase initialized');
+
+                // Get form data
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value,
+                    submittedAt: new Date(),
+                    status: 'new',
+                    read: false
+                };
+
+                console.log('Saving to Firestore...', formData);
+
+                // Save to Firestore
+                await addDoc(collection(db, 'contactMessages'), formData);
+                
+                console.log('Contact message saved successfully');
+                
+                // Show success message
+                alert('Thank you for your message! We will get back to you soon.');
+                
+                // Reset form
+                this.reset();
+                
+            } catch (error) {
+                console.error('Error submitting contact form:', error);
+                console.error('Error details:', {
+                    code: error.code,
+                    message: error.message,
+                    stack: error.stack
+                });
+                
+                let errorMessage = 'Error sending message. ';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Permission denied. Please check Firebase security rules.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage += 'Service unavailable. Please check your internet connection.';
+                } else {
+                    errorMessage += error.message || 'Please try again or contact us directly.';
+                }
+                
+                alert(errorMessage);
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
 
         // Scroll-triggered animations using Intersection Observer

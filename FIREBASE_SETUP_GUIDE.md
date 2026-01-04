@@ -56,6 +56,13 @@ service cloud.firestore {
       allow read: if request.auth != null;  // Only authenticated admins can read
       allow update, delete: if request.auth != null;  // Only authenticated admins can update/delete
     }
+    
+    // Contact Messages collection - write for all (public), read for authenticated only
+    match /contactMessages/{document=**} {
+      allow create: if true;  // Anyone can submit contact messages
+      allow read: if request.auth != null;  // Only authenticated admins can read
+      allow update, delete: if request.auth != null;  // Only authenticated admins can update/delete
+    }
   }
 }
 ```

@@ -746,16 +746,16 @@ footer {
   flex: 1;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   margin: 0 auto;
 }
 
 .header-nav > * + * {
-  margin-left: 20px;
+  margin-left: 0; /* Remove margin, use gap instead */
 }
 
 .nav-dropdown + a {
-  margin-left: 12px !important;
+  margin-left: 0 !important; /* Remove inconsistent margin */
 }
 
 .header-nav a {
@@ -799,13 +799,13 @@ footer {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-right: 16px;
+  padding-right: 8px;
 }
 
 .nav-dropdown > a::after {
   content: '▼';
   font-size: 8px;
-  margin-left: 6px;
+  margin-left: 4px;
   opacity: 0.6;
   transition: all 0.3s ease;
   display: inline-block;
@@ -3536,7 +3536,9 @@ footer {
   .hero-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 16px;
+  margin-top: 30px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
@@ -3860,7 +3862,7 @@ footer {
   background: #05060a;
   position: relative;
   min-height: 350px;
-  opacity: 1; /* Container tetap visible, hanya video yang fade */
+  opacity: 1;
   transition: transform 0.5s ease, box-shadow 0.5s ease;
   scroll-margin-top: 80px;
 }
@@ -3889,9 +3891,8 @@ footer {
   display: block;
   min-height: 350px;
   object-fit: cover;
-  will-change: opacity, transform;
-  transition: opacity 0.5s ease, transform 0.5s ease; /* Transition untuk scroll up/down */
-  opacity: 1; /* Start dengan opacity 1 */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 1;
 }
 
 .video-dark-overlay {
@@ -3921,7 +3922,8 @@ footer {
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  z-index: 10;
+  z-index: 100;
+  pointer-events: auto;
 }
 
 .video-mute-btn:hover {
@@ -3940,14 +3942,56 @@ footer {
   display: inline-block;
 }
 
+/* Video Controls Container */
+.video-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.video-control-btn {
+  position: relative;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  pointer-events: auto;
+}
+
+.video-control-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.video-control-btn:active {
+  transform: scale(0.95);
+}
+
+.video-control-btn .play-icon,
+.video-control-btn .pause-icon,
+.video-control-btn .mute-icon,
+.video-control-btn .unmute-icon {
+  font-size: 24px;
+  display: inline-block;
+}
+
 .mockups-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
   grid-auto-rows: 1fr;
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  transform: translateY(60px) scale(0.9);
   margin-top: 60px;
   padding: 40px 0;
   position: relative;

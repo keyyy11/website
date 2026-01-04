@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aeronas Aerocraft</title>
+    <link rel="icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="theme-dark">
@@ -96,15 +97,21 @@
         <section class="mockups-section">
             <div class="news-video-container" id="video-section">
                 <div class="video-top-line" id="videoTopLine"></div>
-                <video id="newsVideo" autoplay muted loop playsinline class="news-video">
+                <video id="newsVideo" autoplay loop playsinline muted class="news-video" controlsList="nodownload nofullscreen noremoteplayback" disablePictureInPicture preload="auto">
                     <source src="assets/images/Media1.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 <div class="video-dark-overlay" id="videoDarkOverlay"></div>
-                <button class="video-mute-btn" id="videoMuteBtn" aria-label="Toggle sound">
-                    <span class="mute-icon">🔇</span>
-                    <span class="unmute-icon" style="display: none;">🔊</span>
-                </button>
+                <div class="video-controls">
+                    <button type="button" class="video-control-btn" id="playPauseBtn" aria-label="Play/Pause">
+                        <span class="play-icon">▶️</span>
+                        <span class="pause-icon" style="display: none;">⏸️</span>
+                    </button>
+                    <button type="button" class="video-control-btn" id="soundBtn" aria-label="Toggle sound">
+                        <span class="mute-icon">🔇</span>
+                        <span class="unmute-icon" style="display: none;">🔊</span>
+                    </button>
+                </div>
             </div>
             <div class="mockups-grid" id="newsCardsGrid">
                 <!-- News cards will be dynamically loaded here -->
@@ -273,16 +280,25 @@
                 // Fix image path - convert absolute Windows path to relative path
                 let imagePath = news.image || news.imageUrl || '';
                 
-                // Map filename to correct image file (always use UTEM.jpeg, not UTeM-Aeronas.jpeg)
+                // Map filename to correct image file (always use lowercase extension)
                 const imageMap = {
                     'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                    'UTeM-Aeronas.Jpeg': 'UTEM.jpeg',
+                    'UTeM-Aeronas.JPEG': 'UTEM.jpeg',
                     'UTeM-Aeronas': 'UTEM.jpeg',
                     'UTEM.jpeg': 'UTEM.jpeg',
+                    'UTEM.Jpeg': 'UTEM.jpeg',
+                    'UTEM.JPEG': 'UTEM.jpeg',
                     'KKTM.jpeg': 'KKTM.jpeg',
+                    'KKTM.Jpeg': 'KKTM.jpeg',
                     'USIM.jpeg': 'USIM.jpeg',
+                    'USIM.Jpeg': 'USIM.jpeg',
                     'UTHM.jpeg': 'UTHM.jpeg',
+                    'UTHM.Jpeg': 'UTHM.jpeg',
                     'GMI.jpeg': 'GMI.jpeg',
-                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                    'GMI.Jpeg': 'GMI.jpeg',
+                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                    'CHEMTRON.Jpeg': 'CHEMTRON.jpeg'
                 };
                 
                 // Extract filename from path (handle both absolute and relative paths)
@@ -298,8 +314,18 @@
                     filename = imagePath;
                 }
                 
-                // Apply mapping to get correct filename
-                const correctFilename = imageMap[filename] || filename;
+                // Normalize extension to lowercase for case-insensitive matching
+                const filenameLower = filename.toLowerCase();
+                const baseName = filename.split('.').slice(0, -1).join('.');
+                const extension = filename.split('.').pop()?.toLowerCase() || '';
+                const normalizedFilename = extension ? `${baseName}.${extension}` : filename;
+                
+                // Apply mapping to get correct filename (case-insensitive)
+                let correctFilename = imageMap[filename] || imageMap[normalizedFilename] || imageMap[filenameLower];
+                if (!correctFilename) {
+                    // If no mapping found, use normalized filename (lowercase extension)
+                    correctFilename = normalizedFilename;
+                }
                 
                 // Rebuild path with correct filename
                 if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
@@ -342,6 +368,15 @@
                 if (imagePath.includes('%')) {
                     imagePath = decodeURIComponent(imagePath);
                     console.log(`Index - News ${news.id}: Decoded URL encoding in path`);
+                }
+                
+                // Final normalization - ensure extension is lowercase
+                if (imagePath && imagePath.includes('.')) {
+                    const pathParts = imagePath.split('.');
+                    if (pathParts.length > 1) {
+                        const ext = pathParts.pop();
+                        imagePath = pathParts.join('.') + '.' + ext.toLowerCase();
+                    }
                 }
                 
                 const template = cardTemplates[index % cardTemplates.length];
@@ -455,140 +490,134 @@
             });
         }
 
-        // Video mute/unmute toggle
+        // Video controls - Play/Pause and Sound
         const newsVideo = document.getElementById('newsVideo');
-        const videoMuteBtn = document.getElementById('videoMuteBtn');
-        const muteIcon = videoMuteBtn.querySelector('.mute-icon');
-        const unmuteIcon = videoMuteBtn.querySelector('.unmute-icon');
-
-        videoMuteBtn.addEventListener('click', () => {
-            if (newsVideo.muted) {
-                newsVideo.muted = false;
-                muteIcon.style.display = 'none';
-                unmuteIcon.style.display = 'inline';
-            } else {
-                newsVideo.muted = true;
-                muteIcon.style.display = 'inline';
-                unmuteIcon.style.display = 'none';
-            }
-        });
-
-        // Parallax transition effect between video and other structures
-        const videoContainer = document.querySelector('.news-video-container');
-        const mockupsSection = document.querySelector('.mockups-section');
-        const mockupsGrid = document.querySelector('.mockups-grid');
-        const socialIconsSection = document.getElementById('socialIconsSection');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const soundBtn = document.getElementById('soundBtn');
         
-        if (videoContainer && newsVideo && mockupsGrid) {
-            // Initialize scroll position tracking
-            window.lastScrollY = window.scrollY;
-            
-            window.addEventListener('scroll', () => {
-                const videoRect = videoContainer.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                const videoHeight = videoRect.height;
-                
-                // Video fade effect - HANYA pada video element, DENGAN transition
-                // Video tidak hilang sepenuhnya, hanya fade sedikit
-                let videoOpacity = 1;
-                let darkOverlayOpacity = 0;
-                let topLineOpacity = 1;
-                
-                // Check scroll direction dan position
-                const scrollDirection = window.scrollY > (window.lastScrollY || 0) ? 'down' : 'up';
-                window.lastScrollY = window.scrollY;
-                
-                // Check if video is in viewport
-                const isVideoInViewport = videoRect.top < windowHeight && videoRect.bottom > 0;
-                
-                if (!isVideoInViewport) {
-                    // Video belum masuk atau sudah keluar viewport
-                    if (videoRect.bottom <= 0) {
-                        // Video completely scrolled past - fade out sedikit sahaja (tidak hilang sepenuhnya)
-                        videoOpacity = 0.3; // Tetap visible sedikit
-                        darkOverlayOpacity = 0.5;
-                        topLineOpacity = 0;
-                    } else {
-                        // Video belum masuk viewport
-                        videoOpacity = 0;
-                        topLineOpacity = 0;
-                    }
+        if (!playPauseBtn || !soundBtn) {
+            console.error('Video control buttons not found!');
+        }
+        
+        const playIcon = playPauseBtn?.querySelector('.play-icon');
+        const pauseIcon = playPauseBtn?.querySelector('.pause-icon');
+        const muteIcon = soundBtn?.querySelector('.mute-icon');
+        const unmuteIcon = soundBtn?.querySelector('.unmute-icon');
+
+        // Update play/pause icon based on video state
+        function updatePlayPauseIcon() {
+            if (newsVideo && playIcon && pauseIcon) {
+                if (newsVideo.paused) {
+                    playIcon.style.display = 'inline';
+                    pauseIcon.style.display = 'none';
                 } else {
-                    // Video is in viewport
-                    if (scrollDirection === 'down') {
-                        // Scroll down - video fade out sedikit sahaja (tidak hilang sepenuhnya)
-                        if (videoRect.top < windowHeight * 0.5) {
-                            // Video sudah melepasi tengah viewport, fade out sedikit
-                            const fadeProgress = 1 - (videoRect.top / (windowHeight * 0.5));
-                            videoOpacity = Math.max(0.3, 1 - (fadeProgress * 0.7)); // Minimum 0.3 opacity
-                            topLineOpacity = Math.max(0, 1 - fadeProgress);
-                            darkOverlayOpacity = Math.min(0.5, fadeProgress * 0.5); // Maximum 0.5 overlay
-                        } else {
-                            // Video masih di atas, fully visible
-                            videoOpacity = 1;
-                            topLineOpacity = 1;
-                            darkOverlayOpacity = 0;
-                        }
-                    } else {
-                        // Scroll up - video fade in balik dengan transition
-                        if (videoRect.top < windowHeight * 0.5) {
-                            // Video dalam viewport, fade in
-                            const fadeProgress = 1 - (videoRect.top / (windowHeight * 0.5));
-                            videoOpacity = Math.min(1, fadeProgress);
-                            topLineOpacity = Math.min(1, fadeProgress);
-                            darkOverlayOpacity = Math.max(0, 0.5 - (fadeProgress * 0.5));
-                        } else {
-                            // Video di atas, fully visible
-                            videoOpacity = 1;
-                            topLineOpacity = 1;
-                            darkOverlayOpacity = 0;
-                        }
-                    }
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'inline';
                 }
-                
-                // Apply opacity HANYA pada video element, DENGAN transition
-                newsVideo.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                newsVideo.style.opacity = videoOpacity;
-                // Container tetap visible untuk structure
-                videoContainer.style.opacity = 1;
-                
-                // Apply dark overlay
-                const videoDarkOverlay = document.getElementById('videoDarkOverlay');
-                if (videoDarkOverlay) {
-                    videoDarkOverlay.style.background = `rgba(0, 0, 0, ${darkOverlayOpacity})`;
-                }
-                
-                // Apply top line opacity
-                const videoTopLine = document.getElementById('videoTopLine');
-                if (videoTopLine) {
-                    videoTopLine.style.opacity = topLineOpacity;
-                }
-                
-                // News layout popup effect - smooth popup bila video melepasi separuh
-                const mockupsRect = mockupsGrid.getBoundingClientRect();
-                
-                // Check jika video sudah melepasi separuh (50% dari windowHeight)
-                const videoHalfPoint = windowHeight * 0.5;
-                const videoPassedHalf = videoRect.top < videoHalfPoint;
-                
-                if (videoPassedHalf) {
-                    // Video sudah melepasi separuh - news layout popup dengan smooth animation
-                    // Calculate progress untuk smooth transition
-                    const progress = Math.min(1, (videoHalfPoint - videoRect.top) / (videoHalfPoint * 0.3));
-                    const translateY = (1 - progress) * 60;
-                    const scale = 0.9 + (progress * 0.1);
-                    const opacity = Math.min(1, progress);
-                    
-                    mockupsGrid.style.opacity = opacity;
-                    mockupsGrid.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                    mockupsGrid.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            }
+        }
+
+        // Update sound icon based on mute state
+        function updateSoundIcon() {
+            if (newsVideo && muteIcon && unmuteIcon) {
+                if (newsVideo.muted) {
+                    muteIcon.style.display = 'inline';
+                    unmuteIcon.style.display = 'none';
                 } else {
-                    // Video belum melepasi separuh - news layout hidden dengan smooth
-                    mockupsGrid.style.opacity = '0';
-                    mockupsGrid.style.transform = 'translateY(60px) scale(0.9)';
-                    mockupsGrid.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    muteIcon.style.display = 'none';
+                    unmuteIcon.style.display = 'inline';
                 }
+            }
+        }
+
+        // Play/Pause button handler
+        if (playPauseBtn && newsVideo) {
+            playPauseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (newsVideo.paused) {
+                    newsVideo.play();
+                } else {
+                    newsVideo.pause();
+                }
+                updatePlayPauseIcon();
             });
+        }
+
+        // Sound button handler - hanya toggle mute/unmute, tidak pause video
+        if (soundBtn && newsVideo) {
+            // Flag to track if sound button was clicked
+            let soundButtonClicked = false;
+            
+            soundBtn.addEventListener('mousedown', function(e) {
+                soundButtonClicked = true;
+            }, true);
+            
+            soundBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                soundButtonClicked = true;
+                
+                // Toggle mute/unmute sahaja - tidak pause/play video
+                if (newsVideo.muted) {
+                    // Unmute: set muted to false and ensure volume is max
+                    newsVideo.muted = false;
+                    newsVideo.volume = 1.0;
+                } else {
+                    // Mute: set muted to true
+                    newsVideo.muted = true;
+                }
+                
+                // Update icon immediately
+                updateSoundIcon();
+                
+                // Reset flag after a short delay
+                setTimeout(() => {
+                    soundButtonClicked = false;
+                }, 100);
+                
+                return false;
+            }, true); // Use capture phase to ensure it fires first
+            
+            // Prevent video from pausing when sound button is clicked
+            if (newsVideo) {
+                newsVideo.addEventListener('click', function(e) {
+                    if (soundButtonClicked) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                }, true);
+            }
+        }
+
+        // Listen to video events to update icons
+        if (newsVideo) {
+            newsVideo.addEventListener('play', updatePlayPauseIcon);
+            newsVideo.addEventListener('pause', updatePlayPauseIcon);
+            newsVideo.addEventListener('volumechange', updateSoundIcon);
+            newsVideo.addEventListener('loadedmetadata', function() {
+                // Ensure volume is set when video loads
+                newsVideo.volume = 1.0;
+                updateSoundIcon();
+            });
+            newsVideo.addEventListener('canplay', function() {
+                // Ensure volume is set when video can play
+                newsVideo.volume = 1.0;
+                updateSoundIcon();
+            });
+            
+            // Initialize video - set volume to max, start muted for autoplay policy
+            newsVideo.volume = 1.0;
+            newsVideo.muted = true;
+            
+            // Initialize icons
+            updatePlayPauseIcon();
+            updateSoundIcon();
         }
 
     </script>

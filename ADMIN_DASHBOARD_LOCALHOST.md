@@ -89,3 +89,5 @@ Kemudian buka browser:
 - Semua data disimpan di Firebase Firestore
 - Images untuk news perlu menggunakan relative path: `assets/images/filename.jpeg`
 
+
+
