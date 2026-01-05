@@ -22,6 +22,10 @@
                 <span class="nav-icon">📰</span>
                 News
             </a>
+            <a href="#" class="admin-nav-item" data-section="careers">
+                <span class="nav-icon">💼</span>
+                Careers
+            </a>
             <a href="#" class="admin-nav-item" data-section="applications">
                 <span class="nav-icon">📋</span>
                 Job Applications
@@ -80,6 +84,14 @@
                         <div class="stat-label">Total messages</div>
                     </div>
                 </div>
+                <div class="admin-stat-card">
+                    <div class="stat-icon">💼</div>
+                    <div class="stat-content">
+                        <h3>Career Postings</h3>
+                        <div class="stat-number" id="careersCount">0</div>
+                        <div class="stat-label">Total postings</div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -92,6 +104,19 @@
                 </div>
                 <div class="admin-news-grid" id="newsGrid">
                     <!-- News articles will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Careers Section -->
+        <section class="admin-section" id="careers">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2>Career Postings</h2>
+                    <button class="admin-btn-primary" id="addCareerBtn">Add New Career</button>
+                </div>
+                <div class="admin-news-grid" id="careersGrid">
+                    <!-- Career postings will be loaded here -->
                 </div>
             </div>
         </section>
@@ -212,6 +237,44 @@
         </div>
     </div>
 
+    <!-- Add/Edit Career Modal -->
+    <div class="admin-modal" id="careerModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2 id="careerModalTitle">Add New Career</h2>
+                <button class="admin-modal-close" id="closeCareerModal">&times;</button>
+            </div>
+            <form class="admin-modal-form" id="careerForm">
+                <div class="form-group">
+                    <label for="careerId">ID (Unique identifier, e.g., "mobile-developer")</label>
+                    <input type="text" id="careerId" class="admin-input" required placeholder="e.g., mobile-developer">
+                    <small style="color: rgba(255,255,255,0.6);">This will be used as the document ID in Firestore</small>
+                </div>
+                <div class="form-group">
+                    <label for="careerTitle">Job Title</label>
+                    <input type="text" id="careerTitle" class="admin-input" required placeholder="e.g., Mobile Developer">
+                </div>
+                <div class="form-group">
+                    <label for="careerLocation">Location</label>
+                    <input type="text" id="careerLocation" class="admin-input" required placeholder="e.g., Johor Bahru">
+                </div>
+                <div class="form-group">
+                    <label for="careerDescription">Job Description</label>
+                    <textarea id="careerDescription" class="admin-input" required rows="4" placeholder="Job description and requirements"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="careerLink">Link (Optional)</label>
+                    <input type="url" id="careerLink" class="admin-input" placeholder="e.g., https://example.com/job-application or job-application.html?position=Mobile Developer">
+                    <small style="color: rgba(255,255,255,0.6);">Link to job application form or external job posting (optional)</small>
+                </div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="admin-btn-small" id="cancelCareerBtn">Cancel</button>
+                    <button type="submit" class="admin-btn-primary" id="saveCareerBtn">Save Career</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -251,6 +314,7 @@
                     console.log('User authenticated:', user.email);
                     document.getElementById('adminUser').textContent = user.email;
                     loadNews();
+                    loadCareers();
                     loadApplications();
                     loadContactMessages();
                 }
@@ -290,6 +354,221 @@
                 // Update page title
                 document.querySelector('.admin-page-title').textContent = section.charAt(0).toUpperCase() + section.slice(1);
             });
+        });
+
+        // Load careers
+        async function loadCareers() {
+            if (!db) {
+                console.error('Firestore not initialized');
+                return;
+            }
+            
+            const grid = document.getElementById('careersGrid');
+            grid.innerHTML = '<p style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">Loading careers...</p>';
+
+            try {
+                const careersRef = collection(db, 'careers');
+                // Try without orderBy first to avoid index requirement
+                let querySnapshot;
+                try {
+                    const q = query(careersRef, orderBy('title', 'asc'));
+                    querySnapshot = await getDocs(q);
+                } catch (orderError) {
+                    // If orderBy fails (no index or permission), try without ordering
+                    console.warn('OrderBy failed, trying without order:', orderError);
+                    querySnapshot = await getDocs(careersRef);
+                }
+
+                // Update count
+                document.getElementById('careersCount').textContent = querySnapshot.size;
+
+                if (querySnapshot.size === 0) {
+                    grid.innerHTML = '<p style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">No career postings yet. Click "Add New Career" to create one.</p>';
+                    return;
+                }
+
+                // Sort manually if orderBy failed
+                const careers = [];
+                querySnapshot.forEach((docItem) => {
+                    careers.push({ id: docItem.id, data: docItem.data() });
+                });
+                
+                // Sort by title manually
+                careers.sort((a, b) => {
+                    const titleA = (a.data.title || '').toLowerCase();
+                    const titleB = (b.data.title || '').toLowerCase();
+                    return titleA.localeCompare(titleB);
+                });
+
+                grid.innerHTML = '';
+                careers.forEach(({ id, data: career }) => {
+                    const careerCard = document.createElement('div');
+                    careerCard.className = 'admin-news-item';
+                    const linkDisplay = career.link ? `<p style="margin-top: 8px;"><a href="${career.link}" target="_blank" style="color: #4fc3f7; text-decoration: underline;">🔗 View Job Link</a></p>` : '';
+                    careerCard.innerHTML = `
+                        <div class="news-item-content">
+                            <h3>${career.title || 'Untitled'}</h3>
+                            <p class="news-item-date">📍 ${career.location || 'No location'}</p>
+                            <p>${career.description || 'No description'}</p>
+                            ${linkDisplay}
+                            <div class="news-item-actions">
+                                <button class="admin-btn-small edit-career" data-id="${id}">Edit</button>
+                                <button class="admin-btn-small delete-career" data-id="${id}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(careerCard);
+                });
+
+                // Edit handlers
+                document.querySelectorAll('.edit-career').forEach(btn => {
+                    btn.addEventListener('click', () => editCareer(btn.dataset.id));
+                });
+
+                // Delete handlers
+                document.querySelectorAll('.delete-career').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        if (confirm('Are you sure you want to delete this career posting?')) {
+                            try {
+                                await deleteDoc(doc(db, 'careers', btn.dataset.id));
+                                loadCareers();
+                                alert('Career posting deleted successfully!');
+                            } catch (error) {
+                                console.error('Error deleting career:', error);
+                                alert('Error deleting career: ' + error.message);
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading careers:', error);
+                let errorMessage = 'Error loading careers. ';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Please update Firebase security rules for "careers" collection. Check FIREBASE_SETUP_GUIDE.md';
+                } else if (error.message) {
+                    errorMessage += error.message;
+                } else {
+                    errorMessage += 'Please refresh the page.';
+                }
+                
+                grid.innerHTML = `<p style="text-align: center; padding: 40px; color: #e60505;">${errorMessage}</p>`;
+            }
+        }
+
+        let editingCareerId = null;
+
+        // Career modal handlers
+        document.getElementById('addCareerBtn').addEventListener('click', () => {
+            editingCareerId = null;
+            document.getElementById('careerModalTitle').textContent = 'Add New Career';
+            document.getElementById('saveCareerBtn').textContent = 'Save Career';
+            document.getElementById('careerForm').reset();
+            document.getElementById('careerId').disabled = false;
+            document.getElementById('careerModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeCareerModal').addEventListener('click', () => {
+            document.getElementById('careerModal').style.display = 'none';
+            editingCareerId = null;
+        });
+
+        document.getElementById('cancelCareerBtn').addEventListener('click', () => {
+            document.getElementById('careerModal').style.display = 'none';
+            editingCareerId = null;
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('careerModal').addEventListener('click', (e) => {
+            if (e.target.id === 'careerModal') {
+                document.getElementById('careerModal').style.display = 'none';
+                editingCareerId = null;
+            }
+        });
+
+        // Edit career function
+        async function editCareer(careerId) {
+            if (!db) {
+                alert('Database not initialized. Please refresh the page.');
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'careers', careerId);
+                const docSnap = await getDoc(docRef);
+                
+                if (!docSnap.exists()) {
+                    alert('Career posting not found');
+                    return;
+                }
+
+                const career = docSnap.data();
+                editingCareerId = careerId;
+                
+                document.getElementById('careerModalTitle').textContent = 'Edit Career';
+                document.getElementById('saveCareerBtn').textContent = 'Update Career';
+                document.getElementById('careerId').value = careerId;
+                document.getElementById('careerId').disabled = true; // Can't change ID when editing
+                document.getElementById('careerTitle').value = career.title || '';
+                document.getElementById('careerLocation').value = career.location || '';
+                document.getElementById('careerDescription').value = career.description || '';
+                document.getElementById('careerLink').value = career.link || '';
+                
+                document.getElementById('careerModal').style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading career for edit:', error);
+                alert('Error loading career: ' + error.message);
+            }
+        }
+
+        // Add/Update career form
+        document.getElementById('careerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!db) {
+                alert('Database not initialized. Please refresh the page.');
+                return;
+            }
+            
+            const careerId = document.getElementById('careerId').value.trim();
+            const title = document.getElementById('careerTitle').value.trim();
+            const location = document.getElementById('careerLocation').value.trim();
+            const description = document.getElementById('careerDescription').value.trim();
+            const link = document.getElementById('careerLink').value.trim();
+
+            if (!careerId || !title || !location || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                const careerData = {
+                    id: careerId,
+                    title,
+                    location,
+                    description,
+                    link: link || null, // Store link if provided, null if empty
+                    createdAt: editingCareerId ? (await getDoc(doc(db, 'careers', editingCareerId))).data().createdAt : new Date(),
+                    updatedAt: new Date()
+                };
+
+                if (editingCareerId) {
+                    // Update existing career
+                    await setDoc(doc(db, 'careers', editingCareerId), careerData, { merge: true });
+                    alert('Career posting updated successfully!');
+                } else {
+                    // Add new career
+                    await setDoc(doc(db, 'careers', careerId), careerData);
+                    alert('Career posting added successfully!');
+                }
+                
+                document.getElementById('careerModal').style.display = 'none';
+                editingCareerId = null;
+                loadCareers();
+            } catch (error) {
+                console.error('Error saving career:', error);
+                alert('Error saving career: ' + error.message);
+            }
         });
 
         // Load news articles

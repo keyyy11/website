@@ -63,6 +63,12 @@ service cloud.firestore {
       allow read: if request.auth != null;  // Only authenticated admins can read
       allow update, delete: if request.auth != null;  // Only authenticated admins can update/delete
     }
+    
+    // Careers collection - read for all, write for authenticated only
+    match /careers/{document=**} {
+      allow read: if true;  // Anyone can view career postings
+      allow write: if request.auth != null;  // Only authenticated admins can add/update/delete
+    }
   }
 }
 ```
