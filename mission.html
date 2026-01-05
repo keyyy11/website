@@ -18,7 +18,13 @@
             </a>
         </div>
 
-        <nav class="header-nav">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="header-nav" id="headerNav">
             <a href="index.html">Home</a>
             <div class="nav-dropdown">
                 <a href="aircraft.html">Aircraft</a>
@@ -111,6 +117,48 @@
             const opacity = Math.min(scrollPercentage * 0.6, 0.6);
             scrollDarkOverlay.style.opacity = opacity;
         });
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const headerNav = document.getElementById('headerNav');
+        const headerRight = document.querySelector('.header-right');
+
+        if (mobileMenuToggle && headerNav) {
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenuToggle.classList.toggle('active');
+                headerNav.classList.toggle('mobile-open');
+                if (headerRight) {
+                    headerRight.classList.toggle('mobile-open');
+                }
+                document.body.classList.toggle('menu-open');
+            });
+
+            const navLinks = headerNav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    headerNav.classList.remove('mobile-open');
+                    if (headerRight) {
+                        headerRight.classList.remove('mobile-open');
+                    }
+                    document.body.classList.remove('menu-open');
+                });
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!headerNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                    mobileMenuToggle.classList.remove('active');
+                    headerNav.classList.remove('mobile-open');
+                    if (headerRight) {
+                        headerRight.classList.remove('mobile-open');
+                    }
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        }
     </script>
 </body>
 </html>
