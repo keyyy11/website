@@ -19,7 +19,13 @@
             </a>
         </div>
 
-        <nav class="header-nav">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="header-nav" id="headerNav">
             <a href="index.html">Home</a>
             <div class="nav-dropdown">
                 <a href="aircraft.html">Aircraft</a>
@@ -54,10 +60,6 @@
     <main class="company-main">
         <!-- Heritage Front Page Hero Section -->
         <section class="heritage-front-hero">
-            <div class="heritage-front-logo">
-                <img src="assets/images/Logo-Icon-Only.png" alt="Aeronas Aerocraft Logo" class="heritage-logo-img">
-                <span class="heritage-logo-text">Aeronas Aerocraft</span>
-            </div>
             <div class="heritage-front-content">
                 <h1 class="heritage-front-title">Our Heritage.</h1>
                 <div class="heritage-front-text">
@@ -88,9 +90,6 @@
                 <div class="scroll-indicator-dot" data-year="2025"></div>
             </div>
             <div class="company-content-wrapper">
-                <div class="company-heading">
-                    <h1 class="company-title">Our Heritage</h1>
-                </div>
                 <div class="company-description">
                     <!-- Interactive Timeline -->
                     <div class="heritage-timeline" id="heritageTimeline">
@@ -327,6 +326,48 @@
             });
         }
 
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const headerNav = document.getElementById('headerNav');
+        const headerRight = document.querySelector('.header-right');
+
+        if (mobileMenuToggle && headerNav) {
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenuToggle.classList.toggle('active');
+                headerNav.classList.toggle('mobile-open');
+                if (headerRight) {
+                    headerRight.classList.toggle('mobile-open');
+                }
+                document.body.classList.toggle('menu-open');
+            });
+
+            const navLinks = headerNav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    headerNav.classList.remove('mobile-open');
+                    if (headerRight) {
+                        headerRight.classList.remove('mobile-open');
+                    }
+                    document.body.classList.remove('menu-open');
+                });
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!headerNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                    mobileMenuToggle.classList.remove('active');
+                    headerNav.classList.remove('mobile-open');
+                    if (headerRight) {
+                        headerRight.classList.remove('mobile-open');
+                    }
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        }
     </script>
 </body>
 </html>
