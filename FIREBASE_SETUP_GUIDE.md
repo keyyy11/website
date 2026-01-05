@@ -69,6 +69,12 @@ service cloud.firestore {
       allow read: if true;  // Anyone can view career postings
       allow write: if request.auth != null;  // Only authenticated admins can add/update/delete
     }
+    
+    // Events collection - read for all, write for authenticated only
+    match /events/{document=**} {
+      allow read: if true;  // Anyone can view events
+      allow write: if request.auth != null;  // Only authenticated admins can add/update/delete
+    }
   }
 }
 ```
