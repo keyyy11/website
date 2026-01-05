@@ -26,10 +26,10 @@
                 <span class="nav-icon">💼</span>
                 Careers
             </a>
-            <a href="#" class="admin-nav-item" data-section="events">
+            <!-- <a href="#" class="admin-nav-item" data-section="events">
                 <span class="nav-icon">📅</span>
                 Events
-            </a>
+            </a> -->
             <a href="#" class="admin-nav-item" data-section="applications">
                 <span class="nav-icon">📋</span>
                 Job Applications
@@ -96,14 +96,14 @@
                         <div class="stat-label">Total postings</div>
                     </div>
                 </div>
-                <div class="admin-stat-card" data-navigate="events" style="cursor: pointer;">
+                <!-- <div class="admin-stat-card" data-navigate="events" style="cursor: pointer;">
                     <div class="stat-icon">📅</div>
                     <div class="stat-content">
                         <h3>Upcoming Events</h3>
                         <div class="stat-number" id="eventsCount">0</div>
                         <div class="stat-label">Total events</div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
 
@@ -133,8 +133,8 @@
             </div>
         </section>
 
-        <!-- Events Section -->
-        <section class="admin-section" id="events">
+        <!-- Events Section - DISABLED -->
+        <!-- <section class="admin-section" id="events">
             <div class="admin-card">
                 <div class="admin-card-header">
                     <h2>Upcoming Events</h2>
@@ -144,7 +144,7 @@
                     <!-- Events will be loaded here -->
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- Contact Messages Section -->
         <section class="admin-section" id="contacts">
@@ -300,8 +300,8 @@
         </div>
     </div>
 
-    <!-- Add/Edit Event Modal -->
-    <div class="admin-modal" id="eventModal">
+    <!-- Add/Edit Event Modal - DISABLED -->
+    <!-- <div class="admin-modal" id="eventModal">
         <div class="admin-modal-content">
             <div class="admin-modal-header">
                 <h2 id="eventModalTitle">Add New Event</h2>
@@ -350,7 +350,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Firebase SDK -->
     <script type="module">
@@ -392,7 +392,7 @@
                 document.getElementById('adminUser').textContent = user.email;
                 loadNews();
                     loadCareers();
-                    loadEvents();
+                    // loadEvents(); // DISABLED
                     loadApplications();
                     loadContactMessages();
             }
@@ -438,7 +438,7 @@
                     'dashboard': 'Dashboard',
                     'news': 'News',
                     'careers': 'Careers',
-                    'events': 'Events',
+                    // 'events': 'Events', // DISABLED
                     'applications': 'Job Applications',
                     'contacts': 'Contact Messages',
                     'settings': 'Settings'
@@ -692,8 +692,8 @@
             }
         });
 
-        // Load events
-        async function loadEvents() {
+        // Load events - DISABLED
+        /* async function loadEvents() {
             if (!db) {
                 console.error('Firestore not initialized');
                 return;
@@ -794,12 +794,12 @@
                 
                 grid.innerHTML = `<p style="text-align: center; padding: 40px; color: #e60505;">${errorMessage}</p>`;
             }
-        }
+        } */
 
-        let editingEventId = null;
+        // let editingEventId = null; // DISABLED
 
-        // Event modal handlers
-        document.getElementById('addEventBtn').addEventListener('click', () => {
+        // Event modal handlers - DISABLED
+        /* document.getElementById('addEventBtn').addEventListener('click', () => {
             editingEventId = null;
             document.getElementById('eventModalTitle').textContent = 'Add New Event';
             document.getElementById('saveEventBtn').textContent = 'Save Event';
@@ -918,7 +918,7 @@
                 console.error('Error saving event:', error);
                 alert('Error saving event: ' + error.message);
             }
-        });
+        }); */
 
         // Load news articles
         async function loadNews() {
