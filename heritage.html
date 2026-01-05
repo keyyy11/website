@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Heritage – Aeronas Aerocraft</title>
+    <link rel="icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="theme-dark theme-about theme-heritage">
@@ -51,19 +52,49 @@
 
     <!-- Main Content -->
     <main class="company-main">
-        <section class="company-hero-section">
+        <!-- Heritage Front Page Hero Section -->
+        <section class="heritage-front-hero">
+            <div class="heritage-front-logo">
+                <img src="assets/images/Logo-Icon-Only.png" alt="Aeronas Aerocraft Logo" class="heritage-logo-img">
+                <span class="heritage-logo-text">Aeronas Aerocraft</span>
+            </div>
+            <div class="heritage-front-content">
+                <h1 class="heritage-front-title">Our Heritage.</h1>
+                <div class="heritage-front-text">
+                    <p>Aeronas Aerocraft represents a historic milestone in Malaysia's aerospace journey.</p>
+                    <p>As the nation's first small aircraft manufacturer, we carry forward a legacy of innovation, engineering excellence, and national pride.</p>
+                    <p>Our heritage is built on the foundation of Malaysian ingenuity and the vision to establish a world-class aerospace industry.</p>
+                    <p>Through years of dedication, we have transformed from a bold vision into a reality that competes on the global stage.</p>
+                    <p>This is our story, our journey, our heritage.</p>
+                </div>
+            </div>
+            <div class="heritage-scroll-indicator" id="heritageScrollIndicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
+
+        <!-- Heritage Timeline Section -->
+        <section class="company-hero-section" id="heritageTimelineSection">
+            <!-- Scroll Indicator -->
+            <div class="heritage-scroll-indicator-bar" id="heritageScrollIndicator">
+                <div class="scroll-indicator-line"></div>
+                <div class="scroll-indicator-dot" data-year="2018"></div>
+                <div class="scroll-indicator-dot" data-year="2019"></div>
+                <div class="scroll-indicator-dot" data-year="2020"></div>
+                <div class="scroll-indicator-dot" data-year="2021"></div>
+                <div class="scroll-indicator-dot" data-year="2022"></div>
+                <div class="scroll-indicator-dot" data-year="2023"></div>
+                <div class="scroll-indicator-dot" data-year="2024"></div>
+                <div class="scroll-indicator-dot" data-year="2025"></div>
+            </div>
             <div class="company-content-wrapper">
                 <div class="company-heading">
                     <h1 class="company-title">Our Heritage</h1>
-                    <div class="heritage-popup-image" id="heritagePopupImage"></div>
                 </div>
                 <div class="company-description">
-                    <p class="company-text">
-                        Aeronas Aerocraft represents a historic milestone in Malaysia's aerospace journey. As the nation's first small aircraft manufacturer, we carry forward a legacy of innovation, engineering excellence, and national pride. Our heritage is built on the foundation of Malaysian ingenuity and the vision to establish a world-class aerospace industry.
-                    </p>
                     <!-- Interactive Timeline -->
-                    <div class="heritage-timeline">
-                        <div class="timeline-item">
+                    <div class="heritage-timeline" id="heritageTimeline">
+                        <div class="timeline-item" data-year="2018">
                             <div class="timeline-year">2018</div>
                             <div class="timeline-details">
                                 <div class="timeline-image-container">
@@ -73,7 +104,7 @@
                                 <p class="timeline-description">Aeronas Aerocraft was founded with a bold vision to establish Malaysia's first small aircraft manufacturer. The journey began with a small team of passionate aerospace engineers and a clear mission to compete on the global stage.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2019">
                             <div class="timeline-year">2019</div>
                             <div class="timeline-details">
                                 <div class="timeline-image-container">
@@ -83,7 +114,7 @@
                                 <p class="timeline-description">Our engineering team completed the initial design phase for our first aircraft model. We established partnerships with international certification bodies and began the rigorous process of meeting global aerospace standards.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2020">
                             <div class="timeline-year">2020</div>
                             <div class="timeline-details">
                                 <div class="timeline-image-container">
@@ -93,35 +124,35 @@
                                 <p class="timeline-description">We established our state-of-the-art manufacturing facility in Malaysia, equipped with advanced aeronautical engineering capabilities. This marked a significant milestone in building national aerospace infrastructure.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2021">
                             <div class="timeline-year">2021</div>
                             <div class="timeline-details">
                                 <h3 class="timeline-title">Prototype Development</h3>
                                 <p class="timeline-description">The first prototype of our aircraft entered development. Our R&D team worked tirelessly to integrate cutting-edge technology while maintaining the highest standards of safety and performance.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2022">
                             <div class="timeline-year">2022</div>
                             <div class="timeline-details">
                                 <h3 class="timeline-title">International Recognition</h3>
                                 <p class="timeline-description">Aeronas Aerocraft gained international recognition as Malaysia's premier aerospace manufacturer. We participated in global aviation exhibitions and established our presence in the competitive aerospace market.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2023">
                             <div class="timeline-year">2023</div>
                             <div class="timeline-details">
                                 <h3 class="timeline-title">Certification Milestone</h3>
                                 <p class="timeline-description">We achieved major certification milestones, bringing us closer to commercial production. Our commitment to international standards and safety protocols was validated by leading aviation authorities.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2024">
                             <div class="timeline-year">2024</div>
                             <div class="timeline-details">
                                 <h3 class="timeline-title">Production Readiness</h3>
                                 <p class="timeline-description">Our manufacturing processes reached full production readiness. We implemented data-driven decision making and advanced manufacturing technologies to ensure efficient, reliable, and scalable production.</p>
                             </div>
                         </div>
-                        <div class="timeline-item">
+                        <div class="timeline-item" data-year="2025">
                             <div class="timeline-year">2025</div>
                             <div class="timeline-details">
                                 <h3 class="timeline-title">Global Expansion</h3>
@@ -166,39 +197,136 @@
             scrollDarkOverlay.style.opacity = opacity;
         });
 
-        // Heritage popup image - show gambar bila hover pada tahun
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const popupImage = document.getElementById('heritagePopupImage');
-        
-        // Map tahun dengan gambar
-        const yearImages = {
-            '2018': 'assets/images/011.jpeg',
-            '2019': 'assets/images/009 (1).jpeg',
-            '2020': 'assets/images/010.jpeg'
-        };
-
-        timelineItems.forEach(item => {
-            const yearElement = item.querySelector('.timeline-year');
-            if (yearElement) {
-                const year = yearElement.textContent.trim();
-                const imagePath = yearImages[year];
-
-                if (imagePath) {
-                    item.addEventListener('mouseenter', () => {
-                        if (popupImage) {
-                            popupImage.innerHTML = `<img src="${imagePath}" alt="Heritage ${year}">`;
-                            popupImage.classList.add('active');
-                        }
-                    });
-
-                    item.addEventListener('mouseleave', () => {
-                        if (popupImage) {
-                            popupImage.classList.remove('active');
-                        }
+        // Smooth scroll to timeline section (from front page)
+        const frontScrollIndicator = document.querySelector('.heritage-scroll-indicator');
+        if (frontScrollIndicator) {
+            frontScrollIndicator.addEventListener('click', () => {
+                const timelineSection = document.getElementById('heritageTimelineSection');
+                if (timelineSection) {
+                    timelineSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
+            });
+        }
+
+        // Timeline Scroll Indicator and Scroll Snap
+        const timelineSection = document.getElementById('heritageTimelineSection');
+        const timeline = document.getElementById('heritageTimeline');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const scrollIndicatorBar = document.querySelector('.heritage-scroll-indicator-bar');
+        const scrollIndicatorDots = document.querySelectorAll('.scroll-indicator-dot');
+        const scrollIndicatorLine = document.querySelector('.scroll-indicator-line');
+
+        if (timelineSection && timeline && scrollIndicatorBar) {
+            // Show/hide indicator based on scroll position
+            function toggleScrollIndicator() {
+                const sectionTop = timelineSection.offsetTop;
+                const sectionBottom = sectionTop + timelineSection.offsetHeight;
+                const scrollPosition = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                
+                if (scrollPosition + windowHeight / 2 >= sectionTop && scrollPosition <= sectionBottom) {
+                    scrollIndicatorBar.style.display = 'flex';
+                } else {
+                    scrollIndicatorBar.style.display = 'none';
+                }
             }
-        });
+            
+            window.addEventListener('scroll', toggleScrollIndicator);
+            toggleScrollIndicator();
+            // Update scroll indicator position
+            function updateScrollIndicator() {
+                if (!timelineSection || !scrollIndicatorDots.length) return;
+                
+                const sectionTop = timelineSection.offsetTop;
+                const scrollPosition = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const viewportCenter = scrollPosition + windowHeight / 2;
+                
+                // Calculate which timeline item is in view
+                let activeIndex = 0;
+                let minDistance = Infinity;
+                
+                timelineItems.forEach((item, index) => {
+                    const itemTop = item.offsetTop + timelineSection.offsetTop;
+                    const itemCenter = itemTop + item.offsetHeight / 2;
+                    const distance = Math.abs(viewportCenter - itemCenter);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        activeIndex = index;
+                    }
+                });
+
+                // Update indicator dots
+                scrollIndicatorDots.forEach((dot, index) => {
+                    if (index === activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+
+                // Update indicator line position
+                if (scrollIndicatorLine && timelineItems.length > 1) {
+                    const progress = activeIndex / (timelineItems.length - 1);
+                    const barHeight = scrollIndicatorBar.offsetHeight - 40;
+                    scrollIndicatorLine.style.height = `${progress * barHeight}px`;
+                }
+            }
+
+            // Scroll event listener
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(updateScrollIndicator, 10);
+            });
+
+            // Initial update
+            updateScrollIndicator();
+
+            // Smooth scroll to next timeline on scroll
+            let lastScrollTop = window.pageYOffset;
+            let isScrolling = false;
+            
+            window.addEventListener('scroll', () => {
+                if (isScrolling) return;
+                
+                const currentScrollTop = window.pageYOffset;
+                const scrollDelta = currentScrollTop - lastScrollTop;
+                
+                if (Math.abs(scrollDelta) > 100) { // Only trigger on significant scroll
+                    const currentItem = Array.from(timelineItems).find(item => {
+                        const rect = item.getBoundingClientRect();
+                        return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+                    });
+
+                    if (currentItem) {
+                        const currentIndex = Array.from(timelineItems).indexOf(currentItem);
+                        
+                        if (scrollDelta > 0 && currentIndex < timelineItems.length - 1) {
+                            // Scrolling down - go to next item
+                            isScrolling = true;
+                            const nextItem = timelineItems[currentIndex + 1];
+                            nextItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setTimeout(() => { isScrolling = false; }, 1000);
+                        } else if (scrollDelta < 0 && currentIndex > 0) {
+                            // Scrolling up - go to previous item
+                            isScrolling = true;
+                            const prevItem = timelineItems[currentIndex - 1];
+                            prevItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setTimeout(() => { isScrolling = false; }, 1000);
+                        }
+                    }
+                }
+                
+                lastScrollTop = currentScrollTop;
+                updateScrollIndicator();
+            });
+        }
+
     </script>
 </body>
 </html>
