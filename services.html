@@ -50,43 +50,9 @@
                 <h2 class="join-team-title">Join Our Team</h2>
                 <p class="join-team-description">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione</p>
                 
-                <div class="jobs-grid">
-                    <div class="job-card">
-                        <h3 class="job-title">Mobile Developer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=Mobile Developer" class="job-button">JOIN NOW</a>
-                    </div>
-                    <div class="job-card">
-                        <h3 class="job-title">UI / UX Designer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=UI / UX Designer" class="job-button">JOIN NOW</a>
-                    </div>
-                    <div class="job-card">
-                        <h3 class="job-title">Java Programmer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=Java Programmer" class="job-button">JOIN NOW</a>
-                    </div>
-                    <div class="job-card">
-                        <h3 class="job-title">Mobile Developer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=Mobile Developer" class="job-button">JOIN NOW</a>
-                    </div>
-                    <div class="job-card">
-                        <h3 class="job-title">Graphic Designer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=Graphic Designer" class="job-button">JOIN NOW</a>
-                    </div>
-                    <div class="job-card">
-                        <h3 class="job-title">.Net Programmer</h3>
-                        <p class="job-location">Johor Bahru</p>
-                        <p class="job-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam</p>
-                        <a href="job-application.html?position=.Net Programmer" class="job-button">JOIN NOW</a>
-                    </div>
+                <div class="jobs-grid" id="jobsGrid">
+                    <!-- Job cards will be loaded here from Firebase -->
+                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">Loading careers...</div>
                 </div>
             </div>
         </section>
@@ -108,5 +74,90 @@
             <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+            authDomain: "aeronas-aerocraft.firebaseapp.com",
+            projectId: "aeronas-aerocraft",
+            storageBucket: "aeronas-aerocraft.firebasestorage.app",
+            messagingSenderId: "576218545628",
+            appId: "1:576218545628:web:6e7483b743b4c2e0336319",
+            measurementId: "G-CC8VQY3RCN"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Load and display careers
+        async function loadCareers() {
+            const jobsGrid = document.getElementById('jobsGrid');
+            
+            try {
+                const careersRef = collection(db, 'careers');
+                
+                // Try with orderBy first, fallback to simple query if index not available
+                let querySnapshot;
+                try {
+                    const q = query(careersRef, orderBy('title', 'asc'));
+                    querySnapshot = await getDocs(q);
+                } catch (orderError) {
+                    console.warn('OrderBy failed, trying without order:', orderError);
+                    querySnapshot = await getDocs(careersRef);
+                }
+
+                if (querySnapshot.size === 0) {
+                    jobsGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">No job openings available at the moment. Please check back later.</div>';
+                    return;
+                }
+
+                // Sort manually if orderBy failed
+                const careers = [];
+                querySnapshot.forEach((docItem) => {
+                    careers.push({ id: docItem.id, data: docItem.data() });
+                });
+                
+                // Sort by title manually
+                careers.sort((a, b) => {
+                    const titleA = (a.data.title || '').toLowerCase();
+                    const titleB = (b.data.title || '').toLowerCase();
+                    return titleA.localeCompare(titleB);
+                });
+
+                // Clear loading message
+                jobsGrid.innerHTML = '';
+
+                // Render each career as a job card
+                careers.forEach(({ id, data: career }) => {
+                    const jobCard = document.createElement('div');
+                    jobCard.className = 'job-card';
+                    
+                    // Use link from Firebase if available, otherwise default to job-application.html
+                    const jobLink = career.link || `job-application.html?position=${encodeURIComponent(career.title || '')}`;
+                    
+                    jobCard.innerHTML = `
+                        <h3 class="job-title">${career.title || 'Untitled Position'}</h3>
+                        <p class="job-location">${career.location || 'Location TBA'}</p>
+                        <p class="job-description">${career.description || 'No description available.'}</p>
+                        <a href="${jobLink}" class="job-button">JOIN NOW</a>
+                    `;
+                    
+                    jobsGrid.appendChild(jobCard);
+                });
+            } catch (error) {
+                console.error('Error loading careers:', error);
+                jobsGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #e60505;">Error loading job openings. Please refresh the page or try again later.</div>';
+            }
+        }
+
+        // Load careers when page loads
+        loadCareers();
+    </script>
 </body>
 </html>
