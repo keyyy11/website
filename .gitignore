@@ -2,6 +2,9 @@
 Aeronas/
 website/Aeronas/
 
+# Ignore website folder (duplicate/backup folder)
+website/
+
 # OS files
 .DS_Store
 Thumbs.db
