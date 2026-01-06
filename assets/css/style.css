@@ -6898,7 +6898,7 @@ body.menu-open {
     background: rgba(255, 255, 255, 0.03);
   }
 
-  /* Dropdown container - Vertical memanjang ke bawah - COMPACT spacing */
+  /* Dropdown container - Vertical memanjang ke bawah - COMPACT spacing - SAMA dengan items lain */
   .nav-dropdown {
     width: 100% !important;
     display: flex !important;
@@ -6906,12 +6906,13 @@ body.menu-open {
     position: relative !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-right: none !important;
+    border-top: none !important;
     margin: 0 !important;
     padding: 0 !important;
     gap: 0 !important;
   }
 
-  /* Aircraft - Vertical memanjang ke bawah sama seperti items lain - COMPACT */
+  /* Aircraft - Vertical memanjang ke bawah SAMA SEPERTI items lain - NO EXTRA SPACING */
   .header-nav .nav-dropdown > a,
   .header-nav.mobile-open .nav-dropdown > a,
   .nav-dropdown > a {
@@ -6920,6 +6921,7 @@ body.menu-open {
     font-size: 8px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-right: none !important;
+    border-top: none !important;
     text-align: left !important;
     min-height: 18px !important;
     max-height: 18px !important;
