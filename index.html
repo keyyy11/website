@@ -641,10 +641,31 @@
                 document.body.classList.toggle('menu-open');
             });
 
-            // Close menu when clicking on any navigation link
+            // Toggle dropdown untuk Aircraft di mobile
+            const navDropdown = headerNav.querySelector('.nav-dropdown');
+            if (navDropdown) {
+                const dropdownLink = navDropdown.querySelector('> a');
+                if (dropdownLink) {
+                    dropdownLink.addEventListener('click', function(e) {
+                        // Jangan navigate jika ada dropdown menu
+                        if (navDropdown.querySelector('.dropdown-menu')) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navDropdown.classList.toggle('active');
+                        }
+                    });
+                }
+            }
+
+            // Close menu when clicking on any navigation link (kecuali dropdown parent)
             const navLinks = headerNav.querySelectorAll('a');
             navLinks.forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
+                    // Skip jika ini adalah dropdown parent link
+                    if (link.closest('.nav-dropdown') && link === link.closest('.nav-dropdown').querySelector('> a')) {
+                        return; // Let dropdown toggle handle it
+                    }
+                    
                     mobileMenuToggle.classList.remove('active');
                     headerNav.classList.remove('mobile-open');
                     if (headerRight) {

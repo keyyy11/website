@@ -6800,7 +6800,7 @@ body.menu-open {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 50px 0 0 0 !important;
+    padding: 0 !important;
     gap: 0;
     z-index: 1000;
     overflow-y: auto;
@@ -6898,13 +6898,13 @@ body.menu-open {
     background: rgba(255, 255, 255, 0.03);
   }
 
-  /* Dropdown container - Vertical memanjang ke bawah - COMPACT spacing - SAMA dengan items lain */
+  /* Dropdown container - Vertical memanjang ke bawah - Reddit style */
   .nav-dropdown {
     width: 100% !important;
     display: flex !important;
     flex-direction: column !important;
     position: relative !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-right: none !important;
     border-top: none !important;
     margin: 0 !important;
@@ -6912,36 +6912,113 @@ body.menu-open {
     gap: 0 !important;
   }
 
-  /* Aircraft - Vertical memanjang ke bawah SAMA SEPERTI items lain - LEBIH KECIL */
+  /* Aircraft main link - Reddit style */
   .header-nav .nav-dropdown > a,
   .header-nav.mobile-open .nav-dropdown > a,
   .nav-dropdown > a {
     width: 100% !important;
-    padding: 1px 10px !important;
-    font-size: 7px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    border-bottom: none !important;
     border-right: none !important;
     border-top: none !important;
     text-align: left !important;
-    min-height: 16px !important;
-    max-height: 16px !important;
-    height: 16px !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    letter-spacing: 0.06em !important;
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    letter-spacing: 0.02em !important;
     background: transparent !important;
     color: #ffffff !important;
-    text-transform: uppercase !important;
-    font-weight: 500 !important;
-    line-height: 1.0 !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
     text-decoration: none !important;
     display: flex !important;
     position: relative !important;
     margin: 0 !important;
-    padding-top: 1px !important;
-    padding-bottom: 1px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
     white-space: nowrap !important;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .nav-dropdown > a:hover,
+  .nav-dropdown > a:active {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Arrow indicator untuk dropdown - SHOW di mobile dengan style Reddit */
+  .nav-dropdown > a::after {
+    content: '▼' !important;
+    font-size: 10px !important;
+    margin-left: auto !important;
+    opacity: 0.6 !important;
+    transition: transform 0.2s ease, opacity 0.2s ease !important;
+    display: inline-block !important;
+    position: relative !important;
+    right: 0 !important;
+  }
+
+  .nav-dropdown.active > a::after {
+    transform: rotate(180deg) !important;
+    opacity: 1 !important;
+  }
+
+  /* Dropdown menu - SHOW di mobile apabila active - Reddit style */
+  .dropdown-menu {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease, opacity 0.3s ease !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .nav-dropdown.active .dropdown-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: 500px !important;
+    overflow: visible !important;
+  }
+
+  .dropdown-menu::before {
+    display: none !important;
+  }
+
+  .dropdown-menu a {
+    padding: 10px 16px 10px 32px !important;
+    font-size: 13px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    text-align: left !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dropdown-menu a:last-child {
+    border-bottom: none !important;
+  }
+
+  .dropdown-menu a:hover,
+  .dropdown-menu a:active {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
   }
 
   /* Arrow indicator untuk dropdown - HIDE di mobile */
