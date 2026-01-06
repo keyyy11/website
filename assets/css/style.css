@@ -6744,6 +6744,10 @@ body.menu-open {
   .hero-title-image {
     max-width: 450px;
   }
+}
+
+/* Mobile Styles - MUST be after tablet styles untuk override */
+@media (max-width: 768px) {
 
   .social-icons-grid {
     gap: 32px;
@@ -7069,12 +7073,14 @@ body.menu-open {
     width: 100% !important;
   }
 
-  /* Pastikan background image load untuk mobile */
+  /* Pastikan background image load untuk mobile - FORCE dengan !important */
+  body.theme-dark,
   .theme-dark {
     background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed !important;
     background-size: cover !important;
     background-position: center !important;
     background-attachment: fixed !important;
+    min-height: 100vh !important;
   }
 
   .hero-title-image {
