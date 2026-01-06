@@ -6898,7 +6898,7 @@ body.menu-open {
     background: rgba(255, 255, 255, 0.03);
   }
 
-  /* Dropdown container - Vertical memanjang ke bawah */
+  /* Dropdown container - Vertical memanjang ke bawah - COMPACT spacing */
   .nav-dropdown {
     width: 100% !important;
     display: flex !important;
@@ -6908,9 +6908,10 @@ body.menu-open {
     border-right: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    gap: 0 !important;
   }
 
-  /* Aircraft - Vertical memanjang ke bawah sama seperti items lain */
+  /* Aircraft - Vertical memanjang ke bawah sama seperti items lain - COMPACT */
   .header-nav .nav-dropdown > a,
   .header-nav.mobile-open .nav-dropdown > a,
   .nav-dropdown > a {
@@ -6922,7 +6923,7 @@ body.menu-open {
     text-align: left !important;
     min-height: 18px !important;
     max-height: 18px !important;
-    height: auto !important;
+    height: 18px !important;
     align-items: flex-start !important;
     justify-content: flex-start !important;
     letter-spacing: 0.08em !important;
@@ -6935,6 +6936,8 @@ body.menu-open {
     display: flex !important;
     position: relative !important;
     margin: 0 !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
     white-space: nowrap !important;
     cursor: pointer;
   }
