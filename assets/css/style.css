@@ -758,6 +758,11 @@ footer {
   padding: 0 24px;
 }
 
+/* Hide Contact Us button dalam navigation mobile di desktop */
+.header-nav > a.nav-mobile-contact {
+  display: none;
+}
+
 .header-nav > * + * {
   margin-left: 0; /* Remove margin, use gap instead */
 }
@@ -948,6 +953,13 @@ footer {
   z-index: 1;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Mobile footer padding adjustment untuk contact button */
+@media (max-width: 768px) {
+  .theme-dark .site-footer {
+    padding-bottom: 20px; /* Normal padding - tiada button Contact Us di mobile */
+  }
 }
 
 .footer-contact {
@@ -3910,35 +3922,20 @@ footer {
   display: none;
 }
 
-/* Icon First Malaysia - Crescent Moon with Star */
+/* Icon First Malaysia - Using image */
 .icon-first-malaysia {
   background: #ffffff;
   position: relative;
   border-radius: 50%;
+  background-image: url('../images/firstinmalaysia icon.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.icon-first-malaysia::before {
-  content: '';
-  position: absolute;
-  width: 45px;
-  height: 45px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-30%, -50%);
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 8px 0 0 0 rgba(0, 0, 0, 0.1);
-}
-
+.icon-first-malaysia::before,
 .icon-first-malaysia::after {
-  content: '★';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(8%, -50%);
-  font-size: 16px;
-  color: #000000;
-  line-height: 1;
+  display: none;
 }
 
 /* New Icons */
@@ -6796,27 +6793,29 @@ body.menu-open {
   .header-nav {
     order: 3;
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 50% !important;
     max-width: 50% !important;
     min-width: 280px !important;
-    height: 100vh;
-    background: rgba(5, 6, 10, 0.98);
-    backdrop-filter: blur(10px);
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
+    height: 100vh !important;
+    background: rgba(5, 6, 10, 0.98) !important;
+    backdrop-filter: blur(10px) !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
     padding: 0 !important;
-    gap: 0;
-    z-index: 1000;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5), 2px 0 8px rgba(0, 0, 0, 0.3);
+    gap: 0 !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5), 2px 0 8px rgba(0, 0, 0, 0.3) !important;
+    isolation: isolate !important;
   }
 
   /* Dark background untuk mobile navigation di aircraft page - hide countdown */
@@ -6841,16 +6840,87 @@ body.menu-open {
 
   /* Close button di navigation - menggunakan mobile-menu-toggle */
   .mobile-menu-toggle.active {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 1002;
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 100000 !important;
   }
 
   .header-nav.mobile-open {
-    display: flex;
-    transform: translateX(0);
-    animation: slideInFromLeft 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex !important;
+    transform: translateX(0) !important;
+    animation: slideInFromLeft 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 99999 !important;
+    position: fixed !important;
+    isolation: isolate !important;
+  }
+
+  /* Pastikan navigation mobile di depan semua elemen contact page - sama macam page lain */
+  body.theme-contact .header-nav {
+    z-index: 99999 !important;
+    position: fixed !important;
+    display: none !important;
+    transform: translateX(-100%) !important;
+  }
+
+  body.theme-contact .header-nav.mobile-open {
+    z-index: 99999 !important;
+    position: fixed !important;
+    display: flex !important;
+    transform: translateX(0) !important;
+  }
+
+  /* Pastikan semua elemen contact page di belakang navigation apabila menu open */
+  body.theme-contact .contact-main,
+  body.theme-contact .contact-hero,
+  body.theme-contact .contact-section,
+  body.theme-contact .contact-info-card,
+  body.theme-contact .contact-container,
+  body.theme-contact .contact-details,
+  body.theme-contact .contact-detail-item,
+  body.theme-contact .site-footer {
+    z-index: 1 !important;
+    position: relative !important;
+  }
+
+  /* Apabila navigation mobile open, semua contact page content pergi ke belakang */
+  body.theme-contact.menu-open .contact-main,
+  body.theme-contact.menu-open .contact-hero,
+  body.theme-contact.menu-open .contact-section,
+  body.theme-contact.menu-open .contact-info-card,
+  body.theme-contact.menu-open .contact-container,
+  body.theme-contact.menu-open .contact-details,
+  body.theme-contact.menu-open .contact-detail-item,
+  body.theme-contact.menu-open .site-footer,
+  body.theme-contact.menu-open .contact-hero-content,
+  body.theme-contact.menu-open .contact-form {
+    z-index: 0 !important;
+    position: relative !important;
+    opacity: 0.3 !important;
+    filter: blur(2px) !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease, filter 0.3s ease !important;
+  }
+
+  /* Pastikan navigation mobile closed secara default di contact page - sama macam page lain */
+  body.theme-contact .header-nav {
+    display: none !important;
+    transform: translateX(-100%) !important;
+  }
+
+  body.theme-contact .header-nav.mobile-open {
+    display: flex !important;
+    transform: translateX(0) !important;
+  }
+
+  body.theme-contact:not(.menu-open) {
+    overflow: auto !important;
+    position: relative !important;
+  }
+
+  body.theme-contact.menu-open {
+    overflow: hidden !important;
+    position: fixed !important;
   }
 
   /* Smooth close animation */
@@ -6889,12 +6959,38 @@ body.menu-open {
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 999;
+    z-index: 9999 !important;
     opacity: 0;
     transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: auto;
     cursor: pointer;
     animation: fadeInOverlay 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Pastikan navigation links boleh click - overlay tidak block navigation area */
+  body.menu-open .header-nav,
+  body.menu-open .header-nav * {
+    pointer-events: auto !important;
+  }
+
+  /* Pastikan semua navigation links boleh click dan navigate */
+  .header-nav a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 1001 !important;
+    position: relative !important;
+  }
+
+  /* Pastikan overlay tidak block navigation area (50% kiri) */
+  body.menu-open::before {
+    pointer-events: auto;
+  }
+
+  /* Overlay hanya block clicks di luar navigation (50% kanan) */
+  @media (max-width: 768px) {
+    body.menu-open::before {
+      clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%);
+    }
   }
 
   /* Fade out overlay when closing */
@@ -6926,15 +7022,26 @@ body.menu-open {
     position: fixed;
     width: 100%;
     height: 100%;
+    touch-action: none;
   }
 
-  /* Navigation items - Vertical layout memanjang ke bawah - Reddit style */
+  /* Touch action untuk mobile navigation items */
+  .header-nav a,
+  .header-nav .nav-dropdown > a,
+  .dropdown-menu a {
+    touch-action: manipulation;
+  }
+
+  /* Navigation items - Vertical layout centered di tengah page */
   .header-nav {
     flex-direction: column !important;
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
     gap: 0 !important;
     max-height: 100vh !important;
-    overflow-y: hidden !important;
+    overflow-y: auto !important;
+    justify-content: center !important;
+    align-items: stretch !important;
   }
 
   .header-nav > a,
@@ -6945,48 +7052,75 @@ body.menu-open {
     margin: 0 !important;
   }
 
-  /* Semua main navigation items - Vertical memanjang ke bawah - COMPACT - MUAT DALAM SATU PAGE */
+  /* Semua main navigation items - Clean, centered, minimal design */
   .header-nav > a {
-    padding: 4px 12px !important;
-    font-size: 11px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 20px 16px !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-right: none !important;
     border-top: none !important;
-    text-align: left !important;
+    text-align: center !important;
     min-height: auto !important;
     max-height: none !important;
     height: auto !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    letter-spacing: 0.01em !important;
-    background: transparent;
-    color: #ffffff !important;
+    justify-content: center !important;
+    letter-spacing: 0.02em !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.9) !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.1 !important;
-    text-decoration: none;
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
+    line-height: 1.5 !important;
+    text-decoration: none !important;
     margin: 0 !important;
-    white-space: nowrap;
-    transition: background-color 0.2s ease;
+    white-space: nowrap !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 1001 !important;
+    position: relative !important;
+    display: flex !important;
+    width: 100% !important;
   }
 
   .header-nav > a:first-child {
-    border-top: none;
+    border-top: none !important;
   }
 
-  .header-nav > a:last-of-type {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .header-nav > a:last-of-type {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  .header-nav > a:last-child {
+    border-bottom: none !important;
   }
 
   .header-nav > a:hover,
-  .header-nav > a:active {
-    background: rgba(255, 255, 255, 0.05) !important;
+  .header-nav > a:active,
+  .header-nav > a:focus {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
+
+  /* Contact Us button dalam navigation mobile - sama design dengan items lain */
+  .header-nav > a.nav-mobile-contact {
+    display: flex !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 20px 16px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.5 !important;
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .header-nav > a.nav-mobile-contact:hover,
+  .header-nav > a.nav-mobile-contact:active,
+  .header-nav > a.nav-mobile-contact:focus {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: rgba(255, 255, 255, 1) !important;
   }
 
   /* Dropdown container - HIDE Aircraft navigation di mobile sahaja */
@@ -7007,7 +7141,7 @@ body.menu-open {
   .nav-dropdown > a {
     width: 100% !important;
     padding: 4px 12px !important;
-    font-size: 11px !important;
+    font-size: 15px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-right: none !important;
     border-top: none !important;
@@ -7019,10 +7153,10 @@ body.menu-open {
     justify-content: space-between !important;
     letter-spacing: 0.01em !important;
     background: transparent !important;
-    color: #ffffff !important;
+    color: rgba(255, 255, 255, 1) !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.1 !important;
+    line-height: 1.3 !important;
     text-decoration: none !important;
     display: flex !important;
     position: relative !important;
@@ -7030,8 +7164,10 @@ body.menu-open {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
     white-space: nowrap !important;
-    cursor: pointer;
+    cursor: pointer !important;
     transition: background-color 0.2s ease;
+    pointer-events: auto !important;
+    z-index: 1001 !important;
   }
 
   .nav-dropdown > a:hover,
@@ -7084,20 +7220,25 @@ body.menu-open {
 
   .dropdown-menu a {
     padding: 4px 16px 4px 24px !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     text-align: left !important;
     min-height: auto !important;
     display: flex !important;
     align-items: center !important;
     background: transparent !important;
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 1) !important;
     letter-spacing: 0.01em !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.15 !important;
+    line-height: 1.3 !important;
     margin: 0 !important;
     transition: background-color 0.2s ease, color 0.2s ease;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 1001 !important;
+    position: relative !important;
+    text-decoration: none !important;
   }
 
   .dropdown-menu a:last-child {
@@ -7105,46 +7246,31 @@ body.menu-open {
   }
 
   .dropdown-menu a:hover,
-  .dropdown-menu a:active {
+  .dropdown-menu a:active,
+  .dropdown-menu a:focus {
     background: rgba(255, 255, 255, 0.05) !important;
-    color: #ffffff !important;
+    color: rgba(255, 255, 255, 1) !important;
   }
 
 
-  /* Contact button - Sebaris dengan navigation items di tepi kiri */
+  /* Contact button - HIDE COMPLETELY di mobile */
   .header-right {
-    order: 1;
-    width: auto;
-    display: flex;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    border-left: none;
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
     padding: 0 !important;
-    margin-right: 8px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .header-right.mobile-open {
-    display: flex;
+    display: none !important; /* Hide header-right completely di mobile */
   }
 
-  .nav-cta {
-    width: auto !important;
-    text-align: center !important;
-    padding: 1px 8px !important;
-    font-size: 7px !important;
-    min-height: 16px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 3px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
-    font-weight: 500 !important;
-    line-height: 1.0 !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-  }
+  /* REMOVED: .nav-cta styling - semua button Contact Us harus hidden di mobile */
 
   .brand-mark {
     display: flex !important;
@@ -8055,7 +8181,7 @@ body.menu-open {
   }
 
   .site-footer {
-    padding: 36px 16px 20px;
+    padding: 36px 16px 20px; /* Normal padding - tiada button Contact Us di mobile */
   }
 
   .footer-contact {
@@ -8089,15 +8215,39 @@ body.menu-open {
     min-height: 32px;
   }
 
-  .header-right {
-    margin-top: 10px;
-    padding-top: 10px;
-  }
-
-  .nav-cta {
-    padding: 10px 16px;
-    font-size: 11px;
-    min-height: 36px;
+  /* Hide semua Contact Us button di mobile - delete semua button Contact Us */
+  .header-right,
+  .header-right *,
+  .header-right .nav-cta,
+  .site-header .header-right,
+  .site-header .header-right *,
+  .site-header .header-right .nav-cta,
+  .nav-cta,
+  a.nav-cta,
+  a[class*="nav-cta"],
+  .header-nav > a.nav-mobile-contact,
+  a.nav-mobile-contact,
+  a[class*="nav-mobile-contact"],
+  a[href*="contact.html"].nav-cta,
+  a[href*="contact.html"].nav-mobile-contact,
+  a[href="contact.html"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    clip: rect(0, 0, 0, 0) !important;
   }
 }
 

@@ -2,11 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Aeronas Aerocraft</title>
     <link rel="icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="shortcut icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        // Suppress touch event warnings by ensuring passive listeners
+        (function() {
+            if (typeof EventTarget !== 'undefined') {
+                const originalAddEventListener = EventTarget.prototype.addEventListener;
+                EventTarget.prototype.addEventListener = function(type, listener, options) {
+                    // For touch events, ensure passive is set if not explicitly provided
+                    if ((type === 'touchstart' || type === 'touchmove') && !options) {
+                        options = { passive: true };
+                    } else if ((type === 'touchstart' || type === 'touchmove') && typeof options === 'object' && !('passive' in options)) {
+                        options = Object.assign({}, options, { passive: true });
+                    }
+                    return originalAddEventListener.call(this, type, listener, options);
+                };
+            }
+        })();
+
+        // Suppress console warnings for touch events from external sources
+        (function() {
+            const originalWarn = console.warn;
+            const originalError = console.error;
+            
+            console.warn = function(...args) {
+                const message = args.join(' ');
+                // Filter out touch event warnings from external sources
+                if (message.includes('non-passive event listener') && 
+                    (message.includes('touchmove') || message.includes('touchstart')) &&
+                    (message.includes('main.js') || message.includes('init_embed.js'))) {
+                    return; // Suppress this warning
+                }
+                originalWarn.apply(console, args);
+            };
+            
+            console.error = function(...args) {
+                const message = args.join(' ');
+                // Filter out touch event errors from external sources
+                if (message.includes('non-passive event listener') && 
+                    (message.includes('touchmove') || message.includes('touchstart')) &&
+                    (message.includes('main.js') || message.includes('init_embed.js'))) {
+                    return; // Suppress this error
+                }
+                originalError.apply(console, args);
+            };
+        })();
+    </script>
 </head>
 <body class="theme-dark">
     <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
@@ -40,6 +85,7 @@
             <a href="services.html">Careers</a>
             <a href="news.html">News</a>
             <!-- <a href="event.html">Event</a> -->
+            <a href="contact.html" class="nav-mobile-contact">Contact Us</a>
         </nav>
 
         <div class="header-right">
@@ -467,7 +513,7 @@
             // Calculate opacity: 0 at top, up to 0.6 at bottom
             const opacity = Math.min(scrollPercentage * 0.6, 0.6);
             scrollDarkOverlay.style.opacity = opacity;
-        });
+        }, { passive: true });
 
         // Smooth scroll to video section and popup effect
         const getStartedBtn = document.getElementById('getStartedBtn');
@@ -632,14 +678,15 @@
         const headerRight = document.querySelector('.header-right');
 
         if (mobileMenuToggle && headerNav) {
-            mobileMenuToggle.addEventListener('click', function() {
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
                 mobileMenuToggle.classList.toggle('active');
                 headerNav.classList.toggle('mobile-open');
                 if (headerRight) {
                     headerRight.classList.toggle('mobile-open');
                 }
                 document.body.classList.toggle('menu-open');
-            });
+            }, { passive: false });
 
             // Toggle dropdown untuk Aircraft di mobile
             const navDropdown = headerNav.querySelector('.nav-dropdown');
@@ -666,21 +713,32 @@
                     if (parentDropdown) {
                         const parentLink = parentDropdown.querySelector(':scope > a');
                         if (link === parentLink) {
-                            return; // Let dropdown toggle handle it
+                            // Ini adalah dropdown parent - biarkan dropdown toggle handle
+                            return;
                         }
                     }
                     
+                    // Pastikan navigation proceed - jangan prevent default atau stop propagation
+                    // Close menu immediately untuk allow navigation
                     mobileMenuToggle.classList.remove('active');
                     headerNav.classList.remove('mobile-open');
                     if (headerRight) {
                         headerRight.classList.remove('mobile-open');
                     }
                     document.body.classList.remove('menu-open');
+                    
+                    // Navigation akan proceed secara normal - tidak ada preventDefault() atau stopPropagation()
+                    // Link akan navigate ke href secara normal
                 });
             });
 
-            // Close menu when clicking outside
+            // Close menu when clicking outside (tapi jangan block navigation links)
             document.addEventListener('click', function(event) {
+                // Skip jika click pada navigation link - biarkan navigation proceed
+                if (event.target.closest('.header-nav a')) {
+                    return;
+                }
+                
                 if (!headerNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
                     mobileMenuToggle.classList.remove('active');
                     headerNav.classList.remove('mobile-open');

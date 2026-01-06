@@ -108,15 +108,51 @@
             if (newsBackground && imagePath) {
                 // Clean image path
                 let cleanPath = imagePath.trim();
+                
+                // Remove file:// protocol if present
+                if (cleanPath.includes('file://')) {
+                    cleanPath = cleanPath.replace(/^file:\/\/\/?/, '');
+                    // Extract just the filename
+                    const filename = cleanPath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    cleanPath = `assets/images/${cleanFilename}`;
+                }
+                
+                // Remove absolute Windows paths
+                if (cleanPath.includes('C:\\') || cleanPath.includes('C:/') || cleanPath.includes('\\')) {
+                    const filename = cleanPath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    cleanPath = `assets/images/${cleanFilename}`;
+                }
+                
                 // Remove quotes if present
                 cleanPath = cleanPath.replace(/['"]/g, '');
                 // Remove URL encoding
                 cleanPath = cleanPath.replace(/%22/g, '').replace(/%20/g, ' ');
+                
+                // Ensure path is relative
+                if (cleanPath && !cleanPath.startsWith('assets/') && !cleanPath.startsWith('/assets/') && !cleanPath.startsWith('./assets/') && !cleanPath.startsWith('http') && !cleanPath.startsWith('file://')) {
+                    if (!cleanPath.includes('/')) {
+                        cleanPath = `assets/images/${cleanPath}`;
+                    } else {
+                        const filename = cleanPath.split(/[/\\]/).pop();
+                        const cleanFilename = filename.split('?')[0].split('#')[0];
+                        cleanPath = `assets/images/${cleanFilename}`;
+                    }
+                }
+                
+                // Final cleanup - ensure no absolute paths
+                if (cleanPath.includes('C:\\') || cleanPath.includes('C:/') || cleanPath.includes('\\') || cleanPath.includes('file://')) {
+                    const filename = cleanPath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    cleanPath = `assets/images/${cleanFilename}`;
+                }
+                
                 if (cleanPath.includes('%')) {
                     try {
                         cleanPath = decodeURIComponent(cleanPath);
                     } catch (e) {
-                        console.warn('Failed to decode image path:', cleanPath);
+                        // Image path decode failed - silently handle
                     }
                 }
                 
@@ -130,7 +166,7 @@
                 // Escape single quotes in path
                 const escapedPath = cleanPath.replace(/'/g, "\\'");
                 style.textContent = `.news-background-wrapper::after { background-image: url('${escapedPath}') !important; background-size: cover !important; background-position: center !important; transition: background-image 0.5s ease !important; }`;
-                console.log('Background updated to:', cleanPath);
+                // Background updated successfully
             }
         }
         
@@ -167,9 +203,12 @@
                 let imagePath = news.image || news.imageUrl || '';
                 
                 // If path contains Windows absolute path, convert to relative
-                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
                     // Extract filename from absolute path
                     const filename = imagePath.split(/[/\\]/).pop();
+                    
+                    // Remove any query parameters or fragments
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
                     
                     // Map filename to correct image file
                     const imageMap = {
@@ -182,17 +221,37 @@
                         'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
                     };
                     
-                    const correctFilename = imageMap[filename] || filename;
+                    const correctFilename = imageMap[cleanFilename] || cleanFilename;
                     imagePath = `assets/images/${correctFilename}`;
-                    console.warn(`News ${news.id}: Converted absolute path to relative: ${imagePath}`);
+                }
+                
+                // Remove file:// protocol if present
+                if (imagePath.includes('file://')) {
+                    imagePath = imagePath.replace(/^file:\/\/\/?/, '');
+                    // Extract just the filename
+                    const filename = imagePath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    imagePath = `assets/images/${cleanFilename}`;
                 }
                 
                 // Ensure path is relative (starts with assets/)
-                if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http')) {
+                if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http') && !imagePath.startsWith('file://')) {
                     // If just filename, add assets/images/ prefix
                     if (!imagePath.includes('/')) {
                         imagePath = `assets/images/${imagePath}`;
+                    } else {
+                        // Extract filename from any path
+                        const filename = imagePath.split(/[/\\]/).pop();
+                        const cleanFilename = filename.split('?')[0].split('#')[0];
+                        imagePath = `assets/images/${cleanFilename}`;
                     }
+                }
+                
+                // Final cleanup - ensure no absolute paths
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
+                    const filename = imagePath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    imagePath = `assets/images/${cleanFilename}`;
                 }
                 
                 card.className = `news-category-card ${isActive ? 'active' : ''}`;
@@ -208,7 +267,7 @@
                     <p>Date : ${news.date || 'No date'}</p>
                     <div class="news-popup-content">
                         <div class="news-popup-image">
-                            <img src="${imagePath}" alt="${news.title || 'News image'}" onerror="console.error('Failed to load image:', '${imagePath}'); this.style.display='none';">
+                            <img src="${imagePath}" alt="${news.title || 'News image'}" onerror="this.style.display='none';">
                         </div>
                         <div class="news-popup-text">
                             <p>${news.description || news.content || 'No description available'}</p>
@@ -216,11 +275,10 @@
                     </div>
                 `;
                 
-                // Debug: Log image path
-                if (imagePath) {
-                    console.log(`News ${news.id}: Image path = ${imagePath}`);
-                } else {
-                    console.warn(`News ${news.id}: No image path found!`);
+                // Removed console.log - images are loading correctly
+                // Only log if there's an actual error (no image path)
+                if (!imagePath) {
+                    console.error(`News ${news.id}: No image path found!`);
                 }
                 
                 newsCategoriesGrid.appendChild(card);
@@ -315,8 +373,36 @@
                     // Get news data from card attributes
                     const cardTitle = card.getAttribute('data-title') || '';
                     const cardDescription = card.getAttribute('data-description') || '';
-                    const cardImage = card.getAttribute('data-image') || card.getAttribute('data-bg') || '';
+                    let cardImage = card.getAttribute('data-image') || card.getAttribute('data-bg') || '';
                     const cardDate = card.querySelector('p') ? card.querySelector('p').textContent : '';
+                    
+                    // Clean cardImage path before using
+                    if (cardImage) {
+                        cardImage = cardImage.trim();
+                        // Remove file:// protocol if present
+                        if (cardImage.includes('file://')) {
+                            cardImage = cardImage.replace(/^file:\/\/\/?/, '');
+                            const filename = cardImage.split(/[/\\]/).pop();
+                            const cleanFilename = filename.split('?')[0].split('#')[0];
+                            cardImage = `assets/images/${cleanFilename}`;
+                        }
+                        // Remove absolute Windows paths
+                        if (cardImage.includes('C:\\') || cardImage.includes('C:/') || cardImage.includes('\\')) {
+                            const filename = cardImage.split(/[/\\]/).pop();
+                            const cleanFilename = filename.split('?')[0].split('#')[0];
+                            cardImage = `assets/images/${cleanFilename}`;
+                        }
+                        // Ensure relative path
+                        if (cardImage && !cardImage.startsWith('assets/') && !cardImage.startsWith('/assets/') && !cardImage.startsWith('./assets/') && !cardImage.startsWith('http') && !cardImage.startsWith('file://')) {
+                            if (!cardImage.includes('/')) {
+                                cardImage = `assets/images/${cardImage}`;
+                            } else {
+                                const filename = cardImage.split(/[/\\]/).pop();
+                                const cleanFilename = filename.split('?')[0].split('#')[0];
+                                cardImage = `assets/images/${cleanFilename}`;
+                            }
+                        }
+                    }
                     
                     if (cardImage) {
                         // Move title to side

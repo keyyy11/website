@@ -38,6 +38,7 @@
             <a href="services.html">Careers</a>
             <a href="news.html">News</a>
             <!-- <a href="event.html">Event</a> -->
+            <a href="contact.html" class="nav-mobile-contact">Contact Us</a>
         </nav>
 
         <div class="header-right">
@@ -286,6 +287,29 @@
     </script>
 
     <script>
+        // Close navigation mobile apabila page load (pastikan tidak ada menu terbuka) - sama macam page lain
+        function closeMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const headerNav = document.getElementById('headerNav');
+            const headerRight = document.querySelector('.header-right');
+            
+            if (mobileMenuToggle && headerNav) {
+                mobileMenuToggle.classList.remove('active');
+                headerNav.classList.remove('mobile-open');
+                if (headerRight) {
+                    headerRight.classList.remove('mobile-open');
+                }
+                document.body.classList.remove('menu-open');
+            }
+        }
+
+        // Close menu immediately on page load - sama macam page lain
+        closeMobileMenu();
+        
+        // Also close on DOMContentLoaded and window load untuk pastikan
+        document.addEventListener('DOMContentLoaded', closeMobileMenu);
+        window.addEventListener('load', closeMobileMenu);
+
         // Mobile menu toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const headerNav = document.getElementById('headerNav');
@@ -302,16 +326,31 @@
                 document.body.classList.toggle('menu-open');
             });
 
-            // Close menu when clicking on any navigation link
+            // Close menu when clicking on any navigation link (kecuali dropdown parent)
             const navLinks = headerNav.querySelectorAll('a');
             navLinks.forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
+                    // Skip jika ini adalah dropdown parent link
+                    const parentDropdown = link.closest('.nav-dropdown');
+                    if (parentDropdown) {
+                        const parentLink = parentDropdown.querySelector(':scope > a');
+                        if (link === parentLink) {
+                            // Ini adalah dropdown parent - biarkan dropdown toggle handle
+                            return;
+                        }
+                    }
+                    
+                    // Pastikan navigation proceed - jangan prevent default atau stop propagation
+                    // Close menu immediately untuk allow navigation
                     mobileMenuToggle.classList.remove('active');
                     headerNav.classList.remove('mobile-open');
                     if (headerRight) {
                         headerRight.classList.remove('mobile-open');
                     }
                     document.body.classList.remove('menu-open');
+                    
+                    // Navigation akan proceed secara normal - tidak ada preventDefault() atau stopPropagation()
+                    // Link akan navigate ke href secara normal
                 });
             });
 
