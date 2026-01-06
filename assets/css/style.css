@@ -6840,10 +6840,10 @@ body.menu-open {
     display: flex;
   }
 
-  /* Navigation items - Vertical layout memanjang ke bawah - COMPACT */
+  /* Navigation items - Vertical layout memanjang ke bawah - Reddit style */
   .header-nav {
     flex-direction: column !important;
-    padding-top: 45px !important;
+    padding-top: 0 !important;
     gap: 0 !important;
   }
 
@@ -6855,30 +6855,31 @@ body.menu-open {
     margin: 0 !important;
   }
 
-  /* Semua main navigation items - Vertical memanjang ke bawah */
+  /* Semua main navigation items - Vertical memanjang ke bawah - Reddit style */
   .header-nav > a {
-    padding: 1px 10px !important;
-    font-size: 8px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-right: none !important;
     border-top: none !important;
     text-align: left !important;
-    min-height: 18px !important;
-    max-height: 18px !important;
-    height: auto;
-    align-items: flex-start !important;
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+    align-items: center !important;
     justify-content: flex-start !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.02em !important;
     background: transparent;
     color: #ffffff !important;
-    text-transform: uppercase;
-    font-weight: 500;
-    line-height: 1.1 !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
     text-decoration: none;
-    padding-top: 1px !important;
-    padding-bottom: 1px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
     margin: 0 !important;
     white-space: nowrap;
+    transition: background-color 0.2s ease;
   }
 
   .header-nav > a:first-child {
@@ -6895,7 +6896,7 @@ body.menu-open {
 
   .header-nav > a:hover,
   .header-nav > a:active {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05) !important;
   }
 
   /* Dropdown container - Vertical memanjang ke bawah - Reddit style */
@@ -7021,64 +7022,6 @@ body.menu-open {
     color: #ffffff !important;
   }
 
-  /* Arrow indicator untuk dropdown - HIDE di mobile */
-  .nav-dropdown > a::after {
-    display: none !important;
-    content: none !important;
-  }
-
-  .nav-dropdown.active > a::after {
-    display: none !important;
-  }
-
-  /* Dropdown menu - HIDE di mobile */
-  .dropdown-menu {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-  }
-
-  /* Pastikan dropdown tidak muncul walaupun active */
-  .nav-dropdown.active .dropdown-menu {
-    display: none !important;
-  }
-
-  .dropdown-menu::before {
-    display: none;
-  }
-
-  .dropdown-menu a {
-    padding: 2px 12px 2px 20px !important;
-    font-size: 8px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    min-height: 18px !important;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 400;
-    line-height: 1.2;
-    margin: 0;
-  }
-
-  .dropdown-menu a:last-child {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .dropdown-menu a:last-child {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .dropdown-menu a:hover,
-  .dropdown-menu a:active {
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-  }
 
   /* Contact button - Sebaris dengan navigation items di tepi kiri */
   .header-right {
