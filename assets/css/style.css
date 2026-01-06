@@ -3843,8 +3843,8 @@ footer {
 .icon-box {
   width: 60px;
   height: 60px;
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  background: transparent;
+  box-shadow: none;
   border-radius: 8px;
   position: relative;
 }
@@ -3922,15 +3922,15 @@ footer {
   display: none;
 }
 
-/* Icon First Malaysia - Using image */
+/* Icon First Malaysia - Using image with white color, no background */
 .icon-first-malaysia {
-  background: #ffffff;
+  background: transparent;
   position: relative;
-  border-radius: 50%;
   background-image: url('../images/firstinmalaysia icon.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
 .icon-first-malaysia::before,
@@ -3940,12 +3940,13 @@ footer {
 
 /* New Icons */
 .icon-engineering {
-  background: #ffffff;
+  background: transparent;
   position: relative;
   background-image: url('../images/engineering icon.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
 .icon-engineering::before,
@@ -3954,7 +3955,7 @@ footer {
 }
 
 .icon-certification-safety {
-  background: #ffffff;
+  background: transparent;
   position: relative;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
@@ -3966,18 +3967,19 @@ footer {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
-  color: #000000;
+  color: #ffffff;
   font-weight: bold;
   line-height: 1;
 }
 
 .icon-manufacturing {
-  background: #ffffff;
+  background: transparent;
   position: relative;
   background-image: url('../images/manufacturing.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
 .icon-manufacturing::before,
@@ -3986,12 +3988,13 @@ footer {
 }
 
 .icon-performance {
-  background: #ffffff;
+  background: transparent;
   position: relative;
   background-image: url('../images/perfomance.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
 .icon-performance::before,
@@ -4000,12 +4003,13 @@ footer {
 }
 
 .icon-reliability {
-  background: #ffffff;
+  background: transparent;
   position: relative;
   background-image: url('../images/realibility.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: brightness(0) invert(1); /* Make icon white */
 }
 
 .icon-reliability::before {
@@ -8216,6 +8220,7 @@ body.menu-open {
   }
 
   /* Hide semua Contact Us button di mobile - delete semua button Contact Us */
+  /* Note: .header-nav > a.nav-mobile-contact TIDAK di-hide - ini adalah link di mobile navigation */
   .header-right,
   .header-right *,
   .header-right .nav-cta,
@@ -8225,12 +8230,7 @@ body.menu-open {
   .nav-cta,
   a.nav-cta,
   a[class*="nav-cta"],
-  .header-nav > a.nav-mobile-contact,
-  a.nav-mobile-contact,
-  a[class*="nav-mobile-contact"],
-  a[href*="contact.html"].nav-cta,
-  a[href*="contact.html"].nav-mobile-contact,
-  a[href="contact.html"] {
+  a[href*="contact.html"].nav-cta {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
