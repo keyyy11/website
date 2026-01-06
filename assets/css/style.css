@@ -1685,6 +1685,12 @@ footer {
 }
 
 @media (max-width: 480px) {
+  /* Side drawer adjustment untuk screen kecil */
+  .header-nav {
+    min-width: 240px !important;
+    width: 50% !important;
+  }
+
   .unveiling-section {
     padding: 0 12px 32px !important;
     align-items: flex-start !important;
@@ -6793,7 +6799,9 @@ body.menu-open {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 50% !important;
+    max-width: 50% !important;
+    min-width: 280px !important;
     height: 100vh;
     background: rgba(5, 6, 10, 0.98);
     backdrop-filter: blur(10px);
@@ -6806,6 +6814,9 @@ body.menu-open {
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5), 2px 0 8px rgba(0, 0, 0, 0.3);
   }
 
   /* Dark background untuk mobile navigation di aircraft page - hide countdown */
@@ -6838,6 +6849,83 @@ body.menu-open {
 
   .header-nav.mobile-open {
     display: flex;
+    transform: translateX(0);
+    animation: slideInFromLeft 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Smooth close animation */
+  .header-nav:not(.mobile-open) {
+    animation: slideOutToLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutToLeft {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  /* Overlay background untuk side drawer - menutupi seluruh layar */
+  body.menu-open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+    cursor: pointer;
+    animation: fadeInOverlay 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Fade out overlay when closing */
+  body:not(.menu-open)::before {
+    animation: fadeOutOverlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fadeInOverlay {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOutOverlay {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Pastikan body tidak scroll ketika menu open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
   }
 
   /* Navigation items - Vertical layout memanjang ke bawah - Reddit style */
@@ -6845,6 +6933,8 @@ body.menu-open {
     flex-direction: column !important;
     padding-top: 0 !important;
     gap: 0 !important;
+    max-height: 100vh !important;
+    overflow-y: hidden !important;
   }
 
   .header-nav > a,
@@ -6855,10 +6945,10 @@ body.menu-open {
     margin: 0 !important;
   }
 
-  /* Semua main navigation items - Vertical memanjang ke bawah - Reddit style */
+  /* Semua main navigation items - Vertical memanjang ke bawah - COMPACT - MUAT DALAM SATU PAGE */
   .header-nav > a {
-    padding: 12px 16px !important;
-    font-size: 14px !important;
+    padding: 4px 12px !important;
+    font-size: 11px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-right: none !important;
     border-top: none !important;
@@ -6868,15 +6958,15 @@ body.menu-open {
     height: auto !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.01em !important;
     background: transparent;
     color: #ffffff !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.4 !important;
+    line-height: 1.1 !important;
     text-decoration: none;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
     margin: 0 !important;
     white-space: nowrap;
     transition: background-color 0.2s ease;
@@ -6899,28 +6989,26 @@ body.menu-open {
     background: rgba(255, 255, 255, 0.05) !important;
   }
 
-  /* Dropdown container - Vertical memanjang ke bawah - Reddit style */
+  /* Dropdown container - HIDE Aircraft navigation di mobile sahaja */
   .nav-dropdown {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    position: relative !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-right: none !important;
-    border-top: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
-    gap: 0 !important;
+    border: none !important;
   }
 
-  /* Aircraft main link - Reddit style */
+  /* Aircraft main link - SAMA dengan items lain - COMPACT - MUAT DALAM SATU PAGE */
   .header-nav .nav-dropdown > a,
   .header-nav.mobile-open .nav-dropdown > a,
   .nav-dropdown > a {
     width: 100% !important;
-    padding: 12px 16px !important;
-    font-size: 14px !important;
-    border-bottom: none !important;
+    padding: 4px 12px !important;
+    font-size: 11px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-right: none !important;
     border-top: none !important;
     text-align: left !important;
@@ -6929,18 +7017,18 @@ body.menu-open {
     height: auto !important;
     align-items: center !important;
     justify-content: space-between !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.01em !important;
     background: transparent !important;
     color: #ffffff !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.4 !important;
+    line-height: 1.1 !important;
     text-decoration: none !important;
     display: flex !important;
     position: relative !important;
     margin: 0 !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
     white-space: nowrap !important;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -6995,8 +7083,8 @@ body.menu-open {
   }
 
   .dropdown-menu a {
-    padding: 10px 16px 10px 32px !important;
-    font-size: 13px !important;
+    padding: 4px 16px 4px 24px !important;
+    font-size: 12px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     text-align: left !important;
     min-height: auto !important;
@@ -7007,7 +7095,7 @@ body.menu-open {
     letter-spacing: 0.01em !important;
     text-transform: none !important;
     font-weight: 400 !important;
-    line-height: 1.4 !important;
+    line-height: 1.15 !important;
     margin: 0 !important;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
@@ -7169,20 +7257,23 @@ body.menu-open {
   }
 
   .social-icons-grid {
-    flex-wrap: wrap;
-    flex-direction: column;
-    gap: 12px;
-    justify-content: center;
-    max-width: 100%;
-    align-items: center;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    justify-items: center !important;
+    align-items: start !important;
+    max-width: 100% !important;
+    padding: 0 16px !important;
   }
 
   .social-icon-item {
-    flex: 0 0 auto;
-    width: 100%;
-    max-width: 180px;
-    min-width: 0;
-    text-align: center;
+    width: 100% !important;
+    max-width: 180px !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
 
   .icon-box {
@@ -7798,13 +7889,20 @@ body.menu-open {
   }
 
   .social-icons-grid {
-    gap: 10px;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    justify-items: center !important;
+    align-items: start !important;
+    padding: 0 12px !important;
   }
 
   .social-icon-item {
-    flex: 0 0 auto;
-    width: 100%;
-    max-width: 160px;
+    width: 100% !important;
+    max-width: 160px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
 
   .icon-box {

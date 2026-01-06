@@ -644,7 +644,7 @@
             // Toggle dropdown untuk Aircraft di mobile
             const navDropdown = headerNav.querySelector('.nav-dropdown');
             if (navDropdown) {
-                const dropdownLink = navDropdown.querySelector('> a');
+                const dropdownLink = navDropdown.querySelector(':scope > a');
                 if (dropdownLink) {
                     dropdownLink.addEventListener('click', function(e) {
                         // Jangan navigate jika ada dropdown menu
@@ -662,8 +662,12 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     // Skip jika ini adalah dropdown parent link
-                    if (link.closest('.nav-dropdown') && link === link.closest('.nav-dropdown').querySelector('> a')) {
-                        return; // Let dropdown toggle handle it
+                    const parentDropdown = link.closest('.nav-dropdown');
+                    if (parentDropdown) {
+                        const parentLink = parentDropdown.querySelector(':scope > a');
+                        if (link === parentLink) {
+                            return; // Let dropdown toggle handle it
+                        }
                     }
                     
                     mobileMenuToggle.classList.remove('active');
