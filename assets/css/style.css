@@ -200,6 +200,8 @@ footer {
 @media (max-width:768px){
   .landing { height:600px; }
   .landing-content h1 { font-size:34px; }
+  .landing-content p { font-size:16px; margin-bottom:16px; }
+  .btn { font-size:14px; padding:10px 20px; }
   header { flex-direction:column; align-items:flex-start; }
   nav a { margin:10px 10px 0 0; }
 }
@@ -420,6 +422,13 @@ footer {
 /* Dark theme override */
 .theme-dark {
   background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed;
+}
+
+/* Fade effect untuk aircraft page */
+#aircraftPage {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
   animation: none;
   color: #f5f5f7;
   position: relative;
@@ -724,16 +733,19 @@ footer {
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 8px;
   text-decoration: none;
 }
 
 .brand-text {
   font-size: 11px;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #ffffff;
-  opacity: 0.85;
+  opacity: 0.9;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .header-nav {
@@ -1434,19 +1446,46 @@ footer {
 
 @media (max-width: 768px) {
   .careers-hero {
-    padding: 80px 20px 30px;
+    padding: 20px 16px 30px !important;
+    text-align: center !important;
   }
   
   .careers-hero-title {
     font-size: 48px;
+    text-align: center !important;
+    margin: 0 auto !important;
   }
   
   .join-team-section {
-    padding: 30px 20px 60px;
+    padding: 20px 16px 60px !important;
+  }
+
+  .join-team-content {
+    text-align: center !important;
   }
   
   .join-team-title {
     font-size: 36px;
+    text-align: center !important;
+    margin: 0 auto 24px !important;
+    padding-bottom: 16px !important;
+    position: relative;
+  }
+
+  .join-team-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  .join-team-description {
+    text-align: center !important;
+    margin: 0 auto 60px !important;
   }
   
   .jobs-grid {
@@ -1603,9 +1642,22 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .unveiling-section {
+    padding: 0 16px 40px !important;
+    align-items: flex-start !important;
+    min-height: auto !important;
+  }
+
+  .unveiling-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
   .unveiling-title {
     font-size: 32px;
-    margin-bottom: 40px;
+    margin-top: 0 !important;
+    margin-bottom: 30px !important;
+    padding-top: 0 !important;
   }
 
   .countdown-display {
@@ -1633,9 +1685,22 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .unveiling-section {
+    padding: 0 12px 32px !important;
+    align-items: flex-start !important;
+    min-height: auto !important;
+  }
+
+  .unveiling-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
   .unveiling-title {
     font-size: 24px;
-    margin-bottom: 30px;
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+    padding-top: 0 !important;
   }
 
   .countdown-number {
@@ -6694,11 +6759,12 @@ body.menu-open {
 @media (max-width: 768px) {
   /* Header & Navigation - Vertical layout seperti Spotify */
   .site-header {
-    padding: 12px 16px;
+    padding: 10px 16px;
     flex-wrap: wrap;
     position: relative;
-    gap: 12px;
-    justify-content: space-between;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
     max-width: 100%;
   }
 
@@ -6711,6 +6777,10 @@ body.menu-open {
   .header-left {
     order: 1;
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 
   .header-nav {
@@ -6726,7 +6796,7 @@ body.menu-open {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 45px 0 10px;
+    padding: 50px 0 0 0 !important;
     gap: 0;
     z-index: 1000;
     overflow-y: auto;
@@ -6734,78 +6804,152 @@ body.menu-open {
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Dark background untuk mobile navigation di aircraft page - hide countdown */
+  body.menu-open .header-nav.mobile-open {
+    background: rgba(5, 6, 10, 0.99) !important;
+  }
+
+  /* Hide countdown/timer ketika mobile menu open di aircraft page */
+  body.menu-open .unveiling-section,
+  body.menu-open .countdown-container,
+  body.menu-open .countdown-display {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  /* Pastikan main content hidden ketika menu open */
+  body.menu-open main.aircraft-page {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Close button di navigation - menggunakan mobile-menu-toggle */
+  .mobile-menu-toggle.active {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1002;
+  }
+
   .header-nav.mobile-open {
     display: flex;
   }
 
-  /* Navigation items - Compact seperti H&M */
+  /* Navigation items - Horizontal layout sebaris */
+  .header-nav > a,
+  .header-nav > .nav-dropdown {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+  }
+
+  /* Semua main navigation items - Horizontal sebaris */
   .header-nav > a {
-    width: 100%;
-    padding: 6px 16px;
-    font-size: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    text-align: left;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    letter-spacing: 0.12em;
-    background: transparent;
-    color: #ffffff;
-    text-transform: uppercase;
-    font-weight: 400;
-  }
-
-  .header-nav > a:last-child {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Dropdown container */
-  .nav-dropdown {
-    width: 100%;
-    flex-direction: column;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .nav-dropdown > a {
-    width: 100%;
-    padding: 6px 16px;
+    padding: 1px 8px !important;
+    font-size: 7px !important;
     border-bottom: none;
-    min-height: 32px;
-    text-align: left;
-    justify-content: flex-start;
-    background: transparent;
-    position: relative;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: #ffffff;
-    text-transform: uppercase;
-    display: flex;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    text-align: center;
+    min-height: 16px !important;
+    max-height: 18px !important;
+    height: auto;
     align-items: center;
-    font-weight: 400;
-  }
-
-  .nav-dropdown > a::after {
-    display: none; /* Hide arrow in mobile */
-  }
-
-  /* Dropdown menu - Expand inline */
-  .dropdown-menu {
-    position: static;
-    transform: none;
-    width: 100%;
+    justify-content: center;
+    letter-spacing: 0.06em;
     background: transparent;
-    margin-top: 0;
-    margin-left: 0;
-    margin-bottom: 0;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    opacity: 1;
-    visibility: visible;
-    padding: 0;
-    display: block;
-    min-width: 100%;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.0;
+    text-decoration: none;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    margin: 0 !important;
+    white-space: nowrap;
+  }
+
+  .header-nav > a:first-child {
+    border-top: none;
+  }
+
+  .header-nav > a:last-of-type {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .header-nav > a:last-of-type {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .header-nav > a:hover,
+  .header-nav > a:active {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  /* Dropdown container - Horizontal sebaris */
+  .nav-dropdown {
+    width: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    position: relative !important;
+    border-bottom: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Aircraft - Horizontal sebaris dengan items lain */
+  .header-nav .nav-dropdown > a,
+  .header-nav.mobile-open .nav-dropdown > a,
+  .nav-dropdown > a {
+    width: auto !important;
+    padding: 1px 8px !important;
+    font-size: 7px !important;
+    border-bottom: none !important;
+    border-right: none !important;
+    text-align: center !important;
+    min-height: 16px !important;
+    max-height: 18px !important;
+    height: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    letter-spacing: 0.06em !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    font-weight: 500 !important;
+    line-height: 1.0 !important;
+    text-decoration: none !important;
+    display: flex !important;
+    position: relative !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    cursor: pointer;
+  }
+
+  /* Arrow indicator untuk dropdown - HIDE di mobile */
+  .nav-dropdown > a::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .nav-dropdown.active > a::after {
+    display: none !important;
+  }
+
+  /* Dropdown menu - HIDE di mobile */
+  .dropdown-menu {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Pastikan dropdown tidak muncul walaupun active */
+  .nav-dropdown.active .dropdown-menu {
+    display: none !important;
   }
 
   .dropdown-menu::before {
@@ -6813,18 +6957,24 @@ body.menu-open {
   }
 
   .dropdown-menu a {
-    padding: 6px 16px 6px 24px;
-    font-size: 9px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    min-height: 28px;
+    padding: 2px 12px 2px 20px !important;
+    font-size: 8px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    min-height: 18px !important;
     text-align: left;
     display: flex;
     align-items: center;
     background: transparent;
     color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .dropdown-menu a:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .dropdown-menu a:last-child {
@@ -6837,43 +6987,61 @@ body.menu-open {
     color: #ffffff;
   }
 
-  /* Contact button - At bottom */
+  /* Contact button - Sebaris dengan navigation items di tepi kiri */
   .header-right {
-    order: 4;
-    width: 100%;
+    order: 1;
+    width: auto;
+    display: flex;
     margin-top: 0;
     padding-top: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 6px 16px;
+    border-top: none;
+    border-left: none;
+    padding: 0 !important;
+    margin-right: 8px !important;
   }
 
   .header-right.mobile-open {
-    display: block;
+    display: flex;
   }
 
   .nav-cta {
-    width: 100%;
-    text-align: center;
-    padding: 6px 16px;
-    font-size: 10px;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 500;
+    width: auto !important;
+    text-align: center !important;
+    padding: 1px 8px !important;
+    font-size: 7px !important;
+    min-height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 3px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    font-weight: 500 !important;
+    line-height: 1.0 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-mark {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
   }
 
   .brand-text {
-    font-size: 8px;
-    letter-spacing: 0.18em;
+    font-size: 8px !important;
+    letter-spacing: 0.12em !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    opacity: 0.9 !important;
   }
 
   .logo {
-    height: 36px;
+    height: 28px !important;
     width: auto;
+    object-fit: contain;
   }
 
   /* Hero Sections - Compact seperti Spotify */
@@ -6885,52 +7053,56 @@ body.menu-open {
   }
 
   .hero-inner {
-    padding: 40px 16px 32px;
-    max-width: 100%;
+    padding: 32px 16px 24px !important;
+    max-width: 100% !important;
   }
 
   .hero-title-image {
-    max-width: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0 auto 16px;
-    display: block;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto 10px !important;
+    display: block !important;
+    max-height: 100px !important;
+    object-fit: contain !important;
   }
 
-  /* Compact spacing */
-  .hero-subtitle {
-    font-size: 15px;
-    line-height: 1.5;
-    padding: 0;
-    margin: 0 auto 16px;
-    max-width: 100%;
-    text-align: center;
+  /* Compact spacing - Kecilkan text untuk mobile - SANGAT KECIL */
+  .hero-subtitle,
+  .hero-subtitle-centered {
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+    padding: 0 !important;
+    margin: 0 auto 10px !important;
+    max-width: 100% !important;
+    text-align: center !important;
   }
 
   .hero-actions {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 100%;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
   }
 
   .primary-cta {
-    width: 100%;
-    max-width: 100%;
-    padding: 12px 20px;
-    font-size: 15px;
-    min-height: 44px;
-    border-radius: 6px;
-    text-align: center;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 8px 14px !important;
+    font-size: 11px !important;
+    min-height: 36px !important;
+    border-radius: 6px !important;
+    text-align: center !important;
+    font-weight: 500 !important;
   }
 
   .hero-caption {
-    font-size: 12px;
-    margin-top: 12px;
-    opacity: 0.7;
-    text-align: center;
+    font-size: 9px !important;
+    margin-top: 6px !important;
+    opacity: 0.7 !important;
+    text-align: center !important;
   }
 
   /* Social Icons Section - Compact layout */
@@ -6974,15 +7146,15 @@ body.menu-open {
   }
 
   .social-icons-text h2 {
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.3;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     text-align: center;
   }
 
   .social-icons-text p {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.4;
     text-align: center;
   }
 
@@ -7010,8 +7182,8 @@ body.menu-open {
   /* News Cards Grid - Compact */
   .mockups-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 32px 16px;
+    gap: 14px;
+    padding: 28px 16px;
   }
 
   .news-card {
@@ -7020,21 +7192,34 @@ body.menu-open {
     overflow: hidden;
   }
 
+  /* News card text sizes - Compact */
+  .news-card h3,
+  .news-card .news-title {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .news-card p,
+  .news-card .news-description {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
   /* App Banner - Compact */
   .app-banner {
-    padding: 32px 16px;
+    padding: 28px 16px;
     text-align: center;
   }
 
   .app-banner-text h2 {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.3;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .app-banner-text p {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   /* Footer - Compact */
@@ -7054,7 +7239,7 @@ body.menu-open {
   }
 
   .footer-col p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .footer-bottom {
@@ -7069,37 +7254,37 @@ body.menu-open {
 
   /* About Page - Compact */
   .about-hero {
-    padding: 32px 16px;
+    padding: 28px 16px;
     text-align: center;
   }
 
   .about-hero h1 {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.3;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .about-hero p {
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   .about-content {
-    padding: 0 16px 32px;
+    padding: 0 16px 28px;
     max-width: 100%;
   }
 
   .about-content h2 {
-    font-size: 20px;
-    margin-top: 24px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-top: 18px;
+    margin-bottom: 6px;
     line-height: 1.3;
   }
 
   .about-content p {
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-bottom: 6px;
   }
 
   /* Company Page - Compact */
@@ -7108,8 +7293,8 @@ body.menu-open {
   }
 
   .company-heading {
-    font-size: 24px;
-    margin-bottom: 24px;
+    font-size: 20px;
+    margin-bottom: 16px;
     line-height: 1.3;
     text-align: center;
   }
@@ -7128,15 +7313,15 @@ body.menu-open {
   }
 
   .company-content h2 {
-    font-size: 20px;
-    margin-bottom: 12px;
+    font-size: 16px;
+    margin-bottom: 8px;
     line-height: 1.3;
   }
 
   .company-content p {
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-bottom: 8px;
   }
 
   .capabilities-grid {
@@ -7162,14 +7347,14 @@ body.menu-open {
   }
 
   .heritage-front-title {
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1.3;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .heritage-front-text {
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.4;
     padding: 0;
     max-width: 100%;
     margin: 0 auto;
@@ -7201,21 +7386,21 @@ body.menu-open {
   }
 
   .timeline-year {
-    font-size: 28px;
-    margin-bottom: 12px;
+    font-size: 18px;
+    margin-bottom: 6px;
     line-height: 1.2;
   }
 
   .timeline-title {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 13px;
+    margin-bottom: 5px;
     line-height: 1.3;
   }
 
   .timeline-description {
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-bottom: 6px;
   }
 
   .timeline-image-container {
@@ -7232,71 +7417,71 @@ body.menu-open {
 
   /* Contact Page - Compact */
   .contact-hero {
-    padding: 32px 16px 24px;
+    padding: 28px 16px 20px;
     text-align: center;
   }
 
   .contact-hero-content h1 {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.3;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .contact-form-container {
-    padding: 24px 16px;
+    padding: 20px 16px;
     max-width: 100%;
   }
 
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .form-group label {
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 6px;
     display: block;
   }
 
   .form-group input,
   .form-group textarea {
-    font-size: 16px; /* Kekalkan untuk mobile input */
-    padding: 12px 14px;
-    min-height: 44px;
+    font-size: 13px; /* Kecilkan untuk mobile */
+    padding: 8px 10px;
+    min-height: 38px;
     width: 100%;
     border-radius: 6px;
     -webkit-appearance: none;
   }
 
   .form-group textarea {
-    min-height: 100px;
+    min-height: 80px;
     resize: vertical;
   }
 
   .submit-btn {
     width: 100%;
-    padding: 12px 20px;
-    font-size: 15px;
-    min-height: 44px;
+    padding: 8px 16px;
+    font-size: 11px;
+    min-height: 36px;
     border-radius: 6px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   /* News Page - Compact */
   .news-hero-section {
-    padding: 32px 16px 24px;
+    padding: 28px 16px 20px;
     text-align: center;
   }
 
   .news-hero-content h1 {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.3;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .news-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 32px 16px;
+    gap: 14px;
+    padding: 28px 16px;
   }
 
   .news-card {
@@ -7306,29 +7491,29 @@ body.menu-open {
 
   /* Aircraft Page - Compact */
   .unveiling-section {
-    padding: 32px 16px 24px;
+    padding: 28px 16px 20px;
     text-align: center;
   }
 
   .unveiling-content h1 {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.3;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .unveiling-content p {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.5;
   }
 
   /* Services/Careers Page - Compact */
   .careers-hero {
-    padding: 32px 16px 24px;
+    padding: 28px 16px 20px;
     text-align: center;
   }
 
   .careers-hero-title {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.3;
   }
 

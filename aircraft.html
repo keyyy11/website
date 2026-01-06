@@ -6,7 +6,7 @@
     <title>Aircraft – Aeronas Aerocraft</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="theme-dark">
+<body class="theme-dark" id="aircraftPage">
     <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
 
     <!-- Header -->
@@ -26,14 +26,7 @@
 
         <nav class="header-nav" id="headerNav">
             <a href="index.html">Home</a>
-            <div class="nav-dropdown">
-                <a href="aircraft.html" class="active">Aircraft</a>
-                <div class="dropdown-menu">
-                    <a href="aircraft.html#manufacturing" class="active">Manufacturing</a>
-                    <a href="technology.html">Technology</a>
-                    <a href="compliance.html">Compliance</a>
-                </div>
-            </div>
+            <a href="aircraft.html" class="active">Aircraft</a>
             <a href="about.html">About</a>
             <a href="services.html">Careers</a>
             <a href="news.html">News</a>
@@ -41,7 +34,7 @@
         </nav>
 
         <div class="header-right">
-            <a href="contact.html" class="nav-cta">Contact Us</a>
+            <a href="contact.html" class="nav-cta" id="contactLink">Contact Us</a>
         </div>
     </header>
 
@@ -142,6 +135,32 @@
     </script>
 
     <script>
+        // Fade effect untuk aircraft page
+        const aircraftPage = document.getElementById('aircraftPage');
+        
+        // Fade in effect ketika page load
+        if (aircraftPage) {
+            aircraftPage.style.opacity = '0';
+            aircraftPage.style.transition = 'opacity 0.3s ease-in';
+            setTimeout(() => {
+                aircraftPage.style.opacity = '1';
+            }, 50);
+        }
+
+        // Function untuk fade out sebelum navigate
+        function fadeOutAndNavigate(href) {
+            if (aircraftPage && href && !href.includes('#') && !href.includes('aircraft.html')) {
+                aircraftPage.style.transition = 'opacity 0.3s ease-out';
+                aircraftPage.style.opacity = '0';
+                
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+                return true;
+            }
+            return false;
+        }
+
         // Mobile menu toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const headerNav = document.getElementById('headerNav');
@@ -158,15 +177,22 @@
                 document.body.classList.toggle('menu-open');
             });
 
+            // Close menu when clicking on any navigation link dengan fade effect
             const navLinks = headerNav.querySelectorAll('a');
+            
             navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuToggle.classList.remove('active');
-                    headerNav.classList.remove('mobile-open');
-                    if (headerRight) {
-                        headerRight.classList.remove('mobile-open');
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (fadeOutAndNavigate(href)) {
+                        e.preventDefault();
+                    } else {
+                        mobileMenuToggle.classList.remove('active');
+                        headerNav.classList.remove('mobile-open');
+                        if (headerRight) {
+                            headerRight.classList.remove('mobile-open');
+                        }
+                        document.body.classList.remove('menu-open');
                     }
-                    document.body.classList.remove('menu-open');
                 });
             });
 
@@ -178,6 +204,28 @@
                         headerRight.classList.remove('mobile-open');
                     }
                     document.body.classList.remove('menu-open');
+                }
+            });
+        }
+
+        // Fade effect untuk header links (desktop)
+        const homeLink = document.getElementById('homeLink');
+        const contactLink = document.getElementById('contactLink');
+        
+        if (homeLink) {
+            homeLink.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (fadeOutAndNavigate(href)) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        if (contactLink) {
+            contactLink.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (fadeOutAndNavigate(href)) {
+                    e.preventDefault();
                 }
             });
         }

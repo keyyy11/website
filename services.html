@@ -24,14 +24,7 @@
 
         <nav class="header-nav" id="headerNav">
             <a href="index.html">Home</a>
-            <div class="nav-dropdown">
-                <a href="aircraft.html">Aircraft</a>
-                <div class="dropdown-menu">
-                    <a href="aircraft.html#manufacturing">Manufacturing</a>
-                    <a href="technology.html">Technology</a>
-                    <a href="compliance.html">Compliance</a>
-                </div>
-            </div>
+            <a href="aircraft.html">Aircraft</a>
             <a href="about.html">About</a>
             <a href="services.html" class="active">Careers</a>
             <a href="news.html">News</a>
@@ -183,6 +176,7 @@
                 document.body.classList.toggle('menu-open');
             });
 
+            // Close menu when clicking on any navigation link
             const navLinks = headerNav.querySelectorAll('a');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
