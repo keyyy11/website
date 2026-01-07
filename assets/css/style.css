@@ -8333,6 +8333,37 @@ body.menu-open {
     line-height: 1.4;
     margin-bottom: 8px;
   }
+  
+  /* Milestone Page Mobile - Adjust text sizes */
+  .milestone-item {
+    margin-bottom: 32px !important;
+    padding-bottom: 24px !important;
+  }
+  
+  .milestone-year {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: 10px !important;
+    padding: 6px 0 !important;
+  }
+  
+  .milestone-item .section-subtitle {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .milestone-item .company-text {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .company-title {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 24px !important;
+  }
 
   .capabilities-grid {
     grid-template-columns: 1fr;
