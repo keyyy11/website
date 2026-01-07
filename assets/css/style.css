@@ -1052,6 +1052,9 @@ footer {
   line-height: 1.6;
   margin: 20px 0 0 0;
   font-weight: 400;
+  white-space: nowrap; /* Pastikan text sebaris */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gradient-accent-line {
@@ -1299,6 +1302,8 @@ footer {
   padding: 40px 30px;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Centerkan content untuk desktop */
+  text-align: center; /* Centerkan text untuk desktop */
   gap: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
@@ -1336,6 +1341,7 @@ footer {
   margin: 0;
   position: relative;
   z-index: 1;
+  text-align: center; /* Centerkan title untuk desktop */
 }
 
 .job-location {
@@ -1344,6 +1350,7 @@ footer {
   margin: 0;
   position: relative;
   z-index: 1;
+  text-align: center; /* Centerkan location untuk desktop */
 }
 
 .job-description {
@@ -1354,6 +1361,7 @@ footer {
   flex-grow: 1;
   position: relative;
   z-index: 1;
+  text-align: center; /* Centerkan description untuk desktop */
 }
 
 .job-button {
@@ -1368,8 +1376,8 @@ footer {
   letter-spacing: 0.1em;
   border-radius: 6px;
   transition: all 0.3s ease;
-  align-self: flex-start;
-  margin-top: auto;
+  align-self: center; /* Centerkan button untuk desktop */
+  margin: 20px auto 0 auto; /* Centerkan dengan auto margin */
   position: relative;
   z-index: 1;
 }
@@ -3557,8 +3565,12 @@ footer {
   }
 
   .panel-text-description {
-    font-size: 16px;
+    font-size: 14px !important; /* Kurangkan sedikit untuk pastikan muat sebaris */
     margin-top: 16px;
+    white-space: nowrap !important; /* Pastikan text sebaris untuk mobile */
+    overflow: visible !important; /* Allow text to show fully */
+    text-overflow: clip !important;
+    display: inline-block !important; /* Pastikan text tidak wrap */
   }
 
   .panel-number {
@@ -3714,7 +3726,7 @@ footer {
   max-width: 520px;
   width: 100%;
   height: auto;
-  margin: 0 auto 16px;
+  margin: 0 auto 40px; /* Tambah spacing dengan subtitle */
   display: block;
   }
 
@@ -3722,7 +3734,7 @@ footer {
     font-size: 16px;
   max-width: 600px;
   opacity: 0.75;
-  margin: 0 auto 28px;
+  margin: 0 auto 50px; /* Tambah spacing dengan button */
   line-height: 1.6;
 }
 
@@ -3735,7 +3747,7 @@ footer {
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-top: 30px;
+  margin-top: 0; /* Remove top margin kerana subtitle sudah ada bottom margin */
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
@@ -3870,12 +3882,12 @@ footer {
 
 /* App Banner */
 .app-banner {
-  background: linear-gradient(135deg, rgba(79, 195, 247, 0.1) 0%, rgba(230, 5, 5, 0.1) 100%);
-  border-radius: 18px;
-  padding: 60px 40px;
-  text-align: center;
-  margin-bottom: 60px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none !important; /* Hide app banner untuk mobile dan desktop */
+  visibility: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
 }
 
 .app-banner-text {
@@ -7523,7 +7535,7 @@ body.menu-open {
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 !important;
-    margin: 0 auto 10px !important;
+    margin: 0 auto 24px !important; /* Tambah spacing dengan subtitle untuk mobile */
     display: block !important;
     max-height: 100px !important;
     object-fit: contain !important;
@@ -7535,7 +7547,7 @@ body.menu-open {
     font-size: 11px !important;
     line-height: 1.4 !important;
     padding: 0 !important;
-    margin: 0 auto 10px !important;
+    margin: 0 auto 32px !important; /* Tambah spacing dengan button untuk mobile */
     max-width: 100% !important;
     text-align: center !important;
   }
@@ -7672,19 +7684,12 @@ body.menu-open {
 
   /* App Banner - Compact */
   .app-banner {
-    padding: 28px 16px;
-    text-align: center;
-  }
-
-  .app-banner-text h2 {
-    font-size: 16px;
-    line-height: 1.3;
-    margin-bottom: 6px;
-  }
-
-  .app-banner-text p {
-    font-size: 11px;
-    line-height: 1.4;
+    display: none !important; /* Hide app banner untuk mobile */
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
   }
 
   /* Footer - Compact */
@@ -8215,13 +8220,13 @@ body.menu-open {
   }
 
   .hero-title-image {
-    margin-bottom: 12px;
+    margin-bottom: 28px; /* Tambah spacing dengan subtitle untuk tablet */
   }
 
   .hero-subtitle {
     font-size: 14px;
     line-height: 1.5;
-    margin-bottom: 12px;
+    margin-bottom: 40px; /* Tambah spacing dengan button untuk tablet */
   }
 
   .hero-actions {
@@ -8388,15 +8393,12 @@ body.menu-open {
   }
 
   .app-banner {
-    padding: 60px 16px;
-  }
-
-  .app-banner-text h2 {
-    font-size: 26px;
-  }
-
-  .app-banner-text p {
-    font-size: 14px;
+    display: none !important; /* Hide app banner untuk tablet */
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
   }
 
   .mockups-grid {
