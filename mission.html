@@ -6,7 +6,7 @@
     <title>Mission & Vision – Aeronas Aerocraft</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="theme-dark theme-about">
+<body class="theme-dark theme-about theme-mission">
     <div class="scroll-dark-overlay" id="scrollDarkOverlay"></div>
 
     <!-- Header -->
@@ -53,40 +53,71 @@
     </header>
 
     <!-- Main Content -->
-    <main class="company-main">
-        <section class="company-hero-section">
-            <div class="company-content-wrapper">
-                <div class="company-heading">
-                    <h1 class="company-title">Mission & Vision</h1>
+    <main class="mission-main">
+        <section class="mission-panels-section">
+            <!-- Typographic Menu (Left Side) -->
+            <div class="mission-menu">
+                <div class="mission-menu-item" data-panel="1">
+                    <span class="menu-number">01</span>
+                    <span class="menu-title">MISSION</span>
                 </div>
-                <div class="company-description">
-                    <div class="mission-section">
-                        <h2 class="section-subtitle">Our Mission</h2>
-                        <p class="company-text">
-                            Changing the country’s aerospace landscape. A game changer. A Catalyst</p>
+                <div class="mission-menu-item active" data-panel="2">
+                    <span class="menu-number">02</span>
+                    <span class="menu-title">VISION</span>
+                </div>
+                <div class="mission-menu-item" data-panel="3">
+                    <span class="menu-number">03</span>
+                    <span class="menu-title">VALUES</span>
+                </div>
+            </div>
+
+            <!-- Panels Container -->
+            <div class="mission-panels-container">
+                <!-- Panel 1: Mission -->
+                <div class="mission-panel" data-panel="1">
+                    <div class="mission-panel-image" style="background-image: url('assets/images/04.jpeg');">
+                        <div class="mission-panel-overlay"></div>
+                        <div class="mission-panel-content">
+                            <h2 class="mission-panel-title">Our Mission</h2>
+                            <p class="mission-panel-text">Changing the country's aerospace landscape. A game changer. A Catalyst</p>
+                            <div class="mission-panel-expanded-content">
+                                <p class="mission-panel-description">We are committed to transforming Malaysia's aerospace industry through innovation, excellence, and strategic partnerships. Our mission drives us to be a catalyst for change, pushing boundaries and setting new standards in aircraft manufacturing.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="vision-section">
-                        <h2 class="section-subtitle">Our Vision</h2>
-                        <p class="company-text">
-                            Aims To Be The First Full Scale Part 23 Type Certificate Aircraft Manufacturer</p>
+                </div>
+
+                <!-- Panel 2: Vision -->
+                <div class="mission-panel active" data-panel="2">
+                    <div class="mission-panel-image" style="background-image: url('assets/images/08.png');">
+                        <div class="mission-panel-overlay"></div>
+                        <div class="mission-panel-content">
+                            <h2 class="mission-panel-title">Our Vision</h2>
+                            <p class="mission-panel-text">Aims To Be The First Full Scale Part 23 Type Certificate Aircraft Manufacturer</p>
+                            <div class="mission-panel-expanded-content">
+                                <p class="mission-panel-description">Our vision is to establish Malaysia as a leading force in the global aerospace industry. We aim to be the first full-scale Part 23 Type Certificate aircraft manufacturer in the region, creating world-class aircraft that meet the highest international standards.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="values-section">
-                        <h2 class="section-subtitle">Our Core Values</h2>
-                        <p class="company-text">
-                            <strong>Safety Without Compromise:</strong> Safety guides every decision, design, and operation we undertake.
-                        </p>
-                        <p class="company-text">
-                            <strong>Engineering Excellence:</strong> Precision, discipline, and quality define everything we build.
-                        </p>
-                        <p class="company-text">
-                            <strong>Purpose-Driven Innovation:</strong> We innovate responsibly to deliver practical, high-performance solutions.
-                        </p>
-                        <p class="company-text">
-                            <strong>Integrity & Accountability:</strong> We operate with transparency, ethics, and full responsibility to our stakeholders.
-                        </p>
-                        <p class="company-text">
-                            <strong>Proudly Malaysian, Globally Competitive:</strong> Building national aerospace capability to meet international standards.
-                        </p>
+                </div>
+
+                <!-- Panel 3: Core Values -->
+                <div class="mission-panel" data-panel="3">
+                    <div class="mission-panel-image" style="background-image: url('assets/images/06.jpeg');">
+                        <div class="mission-panel-overlay"></div>
+                        <div class="mission-panel-content">
+                            <h2 class="mission-panel-title">Our Core Values</h2>
+                            <p class="mission-panel-text">Safety, Excellence, Innovation, Integrity, and National Pride</p>
+                            <div class="mission-panel-expanded-content">
+                                <div class="mission-panel-description">
+                                    <p><strong>Safety Without Compromise:</strong> Safety guides every decision, design, and operation we undertake.</p>
+                                    <p><strong>Engineering Excellence:</strong> Precision, discipline, and quality define everything we build.</p>
+                                    <p><strong>Purpose-Driven Innovation:</strong> We innovate responsibly to deliver practical, high-performance solutions.</p>
+                                    <p><strong>Integrity & Accountability:</strong> We operate with transparency, ethics, and full responsibility to our stakeholders.</p>
+                                    <p><strong>Proudly Malaysian, Globally Competitive:</strong> Building national aerospace capability to meet international standards.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -111,19 +142,104 @@
     </footer>
 
     <script>
+        // Mission panels expand functionality - expand on hover
+        const missionPanels = document.querySelectorAll('.mission-panel');
+        const missionMenuItems = document.querySelectorAll('.mission-menu-item');
+        const panelsContainer = document.querySelector('.mission-panels-container');
+        let activePanel = null;
+
+        // Function to activate panel
+        function activatePanel(panelNumber) {
+            // Remove active from all panels and menu items
+            missionPanels.forEach(p => p.classList.remove('active'));
+            missionMenuItems.forEach(m => m.classList.remove('active'));
+            
+            // Add active to selected panel and menu item
+            const panel = document.querySelector(`.mission-panel[data-panel="${panelNumber}"]`);
+            const menuItem = document.querySelector(`.mission-menu-item[data-panel="${panelNumber}"]`);
+            
+            if (panel) panel.classList.add('active');
+            if (menuItem) menuItem.classList.add('active');
+            
+            activePanel = panelNumber;
+        }
+
+        // Panel hover
+        missionPanels.forEach(panel => {
+            panel.addEventListener('mouseenter', function() {
+                const panelNumber = this.dataset.panel;
+                activatePanel(panelNumber);
+            });
+        });
+
+        // Menu item click
+        missionMenuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const panelNumber = this.dataset.panel;
+                activatePanel(panelNumber);
+            });
+        });
+
+        // Collapse all panels when mouse leaves the container
+        if (panelsContainer) {
+            panelsContainer.addEventListener('mouseleave', function() {
+                missionPanels.forEach(p => p.classList.remove('active'));
+                missionMenuItems.forEach(m => m.classList.remove('active'));
+                activePanel = null;
+            });
+        }
+
+        // Click handler untuk expand/collapse (terutama untuk mobile)
+        missionPanels.forEach(panel => {
+            panel.addEventListener('click', function(e) {
+                // Check if mobile
+                if (window.innerWidth <= 768) {
+                    e.stopPropagation();
+                    const panelNumber = this.dataset.panel;
+                    
+                    // Toggle expanded state
+                    if (this.classList.contains('expanded')) {
+                        this.classList.remove('expanded');
+                        activePanel = null;
+                    } else {
+                        // Remove expanded from all panels
+                        missionPanels.forEach(p => p.classList.remove('expanded'));
+                        // Add expanded to clicked panel
+                        this.classList.add('expanded');
+                        activePanel = panelNumber;
+                    }
+                } else {
+                    // Desktop behavior
+                    const panelNumber = this.dataset.panel;
+                    if (this.classList.contains('active') && activePanel === panelNumber) {
+                        this.classList.remove('active');
+                        const menuItem = document.querySelector(`.mission-menu-item[data-panel="${panelNumber}"]`);
+                        if (menuItem) menuItem.classList.remove('active');
+                        activePanel = null;
+                    } else {
+                        activatePanel(panelNumber);
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
         // Scroll effect: background gets darker as you scroll down
         const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
         
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.pageYOffset;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-            
-            // Calculate opacity: 0 at top, up to 0.6 at bottom
-            const opacity = Math.min(scrollPercentage * 0.6, 0.6);
-            scrollDarkOverlay.style.opacity = opacity;
-        });
+        if (scrollDarkOverlay) {
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+                
+                // Calculate opacity: 0 at top, up to 0.6 at bottom
+                const opacity = Math.min(scrollPercentage * 0.6, 0.6);
+                scrollDarkOverlay.style.opacity = opacity;
+            });
+        }
     </script>
 
     <script>

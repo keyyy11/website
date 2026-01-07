@@ -5817,6 +5817,490 @@ footer {
   margin-bottom: 40px;
 }
 
+/* Mission Page - Expandable Panels Layout */
+.mission-main {
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed; /* Background asal */
+  background-color: rgba(5, 6, 10, 0.95); /* Gelapkan sikit dengan overlay */
+}
+
+.mission-main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 10, 0.85); /* Dark overlay untuk gelapkan background */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mission-panels-section {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  background: transparent;
+  z-index: 1;
+}
+
+/* Typographic Menu (Left Side) */
+.mission-menu {
+  position: fixed;
+  left: 40px; /* Move lebih ke kiri */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100; /* Pastikan di atas semua */
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 0;
+}
+
+.mission-menu-item {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5;
+  transform: translateX(0);
+}
+
+.mission-menu-item:hover,
+.mission-menu-item.active {
+  opacity: 1;
+  transform: translateX(10px);
+}
+
+.menu-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-menu-item.active .menu-number {
+  color: #ffffff; /* Tukar kepada putih */
+}
+
+.menu-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-menu-item.active .menu-title {
+  color: #ffffff; /* Tukar kepada putih */
+  transform: scale(1.1);
+}
+
+.mission-panels-container {
+  display: flex;
+  width: calc(100% - 320px); /* Kurangkan width untuk avoid overlap */
+  height: 100%;
+  position: relative;
+  margin-left: 320px; /* Tambah margin untuk lebih space dari menu */
+  padding: 0;
+  gap: 0;
+  align-items: stretch;
+  z-index: 2; /* Pastikan di atas overlay */
+}
+
+.mission-panel {
+  flex: 1;
+  height: 100vh;
+  position: relative;
+  cursor: pointer;
+  transition: flex 0.8s cubic-bezier(0.4, 0, 0.2, 1), clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  clip-path: polygon(0 0, 100% 0, 97% 100%, 3% 100%); /* Rapatkan - kurangkan gap */
+  opacity: 0.7;
+  margin: 0; /* No negative margin - tidak overlap */
+}
+
+.mission-panel:nth-child(1) {
+  clip-path: polygon(0 0, 100% 0, 93% 100%, 0% 100%); /* Rapatkan - serong ke kanan */
+}
+
+.mission-panel:nth-child(2) {
+  clip-path: polygon(3% 0, 100% 0, 97% 100%, 0% 100%); /* Rapatkan - serong tengah */
+}
+
+.mission-panel:nth-child(3) {
+  clip-path: polygon(7% 0, 100% 0, 100% 100%, 0% 100%); /* Rapatkan - serong ke kiri */
+}
+
+.mission-panel:hover,
+.mission-panel.active {
+  flex: 2.5;
+  z-index: 10;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  opacity: 1;
+}
+
+.mission-panel:not(.active):not(:hover) {
+  transition: flex 0.8s cubic-bezier(0.4, 0, 0.2, 1), clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-panel-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  filter: brightness(0.9) contrast(1.1); /* Make images more bold/vibrant */
+}
+
+.mission-panel:hover .mission-panel-image,
+.mission-panel.active .mission-panel-image {
+  transform: scale(1.1);
+  filter: brightness(1.1) contrast(1.2) saturate(1.1); /* Even more bold when active */
+}
+
+.mission-panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent; /* Remove fade overlay - make images bold */
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-panel:hover .mission-panel-overlay,
+.mission-panel.active .mission-panel-overlay {
+  background: transparent; /* Keep transparent - no fade */
+}
+
+.mission-panel-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 60px; /* Kurangkan padding untuk lebih compact */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+  color: #f5f5f7;
+  z-index: 2;
+  transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mission-panel-expanded-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+}
+
+.mission-panel.expanded .mission-panel-expanded-content {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 20px;
+}
+
+.mission-panel-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(245, 245, 247, 0.9);
+  margin: 0;
+}
+
+.mission-panel-description p {
+  margin-bottom: 12px;
+}
+
+.mission-panel-description p:last-child {
+  margin-bottom: 0;
+}
+
+.mission-panel-description strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.mission-panel-title {
+  font-size: 48px; /* Kecilkan dari 64px */
+  font-weight: 900;
+  margin-bottom: 12px; /* Kurangkan spacing */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  line-height: 1.2; /* Kemaskan line height */
+}
+
+.mission-panel-text {
+  font-size: 16px; /* Kecilkan dari 20px */
+  line-height: 1.4; /* Kemaskan line height */
+  color: rgba(245, 245, 247, 0.95);
+  margin: 0;
+  max-width: 500px; /* Kurangkan max-width untuk lebih compact */
+}
+
+.mission-panel-expanded {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+}
+
+.mission-panel:hover .mission-panel-expanded,
+.mission-panel.active .mission-panel-expanded {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 24px;
+}
+
+.mission-panel-details {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(245, 245, 247, 0.85);
+}
+
+.mission-panel-details h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.mission-panel-details h3:first-child {
+  margin-top: 0;
+}
+
+.mission-panel-details p {
+  margin-bottom: 16px;
+  color: rgba(245, 245, 247, 0.8);
+}
+
+/* Responsive for Mission Panels */
+@media (max-width: 1024px) {
+  .mission-menu {
+    left: 20px; /* Move lebih ke kiri untuk tablet */
+  }
+  
+  .menu-title {
+    font-size: 32px; /* Kecilkan sikit */
+  }
+  
+  .mission-panels-container {
+    width: calc(100% - 280px); /* Kurangkan width */
+    margin-left: 280px; /* Tambah margin */
+  }
+  
+  .mission-panel.active {
+    flex: 2;
+  }
+  
+  .mission-panel-content {
+    padding: 32px 40px; /* Kurangkan padding untuk tablet */
+  }
+  
+  .mission-panel-title {
+    font-size: 36px; /* Kecilkan untuk tablet */
+    margin-bottom: 10px;
+  }
+  
+  .mission-panel-text {
+    font-size: 15px; /* Kecilkan untuk tablet */
+    max-width: 450px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .mission-main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    min-height: auto;
+  }
+  
+  .mission-main::before {
+    display: none; /* Remove overlay untuk mobile */
+  }
+  
+  .mission-panels-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+  }
+  
+  /* Hide menu untuk mobile */
+  .mission-menu {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  .mission-panels-container {
+    flex-direction: column;
+    height: auto !important;
+    min-height: auto !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    width: 100% !important;
+    gap: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  .mission-panel {
+    flex: 1;
+    min-height: 200px !important;
+    height: 200px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight - sama macam about */
+    opacity: 1 !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  
+  .mission-panel:nth-child(1),
+  .mission-panel:nth-child(2),
+  .mission-panel:nth-child(3) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight - sama macam about */
+  }
+  
+  .mission-panel:hover,
+  .mission-panel.active {
+    flex: 1 !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
+    opacity: 1 !important;
+  }
+  
+  .mission-panel.expanded {
+    min-height: auto !important;
+    height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
+  }
+  
+  .mission-panel-image {
+    min-height: 200px !important;
+    height: 200px !important;
+    width: 100% !important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+  
+  .mission-panel.expanded .mission-panel-image {
+    min-height: 200px !important;
+    height: auto !important;
+  }
+  
+  .mission-panel-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent !important; /* No overlay - full image display */
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mission-panel-content {
+    padding: 20px 16px !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 80%, transparent 100%) !important; /* Lighter gradient untuk full image display */
+    backdrop-filter: blur(5px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: auto !important;
+    margin-top: 0 !important;
+    transition: position 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mission-panel.expanded .mission-panel-content {
+    position: relative !important;
+    bottom: auto !important;
+    min-height: auto !important;
+    padding: 20px 16px 30px 16px !important;
+    justify-content: flex-start !important;
+    background: rgba(5, 6, 10, 0.9) !important; /* Solid background when expanded */
+  }
+  
+  .mission-panel-title {
+    font-size: 24px !important;
+    margin-bottom: 8px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .mission-panel-text {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    max-width: 100%;
+    margin: 0 0 12px 0 !important;
+  }
+  
+  .mission-panel-expanded-content {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    margin-top: 0 !important;
+  }
+  
+  .mission-panel.expanded .mission-panel-expanded-content {
+    max-height: 1000px !important;
+    opacity: 1 !important;
+    margin-top: 16px !important;
+  }
+  
+  .mission-panel-description {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: rgba(245, 245, 247, 0.9) !important;
+  }
+  
+  .mission-panel-description p {
+    margin-bottom: 10px !important;
+  }
+  
+  .mission-panel-description p:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  .mission-panel-description strong {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    display: block;
+    margin-bottom: 4px;
+  }
+}
+
 .milestone-item {
   margin-bottom: 48px;
   padding-bottom: 32px;
@@ -7558,12 +8042,22 @@ body.menu-open {
   body.theme-company:not(.theme-contact),
   body.theme-mission:not(.theme-contact),
   body.theme-milestone:not(.theme-contact) {
-    background: #0a0d1a !important; /* Dark blue background untuk mobile */
-    background-image: none !important;
+    background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed !important; /* Background asal */
+    background-color: rgba(5, 6, 10, 0.95) !important; /* Gelapkan sikit */
     background-size: cover !important;
     background-position: center !important;
     background-attachment: fixed !important;
     min-height: 100vh !important;
+  }
+  
+  body.theme-mission::before,
+  body.theme-milestone::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 6, 10, 0.85) !important; /* Dark overlay untuk gelapkan */
+    z-index: 0 !important;
+    pointer-events: none !important;
   }
 
   /* Pastikan contact us page kekalkan background asal */
