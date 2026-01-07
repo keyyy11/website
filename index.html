@@ -72,6 +72,12 @@
         </button>
 
         <nav class="header-nav" id="headerNav">
+            <div class="mobile-nav-logo">
+                <a href="index.html" class="brand-mark">
+                    <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo">
+                    <span class="brand-text">Aeronas Aerocraft</span>
+                </a>
+            </div>
             <a href="index.html">Home</a>
             <div class="nav-dropdown">
                 <a href="aircraft.html">Aircraft</a>
@@ -672,6 +678,41 @@
     </script>
 
     <script>
+        // Close navigation mobile apabila page load (pastikan tidak ada menu terbuka)
+        function closeMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const headerNav = document.getElementById('headerNav');
+            const headerRight = document.querySelector('.header-right');
+            
+            if (mobileMenuToggle && headerNav) {
+                mobileMenuToggle.classList.remove('active');
+                headerNav.classList.remove('mobile-open');
+                if (headerRight) {
+                    headerRight.classList.remove('mobile-open');
+                }
+                document.body.classList.remove('menu-open');
+                document.documentElement.classList.remove('menu-open');
+            }
+            
+            // Force remove overlay dengan menambahkan style untuk hide pseudo-element
+            const existingStyle = document.getElementById('force-remove-overlay');
+            if (existingStyle) {
+                document.head.removeChild(existingStyle);
+            }
+            
+            const style = document.createElement('style');
+            style.id = 'force-remove-overlay';
+            style.textContent = 'body::before, body.menu-open::before { display: none !important; content: none !important; opacity: 0 !important; pointer-events: none !important; }';
+            document.head.appendChild(style);
+        }
+
+        // Close menu immediately on page load
+        closeMobileMenu();
+        
+        // Also close on DOMContentLoaded and window load untuk pastikan
+        document.addEventListener('DOMContentLoaded', closeMobileMenu);
+        window.addEventListener('load', closeMobileMenu);
+
         // Mobile menu toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const headerNav = document.getElementById('headerNav');
