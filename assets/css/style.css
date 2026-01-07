@@ -7534,12 +7534,45 @@ body.menu-open {
     width: 100% !important;
   }
 
-  /* Pastikan background image load untuk mobile - FORCE dengan !important */
-  body.theme-dark,
-  .theme-dark {
-    background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed !important;
+  /* Dark blue background untuk mobile - semua page kecuali contact us */
+  body:not(.theme-contact) {
+    background: #0a0d1a !important; /* Dark blue background untuk mobile */
+    background-image: none !important;
     background-size: cover !important;
     background-position: center !important;
+    background-attachment: fixed !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Override untuk semua theme classes kecuali contact */
+  body.theme-dark:not(.theme-contact),
+  .theme-dark:not(.theme-contact),
+  body.theme-about:not(.theme-contact),
+  body.theme-heritage:not(.theme-contact),
+  body.theme-careers:not(.theme-contact),
+  body.theme-news:not(.theme-contact),
+  body.theme-services:not(.theme-contact),
+  body.theme-aircraft:not(.theme-contact),
+  body.theme-technology:not(.theme-contact),
+  body.theme-compliance:not(.theme-contact),
+  body.theme-company:not(.theme-contact),
+  body.theme-mission:not(.theme-contact),
+  body.theme-milestone:not(.theme-contact) {
+    background: #0a0d1a !important; /* Dark blue background untuk mobile */
+    background-image: none !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    min-height: 100vh !important;
+  }
+
+  /* Pastikan contact us page kekalkan background asal */
+  body.theme-contact {
+    background: #05060a !important;
+    background-image: url('../images/contact us background.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     min-height: 100vh !important;
   }
