@@ -2777,6 +2777,15 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .news-background-wrapper::after {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    filter: grayscale(100%) blur(0.5px);
+    min-height: 100vh;
+    height: 100%;
+  }
+
   .news-hero-section {
     min-height: 60vh;
     padding: 60px 0;
@@ -4529,16 +4538,7 @@ footer {
 }
 
 .card-news-ac::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('../images/KKTM.jpeg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.4;
-  z-index: 1;
-  pointer-events: none;
+  display: none;
 }
 
 .card-news-ac .mockup-overlay-split {
@@ -4701,14 +4701,8 @@ footer {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('../images/02.jpeg');
-  background-size: cover;
-  background-position: center 30%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  filter: grayscale(100%) blur(1px);
+  background: #05060a;
   z-index: 0;
-  transition: background-image 0.5s ease;
 }
 
 .event-background-wrapper::before {
@@ -4791,7 +4785,7 @@ footer {
 
 .event-category-card {
   flex: 1;
-  background: rgba(15, 18, 25, 0.1);
+  background: rgba(10, 13, 26, 0.9);
   border: none;
   border-radius: 0;
   padding: 40px 20px;
@@ -4803,6 +4797,7 @@ footer {
   justify-content: flex-start;
   min-height: 200px;
   z-index: 1;
+  background-image: none !important;
 }
 
 .event-category-card::before {
@@ -4818,7 +4813,8 @@ footer {
 
 .event-category-card:hover,
 .event-category-card.active {
-  background: #e60505;
+  background: #e60505 !important;
+  background-image: none !important;
 }
 
 .event-category-card.active::before {
@@ -4993,13 +4989,81 @@ footer {
 }
 
 @media (max-width: 768px) {
+  .event-hero-section {
+    min-height: 50vh;
+    padding: 60px 0 40px 0;
+  }
+
   .event-hero-section.moved-to-side {
     transform: translateX(-60%);
   }
 
+  .event-hero-content {
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+  }
+
+  .event-hero-label {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+
+  .event-hero-title {
+    font-size: 48px;
+    margin-bottom: 30px;
+  }
+
+  .event-categories-section {
+    padding-bottom: 60px;
+  }
+
+  .event-categories-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .event-category-card {
+    flex: none;
+    width: 100%;
+    min-height: auto;
+    padding: 24px 20px;
+    border-radius: 0;
+    margin: 0;
+    background: rgba(10, 13, 26, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-image: none !important;
+  }
+
+  .event-category-card:last-child {
+    border-bottom: none;
+  }
+
+  .event-category-card::before {
+    height: 2px;
+  }
+
+  .event-category-card:hover,
+  .event-category-card.active {
+    background: rgba(230, 5, 5, 0.9) !important;
+    background-image: none !important;
+  }
+
+  .event-category-card h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+
+  .event-category-card p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
   .event-fullscreen-content {
     grid-template-columns: 1fr;
-  height: auto;
+    height: auto;
     min-height: 100vh;
   }
 
@@ -5009,7 +5073,7 @@ footer {
   }
 
   .event-fullscreen-text-wrapper {
-  height: auto;
+    height: auto;
     min-height: 50vh;
     padding: 40px 30px;
   }
@@ -5030,16 +5094,8 @@ footer {
     font-size: 28px;
   }
 
-  .event-hero-title {
-    font-size: 56px;
-  }
-
-  .event-category-card h3 {
-    font-size: 14px;
-  }
-
-  .event-category-card p {
-    font-size: 12px;
+  .event-background-wrapper::after {
+    background: #05060a;
   }
 }
 
@@ -5875,6 +5931,7 @@ footer {
 .mission-menu-item.active {
   opacity: 1;
   transform: translateX(10px);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3);
 }
 
 .menu-number {
@@ -5904,6 +5961,7 @@ footer {
 .mission-menu-item.active .menu-title {
   color: #ffffff; /* Tukar kepada putih */
   transform: scale(1.1);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.3);
 }
 
 .mission-panels-container {
@@ -5950,6 +6008,8 @@ footer {
   z-index: 10;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   opacity: 1;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 .mission-panel:not(.active):not(:hover) {
@@ -5972,7 +6032,7 @@ footer {
 .mission-panel:hover .mission-panel-image,
 .mission-panel.active .mission-panel-image {
   transform: scale(1.1);
-  filter: brightness(1.1) contrast(1.2) saturate(1.1); /* Even more bold when active */
+  filter: brightness(1.1) contrast(1.2) saturate(1.1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); /* Even more bold when active with white glow */
 }
 
 .mission-panel-overlay {
@@ -5984,7 +6044,8 @@ footer {
 
 .mission-panel:hover .mission-panel-overlay,
 .mission-panel.active .mission-panel-overlay {
-  background: transparent; /* Keep transparent - no fade */
+  background: rgba(255, 255, 255, 0.05); /* Subtle white tint when active */
+  box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.15);
 }
 
 .mission-panel-content {
@@ -6191,6 +6252,8 @@ footer {
     flex: 1 !important;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
     opacity: 1 !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 40px rgba(255, 255, 255, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid rgba(255, 255, 255, 0.6) !important;
   }
   
   .mission-panel.expanded {
@@ -6224,6 +6287,12 @@ footer {
     inset: 0;
     background: transparent !important; /* No overlay - full image display */
     transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mission-panel:hover .mission-panel-overlay,
+  .mission-panel.active .mission-panel-overlay {
+    background: rgba(255, 255, 255, 0.08) !important; /* Subtle white tint when active on mobile */
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.15) !important;
   }
   
   .mission-panel-content {
@@ -8524,6 +8593,15 @@ body.menu-open {
   }
 
   /* News Page - Compact */
+  .news-background-wrapper::after {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    filter: grayscale(100%) blur(0.5px);
+    min-height: 100vh;
+    height: 100%;
+  }
+
   .news-hero-section {
     padding: 28px 16px 20px;
     text-align: left !important; /* Align ke tepi kiri */
