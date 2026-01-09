@@ -66,35 +66,63 @@
 
     <!-- Main Content -->
     <main class="company-main">
+        <!-- Animated Background Elements -->
+        <div class="motion-background">
+            <div class="motion-shape shape-1"></div>
+            <div class="motion-shape shape-2"></div>
+            <div class="motion-shape shape-3"></div>
+            <div class="motion-shape shape-4"></div>
+        </div>
+
         <section class="company-hero-section">
             <div class="company-content-wrapper">
+                <!-- Animated Title -->
                 <div class="company-heading">
-                    <h1 class="company-title">Company</h1>
+                    <h1 class="company-title animated-title">
+                        <span class="title-word" data-word="1">Company</span>
+                    </h1>
+                    <div class="title-underline"></div>
                 </div>
+
+                <!-- Animated Description Section -->
                 <div class="company-description">
-                    <div class="section-subtitle" style="margin-top: 0;">About Us</div>
-                    <p class="company-text">
-                        AERONAS Aerocraft Sdn. Bhd. is a subsidiary of PETRAX5 Group, the owner of Aircraft Manufacturing Technology (AMT) and the Type Certificate Part 23 (FAA, USA) for a twin-engine, multi-role turboprop aircraft.
-                    </p>
-                    <p class="company-text">
-                        As the exclusive agent and main OEM contractor, AERONAS holds full rights to design, fabricate, assemble, manufacture, market, distribute and sell AERONAS aircraft globally, while advancing Malaysia's aerospace ecosystem through technology transfer and local talent development.
-                    </p>
+                    <div class="section-subtitle animated-subtitle about-us-title" style="margin-top: 0;">
+                        <span class="subtitle-text">About Us</span>
+                    </div>
                     
-                    <div class="section-subtitle capabilities-title" style="margin-top: 40px;">Our Capabilities</div>
+                    <div class="animated-text-container">
+                        <p class="company-text fade-in-text" data-delay="0.2">
+                            AERONAS Aerocraft Sdn. Bhd. is a subsidiary of PETRAX5 Group, the owner of Aircraft Manufacturing Technology (AMT) and the Type Certificate Part 23 (FAA, USA) for a twin-engine, multi-role turboprop aircraft.
+                        </p>
+                        <p class="company-text fade-in-text" data-delay="0.4">
+                            As the exclusive agent and main OEM contractor, AERONAS holds full rights to design, fabricate, assemble, manufacture, market, distribute and sell AERONAS aircraft globally, while advancing Malaysia's aerospace ecosystem through technology transfer and local talent development.
+                        </p>
+                    </div>
+                    
+                    <!-- Animated Capabilities Section -->
+                    <div class="section-subtitle capabilities-title animated-subtitle" style="margin-top: 60px;">
+                        <span class="subtitle-text">Our Capabilities</span>
+                    </div>
+                    
                     <div class="capabilities-grid">
-                        <div class="capability-card">
+                        <div class="capability-card motion-card" data-index="0">
+                            <div class="card-icon">✈</div>
                             <p class="capability-text">Ownership and utilization of FAA-certified AMT & Type Certificate Part 23</p>
                         </div>
-                        <div class="capability-card">
+                        <div class="capability-card motion-card" data-index="1">
+                            <div class="card-icon">🔧</div>
                             <p class="capability-text">Full-scale light aircraft manufacturing and assembly</p>
                         </div>
-                        <div class="capability-card">
+                        <div class="capability-card motion-card" data-index="2">
+                            <div class="card-icon">⚙️</div>
                             <p class="capability-text">Aircraft design, engineering, fabrication and final assembly</p>
                         </div>
-                        <div class="capability-card">
+                        <div class="capability-card motion-card" data-index="3">
+                            <div class="card-icon">🌐</div>
                             <p class="capability-text">Global marketing, sales and distribution network</p>
                         </div>
-                        <div class="capability-card">
+                        <div class="capability-card motion-card" data-index="4">
+                            <div class="card-icon">🎓</div>
                             <p class="capability-text">Technology transfer, training and workforce development</p>
                         </div>
                     </div>
@@ -133,6 +161,57 @@
             // Calculate opacity: 0 at top, up to 0.6 at bottom
             const opacity = Math.min(scrollPercentage * 0.6, 0.6);
             scrollDarkOverlay.style.opacity = opacity;
+        });
+
+        // Motion Graphics Animations - Intersection Observer for scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, observerOptions);
+
+        // Observe animated elements
+        document.querySelectorAll('.fade-in-text, .motion-card, .animated-subtitle').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect for motion shapes
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.motion-shape');
+            shapes.forEach((shape, index) => {
+                const speed = 0.5 + (index * 0.1);
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Micro interaction: Card ripple effect on click
+        document.querySelectorAll('.motion-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
         });
     </script>
 
