@@ -1001,6 +1001,7 @@ footer {
 .footer-col p {
   font-size: 13px;
   opacity: 0.95;
+  color: #ffffff;
 }
 
 .footer-bottom {
@@ -9054,6 +9055,7 @@ body.menu-open {
 
   .footer-col p {
     font-size: 12px;
+    color: #ffffff;
   }
 
   .footer-bottom {
