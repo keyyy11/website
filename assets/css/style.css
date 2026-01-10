@@ -1001,7 +1001,26 @@ footer {
 .footer-col p {
   font-size: 13px;
   opacity: 0.95;
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+/* Ensure phone number is white in all themes */
+.site-footer .footer-col p,
+.theme-dark .site-footer .footer-col p,
+.theme-contact .site-footer .footer-col p,
+.site-footer .footer-col p a,
+.theme-dark .site-footer .footer-col p a,
+.theme-contact .site-footer .footer-col p a {
+  color: #ffffff !important;
+}
+
+/* Override any link styles for phone numbers in footer */
+.site-footer .footer-col p a:link,
+.site-footer .footer-col p a:visited,
+.site-footer .footer-col p a:hover,
+.site-footer .footer-col p a:active {
+  color: #ffffff !important;
+  text-decoration: none;
 }
 
 .footer-bottom {
@@ -9055,7 +9074,26 @@ body.menu-open {
 
   .footer-col p {
     font-size: 12px;
-    color: #ffffff;
+    color: #ffffff !important;
+  }
+  
+  /* Ensure phone number is white in mobile for all themes */
+  .site-footer .footer-col p,
+  .theme-dark .site-footer .footer-col p,
+  .theme-contact .site-footer .footer-col p,
+  .site-footer .footer-col p a,
+  .theme-dark .site-footer .footer-col p a,
+  .theme-contact .site-footer .footer-col p a {
+    color: #ffffff !important;
+  }
+  
+  /* Override any link styles for phone numbers in footer (mobile) */
+  .site-footer .footer-col p a:link,
+  .site-footer .footer-col p a:visited,
+  .site-footer .footer-col p a:hover,
+  .site-footer .footer-col p a:active {
+    color: #ffffff !important;
+    text-decoration: none;
   }
 
   .footer-bottom {
