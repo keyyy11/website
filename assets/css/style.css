@@ -1058,9 +1058,10 @@ footer {
   margin: 0;
   margin-bottom: 8px;
   text-transform: uppercase;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: none !important; /* Disable hyphens untuk elak text terputus */
 }
 
 .panel-text-description {
@@ -3630,7 +3631,8 @@ footer {
     line-height: 1.2 !important; /* Pastikan line height sesuai */
     word-wrap: break-word !important; /* Allow text to wrap */
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus */
   }
 
   .panel-text-description {
@@ -6083,7 +6085,8 @@ footer {
     font-size: 64px !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus */
   }
   
   .animated-text-container {
@@ -6098,7 +6101,8 @@ footer {
   .company-text {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     line-height: 1.7 !important;
     max-width: 100% !important;
   }
@@ -6106,7 +6110,8 @@ footer {
   .capability-text {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     line-height: 1.6 !important;
     max-width: 100% !important;
   }
@@ -6114,18 +6119,22 @@ footer {
   .section-subtitle {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
   }
   
   .subtitle-text {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
   }
   
   .company-description {
     max-width: 100% !important;
     overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 }
 
@@ -8685,13 +8694,29 @@ body.menu-open {
     overflow-x: hidden !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
   }
   
   .hero-inner * {
     max-width: 100% !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
+    white-space: normal !important;
+    box-sizing: border-box !important;
+  }
+  
+  .hero-inner p,
+  .hero-inner .hero-subtitle,
+  .hero-inner .hero-caption {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 
   .hero-centered {
@@ -8756,28 +8781,37 @@ body.menu-open {
   .hero-title-image {
     max-width: 100% !important;
     width: 100% !important;
-    padding: 0 !important;
+    padding: 0 16px !important;
     margin: 0 auto 24px !important; /* Tambah spacing dengan subtitle untuk mobile */
     display: block !important;
     max-height: 100px !important;
+    height: auto !important;
     object-fit: contain !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   /* Compact spacing - Kecilkan text untuk mobile - SANGAT KECIL */
   .hero-subtitle,
   .hero-subtitle-centered {
-    font-size: 13px !important;
-    line-height: 1.6 !important;
+    font-size: 12px !important; /* Kurangkan font size untuk lebih muat */
+    line-height: 1.8 !important; /* Tambah line height untuk readability yang lebih baik */
     padding: 0 16px !important;
     margin: 0 auto 24px !important;
     max-width: 100% !important;
+    width: 100% !important;
     text-align: center !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries sahaja - TIDAK TERPUTUS */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus dengan hyphen */
     white-space: normal !important;
     overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
     text-overflow: clip !important;
+    display: block !important;
+    box-sizing: border-box !important;
   }
 
   .hero-actions {
@@ -8817,10 +8851,15 @@ body.menu-open {
     padding: 0 16px !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     white-space: normal !important;
     overflow: visible !important;
+    overflow-x: hidden !important;
     max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
   }
 
   /* Social Icons Section - Compact layout */
@@ -8835,7 +8874,15 @@ body.menu-open {
     justify-items: center !important;
     align-items: start !important;
     max-width: 100% !important;
+    width: 100% !important;
     padding: 0 16px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  .social-icons-grid * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .social-icon-item {
@@ -8846,6 +8893,14 @@ body.menu-open {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    padding: 0 4px !important;
+  }
+  
+  .social-icon-item * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .icon-box {
@@ -8861,18 +8916,31 @@ body.menu-open {
     letter-spacing: 0.05em;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries sahaja */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus */
     white-space: normal !important;
     text-align: center !important;
     max-width: 100% !important;
-    padding: 0 4px !important;
+    width: 100% !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
   }
 
   .social-icons-text {
     padding: 24px 16px 0;
-    max-width: 100%;
+    max-width: 100% !important;
+    width: 100% !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  .social-icons-text * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .social-icons-text h2 {
@@ -8882,20 +8950,33 @@ body.menu-open {
     text-align: center;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries sahaja */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus */
     white-space: normal !important;
-    padding: 0 8px !important;
+    padding: 0 16px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    display: block !important;
   }
 
   .social-icons-text p {
     font-size: 11px;
-    line-height: 1.4;
+    line-height: 1.6 !important; /* Tambah line height untuk readability */
     text-align: center;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries sahaja - TIDAK TERPUTUS */
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus dengan hyphen */
     white-space: normal !important;
-    padding: 0 8px !important;
+    padding: 0 16px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    display: block !important;
   }
 
   /* Video Section */
@@ -9399,18 +9480,52 @@ body.menu-open {
   /* Home Page - Compact */
   .home-page {
     padding: 0;
-    max-width: 100%;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  .home-page * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .home-page section {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
 
   /* Hero Industrial */
   .hero-industrial {
     margin-bottom: 24px;
     min-height: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  .hero-industrial * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Social Icons Section */
   .social-icons-section {
     margin: 24px 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+  }
+  
+  .social-icons-section * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Mockups Section */
@@ -9463,7 +9578,8 @@ body.menu-open {
   h1, h2, h3, h4, h5, h6, p, span, a, div {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable auto hyphens untuk elak text terputus */
     white-space: normal !important;
     max-width: 100% !important;
   }
@@ -9477,7 +9593,8 @@ body.menu-open {
   .social-icons-text h2 {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Break pada word boundaries sahaja */
+    hyphens: none !important; /* Disable hyphens */
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: clip !important;
@@ -9494,7 +9611,8 @@ body.menu-open {
   h1, h2, h3, h4, h5, h6 {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     white-space: normal !important;
     max-width: 100% !important;
   }
@@ -9502,7 +9620,8 @@ body.menu-open {
   p {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     white-space: normal !important;
     max-width: 100% !important;
     overflow: visible !important;
@@ -9519,7 +9638,8 @@ body.menu-open {
     overflow-x: hidden !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    word-break: normal !important; /* Normal break pada word boundaries */
+    hyphens: none !important; /* Disable hyphens */
     white-space: normal !important;
     max-width: 100% !important;
   }
@@ -9642,7 +9762,7 @@ body.menu-open {
     margin-top: 6px;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
+    hyphens: none !important; /* Disable hyphens untuk elak text terputus */
     white-space: normal !important;
     text-align: center !important;
     max-width: 100% !important;
