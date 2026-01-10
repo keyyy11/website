@@ -6481,6 +6481,12 @@ footer {
   transition: flex 0.8s cubic-bezier(0.4, 0, 0.2, 1), clip-path 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Mission Panel Motion Card Effects */
+.mission-panel {
+  position: relative;
+  overflow: hidden;
+}
+
 .mission-panel-image {
   position: absolute;
   inset: 0;
@@ -6494,23 +6500,83 @@ footer {
   filter: brightness(0.9) contrast(1.1); /* Make images more bold/vibrant */
 }
 
+/* Motion Card White Glow Animation Background */
+.mission-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.08) 0%, 
+    rgba(255, 255, 255, 0.05) 50%, 
+    rgba(255, 255, 255, 0.03) 100%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mission-panel:hover::before {
+  opacity: 1;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.12) 0%, 
+    rgba(255, 255, 255, 0.08) 50%, 
+    rgba(255, 255, 255, 0.05) 100%);
+  /* Static white glow - no pulse animation */
+}
+
+/* White Glow Ripple Effect for Mission Panels */
+.mission-panel::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.8s ease, height 0.8s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mission-panel:hover::after {
+  width: 400px;
+  height: 400px;
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scale(1);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+  /* Static white glow ripple - no pulse animation */
+}
+
 .mission-panel:hover .mission-panel-image,
 .mission-panel.active .mission-panel-image {
   transform: scale(1.1);
-  filter: brightness(1.1) contrast(1.2) saturate(1.1) drop-shadow(0 0 30px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.3)); /* Even more bold when active with white glow */
+  filter: brightness(1.15) contrast(1.2) saturate(1.1) 
+    drop-shadow(0 0 40px rgba(255, 255, 255, 0.7)) 
+    drop-shadow(0 0 60px rgba(255, 255, 255, 0.5)) 
+    drop-shadow(0 0 80px rgba(255, 255, 255, 0.3)); /* Static white glow effects - no pulse */
 }
 
 .mission-panel-overlay {
   position: absolute;
   inset: 0;
-  background: transparent; /* Remove fade overlay - make images bold */
+  background: transparent;
   transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
 }
 
 .mission-panel:hover .mission-panel-overlay,
 .mission-panel.active .mission-panel-overlay {
-  background: rgba(255, 255, 255, 0.08); /* Subtle white tint when active */
-  box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.25), inset 0 0 100px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.08) 50%, 
+    rgba(255, 255, 255, 0.05) 100%);
+  box-shadow: inset 0 0 70px rgba(255, 255, 255, 0.3), inset 0 0 110px rgba(255, 255, 255, 0.15);
+  /* Static white glow overlay - no pulse animation */
 }
 
 .mission-panel-content {
@@ -6522,7 +6588,33 @@ footer {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
   color: #f5f5f7;
   z-index: 2;
-  transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: contentFadeIn 0.8s ease-out forwards;
+}
+
+.mission-panel[data-panel="1"] .mission-panel-content {
+  animation-delay: 0.1s;
+}
+
+.mission-panel[data-panel="2"] .mission-panel-content {
+  animation-delay: 0.2s;
+}
+
+.mission-panel[data-panel="3"] .mission-panel-content {
+  animation-delay: 0.3s;
+}
+
+@keyframes contentFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-panel:hover .mission-panel-content {
+  transform: translateY(-5px);
 }
 
 .mission-panel-expanded-content {
@@ -6569,11 +6661,27 @@ footer {
   line-height: 1.2; /* Kemaskan line height */
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
   transition: text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: titleSlideIn 1s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes titleSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .mission-panel:hover .mission-panel-title,
 .mission-panel.active .mission-panel-title {
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5), 0 0 90px rgba(255, 255, 255, 0.3);
+  text-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.9),
+    0 0 50px rgba(255, 255, 255, 0.7),
+    0 0 70px rgba(255, 255, 255, 0.5),
+    0 0 90px rgba(255, 255, 255, 0.3);
+  /* Static white glow title - no pulse animation */
 }
 
 .mission-panel-text {
@@ -6582,6 +6690,23 @@ footer {
   color: rgba(245, 245, 247, 0.95);
   margin: 0;
   max-width: 500px; /* Kurangkan max-width untuk lebih compact */
+  opacity: 0;
+  transform: translateY(15px);
+  animation: textFadeInUp 1s ease-out forwards;
+  animation-delay: 0.6s;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+
+@keyframes textFadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-panel:hover .mission-panel-text {
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
 }
 
 .mission-panel-expanded {
@@ -9104,12 +9229,28 @@ body.menu-open {
   .news-hero-section {
     padding: 28px 16px 20px;
     text-align: left !important; /* Align ke tepi kiri */
+    background: url("../images/background 1.jpeg") center 30% / 110% no-repeat fixed !important; /* Same as main background */
+    background-color: rgba(5, 6, 10, 0.95) !important; /* Dark overlay */
+    position: relative;
+    z-index: 1;
+    min-height: 40vh;
+  }
+  
+  .news-hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 6, 10, 0.85) !important; /* Dark overlay untuk gelapkan background */
+    z-index: 0;
+    pointer-events: none;
   }
 
   .news-hero-content {
     text-align: left !important; /* Align content ke tepi kiri */
     padding-left: 16px !important;
     padding-right: 16px !important;
+    position: relative;
+    z-index: 2; /* Above overlay */
   }
 
   .news-hero-label {
