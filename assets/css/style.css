@@ -2824,6 +2824,15 @@ footer {
 }
 
 @media (max-width: 768px) {
+  /* Contact page background fix for mobile */
+  .theme-contact {
+    background-image: url('../images/contact us background.jpeg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+  }
+
   .news-background-wrapper::after {
     background-image: none !important; /* Remove background image on mobile */
     background-color: #1a1a1a !important; /* Dark background instead */
@@ -5595,12 +5604,20 @@ footer {
   align-items: flex-end;
   justify-content: flex-start;
   position: relative;
+  background: url("../images/twst3.jpeg") center center / cover no-repeat fixed !important;
+  background-color: rgba(5, 6, 10, 0.95) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+.company-hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: url("../images/twst3.jpeg") center center / cover no-repeat fixed;
-  background-color: rgba(5, 6, 10, 0.95);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  z-index: 0;
 }
 
 .company-hero-section::after {
@@ -5639,7 +5656,8 @@ footer {
 
 /* Company Statistics Section */
 .company-statistics {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   justify-content: space-between;
   align-items: center;
   gap: 40px;
@@ -5683,6 +5701,8 @@ footer {
 .company-hero-content {
   width: 100%;
   max-width: 800px;
+  position: relative;
+  z-index: 2;
 }
 
 .company-hero-title {
@@ -7139,6 +7159,12 @@ footer {
     padding-top: 0 !important;
     margin-top: 0 !important;
     min-height: auto;
+    background-image: url("../images/background 1.jpeg") !important;
+    background-size: cover !important;
+    background-position: center 30% !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    background-color: rgba(5, 6, 10, 0.95) !important;
   }
   
   .mission-main::before {
@@ -7538,6 +7564,12 @@ footer {
   .milestone-hero-section {
     min-height: 50vh;
     padding: 100px 30px;
+    background-image: url("../images/twst3.jpeg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    background-color: rgba(5, 6, 10, 0.95) !important;
   }
 
   .milestone-hero-title {
@@ -8131,27 +8163,54 @@ footer {
     padding: 80px 20px;
     padding-bottom: 60px;
     align-items: flex-end;
-    background: url("../images/twst3.jpeg") center center / cover no-repeat fixed !important;
+    background-image: url("../images/twst3.jpeg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
     background-color: rgba(5, 6, 10, 0.95) !important;
     min-height: 100vh;
+    position: relative;
+  }
+
+  .company-hero-section::before {
+    display: none !important;
   }
 
   .company-hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.9) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .company-content-wrapper {
+    position: relative !important;
+    z-index: 3 !important;
   }
 
   .company-statistics {
-    flex-wrap: wrap;
-    gap: 30px;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
     margin-bottom: 50px;
     padding: 30px 0;
     justify-content: center;
+    align-items: center;
     max-width: 100%;
+    width: 100%;
+    flex-wrap: nowrap !important;
+    position: relative;
+    z-index: 4;
   }
 
   .stat-item {
-    flex: 0 0 calc(50% - 15px);
-    min-width: 140px;
+    width: 100% !important;
+    flex: none !important;
+    min-width: auto !important;
+    position: relative;
   }
 
   .stat-label {
@@ -9405,7 +9464,7 @@ body.menu-open {
     background-image: none !important;
     background-size: cover !important;
     background-position: center !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important;
     min-height: 100vh !important;
   }
   
@@ -9423,11 +9482,12 @@ body.menu-open {
   body.theme-company:not(.theme-contact),
   body.theme-mission:not(.theme-contact),
   body.theme-milestone:not(.theme-contact) {
-    background: url("../images/darkwallpaper .jpeg") center 30% / 110% no-repeat fixed !important; /* Background asal */
-    background-color: rgba(5, 6, 10, 0.95) !important; /* Gelapkan sikit */
+    background-image: url("../images/darkwallpaper .jpeg") !important;
     background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
+    background-position: center 30% !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    background-color: rgba(5, 6, 10, 0.95) !important; /* Gelapkan sikit */
     min-height: 100vh !important;
   }
   
@@ -9448,7 +9508,7 @@ body.menu-open {
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important;
     min-height: 100vh !important;
   }
 
@@ -9799,28 +9859,54 @@ body.menu-open {
   .company-hero-section {
     padding: 40px 16px 50px;
     align-items: flex-end;
-    background: url("../images/twst3.jpeg") center center / cover no-repeat fixed !important;
+    background-image: url("../images/twst3.jpeg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
     background-color: rgba(5, 6, 10, 0.95) !important;
     min-height: 100vh;
+    position: relative;
+  }
+
+  .company-hero-section::before {
+    display: none !important;
   }
 
   .company-hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.9) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .company-content-wrapper {
+    position: relative !important;
+    z-index: 3 !important;
   }
 
   .company-statistics {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
     margin-bottom: 40px;
     padding: 24px 0;
-    width: 100%;
+    width: 100% !important;
     max-width: 100%;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    position: relative;
+    z-index: 4;
   }
 
   .stat-item {
-    width: 100%;
-    flex: none;
+    width: 100% !important;
+    flex: none !important;
+    min-width: auto !important;
+    position: relative;
   }
 
   .stat-label {
@@ -9968,6 +10054,12 @@ body.menu-open {
   .milestone-hero-section {
     min-height: 50vh;
     padding: 80px 20px;
+    background-image: url("../images/twst3.jpeg") !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    background-color: rgba(5, 6, 10, 0.95) !important;
   }
 
   .milestone-hero-title {
