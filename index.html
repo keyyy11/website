@@ -197,11 +197,28 @@
         import { loadNewsFromFirestore } from './assets/js/news-firebase.js';
         import { newsData } from './assets/js/news-data.js';
         
+        // Helper function to format news title for display
+        function formatNewsTitle(title, maxLength = 50) {
+            if (!title) return 'NEWS';
+            // Escape HTML
+            const safeTitle = title.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Convert to uppercase and truncate if needed
+            let formatted = safeTitle.toUpperCase();
+            if (formatted.length > maxLength) {
+                formatted = formatted.substring(0, maxLength) + '...';
+            }
+            // Replace newlines with <br>
+            formatted = formatted.replace(/\n/g, '<br>');
+            return formatted;
+        }
+
         // News card templates
         const cardTemplates = [
             {
                 type: 'latest-news',
-                html: (news) => `
+                html: (news) => {
+                    const title = formatNewsTitle(news.title || 'LATEST NEWS', 40);
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-latest-news" data-news-id="${news.id}">
                         <div class="mockup-sidebar red-sidebar">
                             <p class="sidebar-text vertical">AERONAS.COM</p>
@@ -209,7 +226,7 @@
                         </div>
                         <div class="mockup-content">
                             <div class="mockup-overlay">
-                                <h3>LATEST NEWS</h3>
+                                <h3>${title}</h3>
                                 <div class="mockup-brand">
                                     <span class="brand-aeronas">AERONAS</span>
                                     <span class="brand-aerocraft">AEROCRAFT</span>
@@ -217,25 +234,52 @@
                             </div>
                         </div>
                     </a>
-                `
+                `;
+                }
             },
             {
                 type: 'news-updates',
-                html: (news) => `
+                html: (news) => {
+                    const title = formatNewsTitle(news.title || 'NEWS UPDATES EVENTS', 40);
+                    // Split long titles into multiple lines
+                    const titleParts = title.split(' ');
+                    let titleHtml = '';
+                    if (titleParts.length <= 3) {
+                        titleHtml = title;
+                    } else {
+                        // Split into chunks for better display
+                        const chunk1 = titleParts.slice(0, Math.ceil(titleParts.length / 3)).join(' ');
+                        const chunk2 = titleParts.slice(Math.ceil(titleParts.length / 3), Math.ceil(titleParts.length * 2 / 3)).join(' ');
+                        const chunk3 = titleParts.slice(Math.ceil(titleParts.length * 2 / 3)).join(' ');
+                        titleHtml = `${chunk1}<br>${chunk2}<br>${chunk3}`;
+                    }
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-news-updates" data-news-id="${news.id}">
                         <div class="mockup-overlay-full">
-                            <h3>NEWS<br>UPDATES<br>EVENTS</h3>
+                            <h3>${titleHtml}</h3>
                             <div class="mockup-brand">
                                 <span class="brand-aeronas">AERONAS</span>
                                 <span class="brand-aerocraft">AEROCRAFT</span>
                             </div>
                         </div>
                     </a>
-                `
+                `;
+                }
             },
             {
                 type: 'industry-news',
-                html: (news) => `
+                html: (news) => {
+                    const title = formatNewsTitle(news.title || 'INDUSTRY NEWS', 35);
+                    // Split into two lines if long
+                    const titleParts = title.split(' ');
+                    let titleHtml = '';
+                    if (titleParts.length <= 4) {
+                        titleHtml = title;
+                    } else {
+                        const midPoint = Math.ceil(titleParts.length / 2);
+                        titleHtml = `${titleParts.slice(0, midPoint).join(' ')}<br>${titleParts.slice(midPoint).join(' ')}`;
+                    }
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-industry-news" data-news-id="${news.id}">
                         <div class="mockup-sidebar blue-sidebar">
                             <p class="sidebar-text vertical">AERONAS.COM</p>
@@ -243,7 +287,7 @@
                         </div>
                         <div class="mockup-content">
                             <div class="mockup-overlay">
-                                <h3>INDUSTRY<br>NEWS</h3>
+                                <h3>${titleHtml}</h3>
                                 <div class="mockup-brand">
                                     <span class="brand-aeronas">AERONAS</span>
                                     <span class="brand-aerocraft">AEROCRAFT</span>
@@ -251,41 +295,59 @@
                             </div>
                         </div>
                     </a>
-                `
+                `;
+                }
             },
             {
                 type: 'aerospace-news',
-                html: (news) => `
+                html: (news) => {
+                    const title = formatNewsTitle(news.title || 'AEROSPACE NEWS', 30);
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-aerospace-news" data-news-id="${news.id}">
                         <div class="mockup-overlay-full">
-                            <h3>AEROSPACE NEWS</h3>
+                            <h3>${title}</h3>
                             <div class="mockup-brand">
                                 <span class="brand-aerocraft">AEROCRAFT</span>
                             </div>
                         </div>
                     </a>
-                `
+                `;
+                }
             },
             {
                 type: 'news-ac',
-                html: (news) => `
+                html: (news) => {
+                    // text-right menggunakan tajuk news yang sebenar - panjangkan tanpa truncate
+                    const title = formatNewsTitle(news.title || 'UPDATES', 200); // Increase max length
+                    // Jangan truncate - biar ayat memajang
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-news-ac" data-news-id="${news.id}">
                         <div class="mockup-overlay-split">
-                            <span class="text-left">NEWS</span>
-                            <span class="text-right">UPDATES</span>
+                            <span class="text-right">${title}</span>
                             <span class="text-ac">AC</span>
                         </div>
                     </a>
-                `
+                `;
+                }
             },
             {
                 type: 'latest-split',
-                html: (news) => `
+                html: (news) => {
+                    const title = formatNewsTitle(news.title || 'LATEST NEWS', 40);
+                    const titleParts = title.split(' ').filter(p => p.length > 0);
+                    let firstLine = 'LATEST NEWS';
+                    let secondLine = 'STAY UPDATED';
+                    if (titleParts.length > 0) {
+                        const midPoint = Math.ceil(titleParts.length / 2);
+                        firstLine = titleParts.slice(0, midPoint).join(' ') || 'LATEST NEWS';
+                        secondLine = titleParts.slice(midPoint).join(' ') || 'STAY UPDATED';
+                    }
+                    return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-latest-split" data-news-id="${news.id}">
                         <div class="mockup-split-top"></div>
                         <div class="mockup-split-bottom">
                             <div class="split-left-red">
-                                <h3>LATEST NEWS.<br>STAY UPDATED.</h3>
+                                <h3>${firstLine}<br>${secondLine}</h3>
                                 <p>AERONAS.COM</p>
                             </div>
                             <div class="split-right-blue">
@@ -293,7 +355,8 @@
                             </div>
                         </div>
                     </a>
-                `
+                `;
+                }
             }
         ];
         
