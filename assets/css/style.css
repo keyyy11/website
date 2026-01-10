@@ -2497,17 +2497,20 @@ footer {
   transition: all 0.3s ease;
 }
 
-.news-category-card:hover,
-.news-category-card.active {
-  background: #e60505;
-}
+/* Desktop hover effect only */
+@media (min-width: 769px) {
+  .news-category-card:hover,
+  .news-category-card.active {
+    background: #e60505;
+  }
+  
+  .news-category-card.active::before {
+    background: linear-gradient(90deg, #e60505 0%, #e60505 50%, #ffffff 50%, #ffffff 100%);
+  }
 
-.news-category-card.active::before {
-  background: linear-gradient(90deg, #e60505 0%, #e60505 50%, #ffffff 50%, #ffffff 100%);
-}
-
-.news-category-card:hover::before {
-  background: linear-gradient(90deg, #e60505 0%, #e60505 50%, #ffffff 50%, #ffffff 100%);
+  .news-category-card:hover::before {
+    background: linear-gradient(90deg, #e60505 0%, #e60505 50%, #ffffff 50%, #ffffff 100%);
+  }
 }
 
 .news-category-card h3 {
@@ -2724,6 +2727,15 @@ footer {
   .news-fullscreen-image {
     height: 50vh;
     min-height: 300px;
+    background-color: #2a2a2a; /* Dark gray background if no image */
+  }
+  
+  .news-fullscreen-image img {
+    display: block;
+  }
+  
+  .news-fullscreen-image:empty {
+    background-color: #2a2a2a !important; /* Dark gray when empty */
   }
 
   .news-fullscreen-text-wrapper {
@@ -2792,10 +2804,12 @@ footer {
 
 @media (max-width: 768px) {
   .news-background-wrapper::after {
+    background-image: none !important; /* Remove background image on mobile */
+    background-color: #1a1a1a !important; /* Dark background instead */
     background-size: cover !important;
     background-position: center center !important;
     background-attachment: scroll !important;
-    filter: grayscale(100%) blur(0.5px);
+    filter: none !important; /* Remove filters */
     min-height: 100vh;
     height: 100%;
   }
@@ -2870,6 +2884,28 @@ footer {
 
   .news-category-card {
     padding: 30px 24px;
+    background: #2a2a2a !important; /* Dark gray background for mobile */
+    background-image: none !important; /* Remove any background images */
+  }
+  
+  /* Disable background hover effects on mobile - keep plain dark gray */
+  .news-category-card:hover,
+  .news-category-card.active,
+  .news-category-card:active,
+  .news-category-card:focus {
+    background: #2a2a2a !important; /* Keep dark gray on hover/active/touch for mobile */
+    background-image: none !important;
+  }
+  
+  /* Allow title changes on mobile hover - title can change on mobile */
+  .news-hero-title {
+    transition: opacity 0.3s ease !important;
+  }
+  
+  /* Remove background image updates for mobile */
+  .news-background-wrapper::after {
+    background-image: none !important;
+    background-color: #1a1a1a !important; /* Dark background instead */
   }
 
   .news-category-card h3 {
@@ -6045,6 +6081,9 @@ footer {
   
   .company-title {
     font-size: 64px !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
   }
   
   .animated-text-container {
@@ -6053,6 +6092,40 @@ footer {
   
   .fade-in-text {
     animation-delay: 0s !important;
+  }
+  
+  /* Fix text wrapping for company page mobile */
+  .company-text {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.7 !important;
+    max-width: 100% !important;
+  }
+  
+  .capability-text {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.6 !important;
+    max-width: 100% !important;
+  }
+  
+  .section-subtitle {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+  
+  .subtitle-text {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+  
+  .company-description {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
   }
 }
 
@@ -9008,12 +9081,24 @@ body.menu-open {
 
   /* News Page - Compact */
   .news-background-wrapper::after {
+    background-image: none !important; /* Remove background image on mobile */
+    background-color: #1a1a1a !important; /* Dark background instead */
     background-size: cover !important;
     background-position: center center !important;
     background-attachment: scroll !important;
-    filter: grayscale(100%) blur(0.5px);
+    filter: none !important; /* Remove filters */
     min-height: 100vh;
     height: 100%;
+  }
+  
+  .news-category-card {
+    background: #2a2a2a !important; /* Dark gray background for mobile */
+    background-image: none !important; /* Remove any background images */
+  }
+  
+  .news-category-card:hover,
+  .news-category-card.active {
+    background: #2a2a2a !important; /* Keep dark gray on hover/active for mobile */
   }
 
   .news-hero-section {

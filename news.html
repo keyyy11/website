@@ -291,8 +291,8 @@
                 newsCategoriesGrid.appendChild(card);
             });
             
-            // Set initial background
-            if (sortedNews.length > 0 && sortedNews[0].image) {
+            // Set initial background (desktop only, not mobile)
+            if (window.innerWidth > 768 && sortedNews.length > 0 && sortedNews[0].image) {
                 updateBackground(sortedNews[0].image);
             }
             
@@ -333,25 +333,18 @@
             const newsFullscreenImage = document.getElementById('newsFullscreenImage');
             const newsFullscreenText = document.getElementById('newsFullscreenText');
 
+            // Check if mobile device - use function to check on each interaction
+            function isMobileDevice() {
+                return window.innerWidth <= 768;
+            }
+            
             categoryCards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
-                    const bgImage = card.getAttribute('data-bg');
-                    if (bgImage) {
-                        updateBackground(bgImage);
-                    }
-                    // Remove active class from all cards
-                    categoryCards.forEach(c => c.classList.remove('active'));
-                    // Add active class to hovered card
-                    card.classList.add('active');
-                    
-                    // Get news data from card attributes
-                    const cardTitle = card.getAttribute('data-title') || '';
-                    const cardDescription = card.getAttribute('data-description') || '';
-                    const cardImage = card.getAttribute('data-image') || '';
-                    
-                    // Update news hero title dengan smooth transition
                     const newsHeroTitle = document.getElementById('newsHeroTitle');
-                    if (newsHeroTitle && cardTitle) {
+                    const cardTitle = card.getAttribute('data-title') || '';
+                    
+                    // Update title text - ONLY on mobile (mobile layout sahaja)
+                    if (isMobileDevice() && newsHeroTitle && cardTitle) {
                         newsHeroTitle.style.transition = 'opacity 0.3s ease';
                         newsHeroTitle.style.opacity = '0';
                         setTimeout(() => {
@@ -360,18 +353,32 @@
                         }, 200);
                     }
                     
+                    // Desktop: background changes, title stays "NEWS"
+                    if (!isMobileDevice()) {
+                        const bgImage = card.getAttribute('data-bg');
+                        if (bgImage) {
+                            updateBackground(bgImage);
+                        }
+                        
+                        // Remove active class from all cards
+                        categoryCards.forEach(c => c.classList.remove('active'));
+                        // Add active class to hovered card
+                        card.classList.add('active');
+                    }
                 });
                 
                 card.addEventListener('mouseleave', () => {
-                    // Reset news hero title
-                    const newsHeroTitle = document.getElementById('newsHeroTitle');
-                    if (newsHeroTitle) {
-                        newsHeroTitle.style.transition = 'opacity 0.3s ease';
-                        newsHeroTitle.style.opacity = '0';
-                        setTimeout(() => {
-                            newsHeroTitle.textContent = 'NEWS';
-                            newsHeroTitle.style.opacity = '1';
-                        }, 200);
+                    // Reset news hero title - ONLY on mobile
+                    if (isMobileDevice()) {
+                        const newsHeroTitle = document.getElementById('newsHeroTitle');
+                        if (newsHeroTitle) {
+                            newsHeroTitle.style.transition = 'opacity 0.3s ease';
+                            newsHeroTitle.style.opacity = '0';
+                            setTimeout(() => {
+                                newsHeroTitle.textContent = 'NEWS';
+                                newsHeroTitle.style.opacity = '1';
+                            }, 200);
+                        }
                     }
                 });
 
@@ -411,15 +418,23 @@
                         }
                     }
                     
-                    if (cardImage) {
-                        // Move title to side
-                        newsHeroSection.classList.add('moved-to-side');
-                        
-                        // Move categories down
-                        newsCategoriesSection.classList.add('moved-down');
+                    // For mobile: always show fullscreen, with or without image
+                    // For desktop: only show if image exists
+                    if (cardImage || isMobileDevice()) {
+                        // Move title to side (desktop only)
+                        if (!isMobileDevice()) {
+                            newsHeroSection.classList.add('moved-to-side');
+                            newsCategoriesSection.classList.add('moved-down');
+                        }
                         
                         // Show fullscreen view dengan layout: image kiri, text kanan
-                        newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="this.style.display='none';">`;
+                        if (cardImage) {
+                            newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#2a2a2a';">`;
+                        } else {
+                            // No image - show dark gray background
+                            newsFullscreenImage.innerHTML = '';
+                            newsFullscreenImage.style.backgroundColor = '#2a2a2a';
+                        }
                         newsFullscreenText.innerHTML = `
                             <h2 class="news-fullscreen-title">${cardTitle}</h2>
                             ${cardDate ? `<p class="news-fullscreen-date">${cardDate}</p>` : ''}
@@ -437,9 +452,14 @@
             if (newsCloseBtn) {
                 newsCloseBtn.addEventListener('click', () => {
                     newsFullscreenView.classList.remove('active');
-                    newsHeroSection.classList.remove('moved-to-side');
-                    newsCategoriesSection.classList.remove('moved-down');
+                    // Only move sections on desktop
+                    if (!isMobileDevice()) {
+                        newsHeroSection.classList.remove('moved-to-side');
+                        newsCategoriesSection.classList.remove('moved-down');
+                    }
                     document.body.style.overflow = '';
+                    // Reset image container background
+                    newsFullscreenImage.style.backgroundColor = '';
                 });
             }
 
@@ -447,9 +467,14 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && newsFullscreenView.classList.contains('active')) {
                     newsFullscreenView.classList.remove('active');
-                    newsHeroSection.classList.remove('moved-to-side');
-                    newsCategoriesSection.classList.remove('moved-down');
+                    // Only move sections on desktop
+                    if (!isMobileDevice()) {
+                        newsHeroSection.classList.remove('moved-to-side');
+                        newsCategoriesSection.classList.remove('moved-down');
+                    }
                     document.body.style.overflow = '';
+                    // Reset image container background
+                    newsFullscreenImage.style.backgroundColor = '';
                 }
             });
             
