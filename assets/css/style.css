@@ -6088,8 +6088,9 @@ footer {
 
 .capability-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  animation: waveGlow 3s ease-in-out infinite;
 }
 
 .capability-card:hover::before {
@@ -6314,12 +6315,24 @@ footer {
 .motion-card:hover::after {
   width: 300px;
   height: 300px;
+  animation: waveRipple 3s ease-in-out infinite;
+}
+
+@keyframes waveRipple {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.7;
+  }
 }
 
 .motion-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .card-icon {
@@ -6373,7 +6386,7 @@ footer {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   transform: rotate(45deg);
   transition: transform 0.6s ease;
   opacity: 0;
@@ -6382,6 +6395,18 @@ footer {
 .capability-card:hover::before {
   transform: rotate(45deg) translate(50%, 50%);
   opacity: 1;
+  animation: waveGlow 3s ease-in-out infinite;
+}
+
+@keyframes waveGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: rotate(45deg) translate(50%, 50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translate(50%, 50%) scale(1.1);
+  }
 }
 
 /* Ripple Effect */
@@ -6440,6 +6465,31 @@ footer {
   
   .capability-card {
     padding: 24px;
+  }
+
+  /* Company page mobile - Wave animation and reduced white glow intensity */
+  .capability-card::before {
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent) !important;
+    animation: waveGlow 3s ease-in-out infinite !important;
+  }
+
+  .capability-card:hover::before {
+    animation: waveGlow 3s ease-in-out infinite !important;
+  }
+
+  .capability-card:hover {
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.08), 0 0 30px rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .motion-card::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%) !important;
+    animation: waveRipple 3s ease-in-out infinite !important;
+  }
+
+  .motion-card:hover {
+    box-shadow: 0 20px 60px rgba(255, 255, 255, 0.12), 0 0 40px rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
   }
   
   .company-title {
@@ -6842,9 +6892,10 @@ footer {
   z-index: 10;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   opacity: 1;
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.6), 0 0 80px rgba(255, 255, 255, 0.4), 0 0 120px rgba(255, 255, 255, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.5));
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2), 0 0 90px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  /* No animation - static glow */
 }
 
 .mission-panel:not(.active):not(:hover) {
@@ -6891,10 +6942,10 @@ footer {
 .mission-panel:hover::before {
   opacity: 1;
   background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.12) 0%, 
-    rgba(255, 255, 255, 0.08) 50%, 
-    rgba(255, 255, 255, 0.05) 100%);
-  /* Static white glow - no pulse animation */
+    rgba(255, 255, 255, 0.06) 0%, 
+    rgba(255, 255, 255, 0.04) 50%, 
+    rgba(255, 255, 255, 0.03) 100%);
+  /* No animation - static glow */
 }
 
 /* White Glow Ripple Effect for Mission Panels */
@@ -6916,19 +6967,20 @@ footer {
 .mission-panel:hover::after {
   width: 400px;
   height: 400px;
-  opacity: 0.8;
+  opacity: 0.6;
   transform: translate(-50%, -50%) scale(1);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-  /* Static white glow ripple - no pulse animation */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.12) 50%, transparent 70%);
+  /* No animation - static ripple */
 }
 
 .mission-panel:hover .mission-panel-image,
 .mission-panel.active .mission-panel-image {
   transform: scale(1.1);
   filter: brightness(1.15) contrast(1.2) saturate(1.1) 
-    drop-shadow(0 0 40px rgba(255, 255, 255, 0.7)) 
-    drop-shadow(0 0 60px rgba(255, 255, 255, 0.5)) 
-    drop-shadow(0 0 80px rgba(255, 255, 255, 0.3)); /* Static white glow effects - no pulse */
+    drop-shadow(0 0 30px rgba(255, 255, 255, 0.4)) 
+    drop-shadow(0 0 50px rgba(255, 255, 255, 0.3)) 
+    drop-shadow(0 0 70px rgba(255, 255, 255, 0.2));
+  /* No animation - static filter */
 }
 
 .mission-panel-overlay {
@@ -6942,11 +6994,11 @@ footer {
 .mission-panel:hover .mission-panel-overlay,
 .mission-panel.active .mission-panel-overlay {
   background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0.08) 50%, 
-    rgba(255, 255, 255, 0.05) 100%);
-  box-shadow: inset 0 0 70px rgba(255, 255, 255, 0.3), inset 0 0 110px rgba(255, 255, 255, 0.15);
-  /* Static white glow overlay - no pulse animation */
+    rgba(255, 255, 255, 0.03) 0%, 
+    rgba(255, 255, 255, 0.025) 50%, 
+    rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.1), inset 0 0 50px rgba(255, 255, 255, 0.05);
+  /* Reduced overlay intensity - further decreased */
 }
 
 .mission-panel-content {
@@ -6954,14 +7006,18 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 40px 60px; /* Kurangkan padding untuk lebih compact */
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+  padding: 50px 60px 40px 60px; /* Increase top padding to move title down */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0.05) 60%, transparent 100%); /* More transparent overlay */
   color: #f5f5f7;
   z-index: 2;
-  transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease;
+  transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease, background 0.6s ease, justify-content 0.6s ease;
   opacity: 0;
   transform: translateY(20px);
   animation: contentFadeIn 0.8s ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align content to bottom by default */
+  min-height: 100%; /* Fill panel height */
 }
 
 .mission-panel[data-panel="1"] .mission-panel-content {
@@ -6984,53 +7040,94 @@ footer {
 }
 
 .mission-panel:hover .mission-panel-content {
-  transform: translateY(-5px);
+  transform: translateY(0); /* Don't move up, stay in place */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.3) 100%); /* Darker background on hover to accommodate description */
+  justify-content: flex-start; /* Align content to top when description shows */
+  padding-top: 60px; /* More top padding when description shows */
+  padding-bottom: 60px; /* More bottom padding for full panel coverage */
+  min-height: 100%; /* Fill entire panel height */
 }
 
 .mission-panel-expanded-content {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(30px); /* Start from below */
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+  position: relative;
+  z-index: 3;
+}
+
+/* Show description on hover for desktop - animation from bottom to top */
+.mission-panel:hover .mission-panel-expanded-content {
+  max-height: 2000px; /* Large enough to fit all content */
+  opacity: 1;
+  transform: translateY(0); /* Slide up to position */
+  margin-top: 24px;
+}
+
+/* Keep description hidden even if panel has active class (without hover) */
+.mission-panel.active:not(:hover) .mission-panel-expanded-content {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(30px);
   margin-top: 0;
 }
 
 .mission-panel.expanded .mission-panel-expanded-content {
-  max-height: 1000px;
+  max-height: 2000px;
   opacity: 1;
-  margin-top: 20px;
+  transform: translateY(0);
+  margin-top: 24px;
 }
 
 .mission-panel-description {
   font-size: 15px;
-  line-height: 1.6;
-  color: rgba(245, 245, 247, 0.9);
+  line-height: 1.7; /* Increased for better readability */
+  color: rgba(245, 245, 247, 0.95); /* Slightly brighter */
   margin: 0;
 }
 
 .mission-panel-description p {
-  margin-bottom: 12px;
+  margin-bottom: 20px; /* Increased spacing between points */
+  padding-bottom: 16px; /* Add padding for visual separation */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border separator */
 }
 
 .mission-panel-description p:last-child {
   margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none; /* No border on last item */
 }
 
 .mission-panel-description strong {
   color: #ffffff;
   font-weight: 700;
+  display: block; /* Make title stand on its own line */
+  margin-bottom: 6px; /* Space between title and description */
+  font-size: 16px; /* Slightly larger for emphasis */
+  letter-spacing: 0.02em; /* Better letter spacing */
 }
 
 .mission-panel-title {
-  font-size: 48px; /* Kecilkan dari 64px */
+  font-size: 42px; /* Reduced from 52px for desktop */
   font-weight: 900;
-  margin-bottom: 12px; /* Kurangkan spacing */
+  margin-bottom: 0; /* No margin - text will show on hover */
+  margin-top: 0;
+  padding-top: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em; /* Increased letter spacing for clarity */
   color: #ffffff;
-  line-height: 1.2; /* Kemaskan line height */
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
-  transition: text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.3; /* Better line height for readability */
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(255, 255, 255, 0.7),
+    0 0 45px rgba(255, 255, 255, 0.5); /* Stronger text shadow for clarity */
+  transition: text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease;
   opacity: 0;
   transform: translateX(-30px);
   animation: titleSlideIn 1s ease-out forwards;
@@ -7047,36 +7144,55 @@ footer {
 .mission-panel:hover .mission-panel-title,
 .mission-panel.active .mission-panel-title {
   text-shadow: 
+    2px 2px 6px rgba(0, 0, 0, 0.9),
     0 0 30px rgba(255, 255, 255, 0.9),
     0 0 50px rgba(255, 255, 255, 0.7),
-    0 0 70px rgba(255, 255, 255, 0.5),
-    0 0 90px rgba(255, 255, 255, 0.3);
-  /* Static white glow title - no pulse animation */
+    0 0 70px rgba(255, 255, 255, 0.5);
+  /* Enhanced text shadow for clarity on hover */
 }
 
 .mission-panel-text {
   font-size: 16px; /* Kecilkan dari 20px */
-  line-height: 1.4; /* Kemaskan line height */
+  line-height: 1.5; /* Better line height */
   color: rgba(245, 245, 247, 0.95);
   margin: 0;
+  margin-top: 0;
   max-width: 500px; /* Kurangkan max-width untuk lebih compact */
-  opacity: 0;
+  opacity: 0 !important; /* Hidden by default - force hidden */
+  max-height: 0 !important;
+  overflow: hidden !important;
+  display: none !important; /* Completely hide by default */
   transform: translateY(15px);
-  animation: textFadeInUp 1s ease-out forwards;
-  animation-delay: 0.6s;
-  transition: color 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease, display 0.5s ease, visibility 0.5s ease;
+  pointer-events: none !important;
+  visibility: hidden !important; /* Additional hiding */
+  animation: none !important; /* Remove any animations */
 }
 
-@keyframes textFadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Removed textFadeInUp animation - text should only show on hover */
 
 .mission-panel:hover .mission-panel-text {
+  opacity: 1 !important; /* Show text ONLY on hover */
+  max-height: 200px !important; /* Allow text to show */
+  margin-top: 16px !important; /* Add spacing from title */
+  transform: translateY(0);
   color: rgba(255, 255, 255, 1);
-  transform: translateY(-2px);
+  pointer-events: auto;
+  display: block !important; /* Show on hover */
+  visibility: visible !important; /* Make visible on hover */
+}
+
+/* Remove .active selector - text should only show on hover, not just active class */
+.mission-panel.active:not(:hover) .mission-panel-text {
+  opacity: 0 !important; /* Keep hidden even if active */
+  max-height: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.mission-panel:hover .mission-panel-title,
+.mission-panel.active .mission-panel-title {
+  margin-bottom: 0; /* Keep no margin when text shows */
 }
 
 .mission-panel-expanded {
@@ -7225,9 +7341,35 @@ footer {
     flex: 1 !important;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
     opacity: 1 !important;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4), 0 0 90px rgba(255, 255, 255, 0.2), inset 0 0 25px rgba(255, 255, 255, 0.15) !important;
-    border: 2px solid rgba(255, 255, 255, 0.8) !important;
-    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), 0 0 50px rgba(255, 255, 255, 0.2), 0 0 75px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) !important;
+    /* No animation - static glow */
+  }
+
+  /* Mission panel static glow for mobile - no animations */
+  .mission-panel:hover::before,
+  .mission-panel.active::before {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.04) 0%, 
+      rgba(255, 255, 255, 0.03) 50%, 
+      rgba(255, 255, 255, 0.02) 100%) !important;
+    /* No animation */
+  }
+
+  .mission-panel:hover::after,
+  .mission-panel.active::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 70%) !important;
+    /* No animation */
+  }
+
+  .mission-panel:hover .mission-panel-image,
+  .mission-panel.active .mission-panel-image {
+    filter: brightness(1.15) contrast(1.2) saturate(1.1) 
+      drop-shadow(0 0 25px rgba(255, 255, 255, 0.3)) 
+      drop-shadow(0 0 45px rgba(255, 255, 255, 0.2)) 
+      drop-shadow(0 0 65px rgba(255, 255, 255, 0.15)) !important;
+    /* No animation */
   }
   
   .mission-panel.expanded {
@@ -7265,8 +7407,8 @@ footer {
   
   .mission-panel:hover .mission-panel-overlay,
   .mission-panel.active .mission-panel-overlay {
-    background: rgba(255, 255, 255, 0.1) !important; /* Subtle white tint when active on mobile */
-    box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.25), inset 0 0 70px rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.03) !important; /* Further reduced overlay for mobile */
+    box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.08), inset 0 0 40px rgba(255, 255, 255, 0.04) !important;
   }
   
   .mission-panel:hover .mission-panel-title,
@@ -7275,13 +7417,13 @@ footer {
   }
   
   .mission-panel-content {
-    padding: 28px 24px !important;
+    padding: 36px 24px 28px 24px !important; /* Increase top padding to move title down */
     position: absolute !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 80%, transparent 100%) !important; /* Lighter gradient untuk full image display */
-    backdrop-filter: blur(5px);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.18) 30%, rgba(0, 0, 0, 0.05) 60%, transparent 100%) !important; /* More transparent overlay for mobile */
+    backdrop-filter: blur(2px) !important; /* Less blur for more transparency */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -7289,6 +7431,11 @@ footer {
     min-height: auto !important;
     margin-top: 0 !important;
     transition: position 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mission-panel:hover .mission-panel-content,
+  .mission-panel.active .mission-panel-content {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.22) 30%, rgba(0, 0, 0, 0.08) 60%, transparent 100%) !important; /* Slightly darker on hover for text readability */
   }
   
   .mission-panel.expanded .mission-panel-content {
@@ -7301,16 +7448,57 @@ footer {
   }
   
   .mission-panel-title {
-    font-size: 28px !important;
-    margin-bottom: 14px !important;
+    font-size: 30px !important; /* Slightly larger for clarity */
+    margin-bottom: 0 !important; /* No margin - text shows on hover */
+    margin-top: 0 !important;
     line-height: 1.3 !important;
+    letter-spacing: 0.06em !important; /* Increased letter spacing */
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 35px rgba(255, 255, 255, 0.4) !important; /* Stronger text shadow for clarity */
+  }
+
+  .mission-panel:hover .mission-panel-title,
+  .mission-panel.active .mission-panel-title {
+    text-shadow: 
+      2px 2px 6px rgba(0, 0, 0, 0.9),
+      0 0 25px rgba(255, 255, 255, 0.8),
+      0 0 45px rgba(255, 255, 255, 0.6) !important; /* Enhanced on hover */
   }
   
   .mission-panel-text {
     font-size: 16px !important;
-    line-height: 1.7 !important;
+    line-height: 1.6 !important;
     max-width: 100%;
-    margin: 0 0 18px 0 !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    opacity: 0 !important; /* Hidden by default */
+    max-height: 0 !important;
+    overflow: hidden !important;
+    display: none !important; /* Completely hide by default */
+    visibility: hidden !important; /* Additional hiding */
+    transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease, display 0.5s ease, visibility 0.5s ease !important;
+    pointer-events: none !important;
+    animation: none !important; /* Remove any animations */
+  }
+
+  .mission-panel:hover .mission-panel-text {
+    opacity: 1 !important; /* Show text ONLY on hover */
+    max-height: 200px !important;
+    margin-top: 14px !important; /* Add spacing from title */
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    display: block !important; /* Show on hover */
+    visibility: visible !important; /* Make visible on hover */
+  }
+
+  /* Keep text hidden even if panel has active class (without hover) */
+  .mission-panel.active:not(:hover) .mission-panel-text {
+    opacity: 0 !important;
+    max-height: 0 !important;
+    display: none !important;
+    visibility: hidden !important;
   }
   
   .mission-panel-expanded-content {
@@ -7328,15 +7516,15 @@ footer {
   }
   
   .mission-panel-description {
-    font-size: 16px !important;
-    line-height: 1.9 !important;
+    font-size: 14px !important; /* Reduced from 16px for mobile 768px */
+    line-height: 1.7 !important; /* Reduced from 1.9 */
     color: rgba(245, 245, 247, 0.95) !important;
     padding: 0 !important;
   }
   
   .mission-panel-description p {
-    margin-bottom: 26px !important;
-    padding-bottom: 22px !important;
+    margin-bottom: 22px !important; /* Reduced from 26px */
+    padding-bottom: 18px !important; /* Reduced from 22px */
     border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
   
@@ -7349,9 +7537,9 @@ footer {
   .mission-panel-description strong {
     color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 17px !important;
+    font-size: 15px !important; /* Reduced from 17px */
     display: block !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 12px !important; /* Reduced from 14px */
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
     line-height: 1.4 !important;
@@ -9975,7 +10163,14 @@ body.menu-open {
 
   /* Mission Page Mobile - Better spacing and text size */
   .mission-panel-content {
-    padding: 30px 24px !important;
+    padding: 38px 24px 30px 24px !important; /* Increase top padding to move title down */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.18) 30%, rgba(0, 0, 0, 0.05) 60%, transparent 100%) !important; /* More transparent overlay */
+    backdrop-filter: blur(2px) !important; /* Less blur */
+  }
+
+  .mission-panel:hover .mission-panel-content,
+  .mission-panel.active .mission-panel-content {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.22) 30%, rgba(0, 0, 0, 0.08) 60%, transparent 100%) !important; /* Slightly darker on hover */
   }
   
   .mission-panel.expanded .mission-panel-content {
@@ -9983,15 +10178,53 @@ body.menu-open {
   }
   
   .mission-panel-title {
-    font-size: 28px !important;
-    margin-bottom: 16px !important;
+    font-size: 30px !important; /* Slightly larger for clarity */
+    margin-bottom: 0 !important; /* No margin - text shows on hover */
+    margin-top: 0 !important;
     line-height: 1.3 !important;
+    letter-spacing: 0.06em !important; /* Increased letter spacing */
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 35px rgba(255, 255, 255, 0.4) !important; /* Stronger text shadow for clarity */
+  }
+
+  .mission-panel:hover .mission-panel-title,
+  .mission-panel.active .mission-panel-title {
+    text-shadow: 
+      2px 2px 6px rgba(0, 0, 0, 0.9),
+      0 0 25px rgba(255, 255, 255, 0.8),
+      0 0 45px rgba(255, 255, 255, 0.6) !important; /* Enhanced on hover */
   }
   
   .mission-panel-text {
     font-size: 17px !important;
-    line-height: 1.8 !important;
-    margin: 0 0 20px 0 !important;
+    line-height: 1.7 !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    opacity: 0 !important; /* Hidden by default */
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease !important;
+    pointer-events: none !important;
+  }
+
+  .mission-panel:hover .mission-panel-text {
+    opacity: 1 !important; /* Show text ONLY on hover */
+    max-height: 250px !important;
+    margin-top: 16px !important; /* Add spacing from title */
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    display: block !important; /* Show on hover */
+    visibility: visible !important; /* Make visible on hover */
+  }
+
+  /* Keep text hidden even if panel has active class (without hover) */
+  .mission-panel.active:not(:hover) .mission-panel-text {
+    opacity: 0 !important;
+    max-height: 0 !important;
+    display: none !important;
+    visibility: hidden !important;
   }
   
   .mission-panel.expanded .mission-panel-expanded-content {
@@ -9999,14 +10232,14 @@ body.menu-open {
   }
   
   .mission-panel-description {
-    font-size: 17px !important;
-    line-height: 2 !important;
+    font-size: 14px !important; /* Reduced from 17px for mobile 480px */
+    line-height: 1.7 !important; /* Reduced from 2 */
     color: rgba(245, 245, 247, 0.95) !important;
   }
   
   .mission-panel-description p {
-    margin-bottom: 32px !important;
-    padding-bottom: 28px !important;
+    margin-bottom: 20px !important; /* Reduced from 32px */
+    padding-bottom: 16px !important; /* Reduced from 28px */
     border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
   
@@ -10017,9 +10250,9 @@ body.menu-open {
   }
   
   .mission-panel-description strong {
-    font-size: 18px !important;
-    margin-bottom: 16px !important;
-    line-height: 1.5 !important;
+    font-size: 15px !important; /* Reduced from 18px */
+    margin-bottom: 10px !important; /* Reduced from 16px */
+    line-height: 1.4 !important; /* Reduced from 1.5 */
     display: block !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
