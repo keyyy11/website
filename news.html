@@ -33,7 +33,7 @@
             </div>
             <a href="index.html">Home</a>
             <div class="nav-dropdown">
-                <a href="aircraft.html">Aircraft</a>
+            <a href="aircraft.html">Aircraft</a>
                 <div class="dropdown-menu">
                     <a href="aircraft.html#manufacturing">Manufacturing</a>
                     <a href="technology.html">Technology</a>
@@ -172,9 +172,132 @@
                 }
                 // Escape single quotes in path
                 const escapedPath = cleanPath.replace(/'/g, "\\'");
-                style.textContent = `.news-background-wrapper::after { background-image: url('${escapedPath}') !important; background-size: cover !important; background-position: center !important; transition: background-image 0.5s ease !important; }`;
+                style.textContent = `.news-background-wrapper::after { background-image: url('${escapedPath}') !important; background-size: cover !important; background-position: center !important; transition: background-image 2s ease-in-out !important; }`;
                 // Background updated successfully
             }
+        }
+        
+        // Auto-slide functionality for desktop
+        let autoSlideInterval = null;
+        let newsImages = [];
+        let isPaused = false;
+        let currentRandomImage = null;
+        
+        // Helper function to clean image path (same as renderNewsCards)
+        function cleanImagePath(imagePath) {
+            if (!imagePath) return '';
+            
+            // If path contains Windows absolute path, convert to relative
+            if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
+                const filename = imagePath.split(/[/\\]/).pop();
+                const cleanFilename = filename.split('?')[0].split('#')[0];
+                
+                // Map filename to correct image file
+                const imageMap = {
+                    'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                    'UTEM.jpeg': 'UTEM.jpeg',
+                    'KKTM.jpeg': 'KKTM.jpeg',
+                    'USIM.jpeg': 'USIM.jpeg',
+                    'UTHM.jpeg': 'UTHM.jpeg',
+                    'GMI.jpeg': 'GMI.jpeg',
+                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                };
+                
+                const correctFilename = imageMap[cleanFilename] || cleanFilename;
+                imagePath = `assets/images/${correctFilename}`;
+            }
+            
+            // Remove file:// protocol if present
+            if (imagePath.includes('file://')) {
+                imagePath = imagePath.replace(/^file:\/\/\/?/, '');
+                const filename = imagePath.split(/[/\\]/).pop();
+                const cleanFilename = filename.split('?')[0].split('#')[0];
+                imagePath = `assets/images/${cleanFilename}`;
+            }
+            
+            // Ensure path is relative (starts with assets/)
+            if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http') && !imagePath.startsWith('file://')) {
+                if (!imagePath.includes('/')) {
+                    imagePath = `assets/images/${imagePath}`;
+                } else {
+                    const filename = imagePath.split(/[/\\]/).pop();
+                    const cleanFilename = filename.split('?')[0].split('#')[0];
+                    imagePath = `assets/images/${cleanFilename}`;
+                }
+            }
+            
+            // Final cleanup - ensure no absolute paths
+            if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
+                const filename = imagePath.split(/[/\\]/).pop();
+                const cleanFilename = filename.split('?')[0].split('#')[0];
+                imagePath = `assets/images/${cleanFilename}`;
+            }
+            
+            return imagePath;
+        }
+        
+        function startAutoSlide(newsArray) {
+            // Only run on desktop
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
+            // Clear existing interval
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+            
+            // Get all news images using same logic as renderNewsCards
+            newsImages = newsArray
+                .map(news => {
+                    const imagePath = news.image || news.imageUrl || '';
+                    return cleanImagePath(imagePath);
+                })
+                .filter(imagePath => imagePath && imagePath.startsWith('assets/'));
+            
+            // If no images, don't start auto-slide
+            if (newsImages.length === 0) {
+                return;
+            }
+            
+            // Function to get random image (avoid same image consecutively)
+            function getRandomImage() {
+                if (newsImages.length === 1) {
+                    return newsImages[0];
+                }
+                
+                let randomImage;
+                do {
+                    const randomIndex = Math.floor(Math.random() * newsImages.length);
+                    randomImage = newsImages[randomIndex];
+                } while (randomImage === currentRandomImage && newsImages.length > 1);
+                
+                currentRandomImage = randomImage;
+                return randomImage;
+            }
+            
+            // Auto-slide every 5 seconds with random selection
+            autoSlideInterval = setInterval(() => {
+                if (!isPaused && window.innerWidth > 768) {
+                    const randomImage = getRandomImage();
+                    updateBackground(randomImage);
+                }
+            }, 5000); // 5 seconds per slide
+        }
+        
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+        
+        function pauseAutoSlide() {
+            isPaused = true;
+        }
+        
+        function resumeAutoSlide() {
+            isPaused = false;
         }
         
         // Function to render news cards
@@ -291,8 +414,17 @@
                 newsCategoriesGrid.appendChild(card);
             });
             
-            // Set initial background (desktop only, not mobile)
-            if (window.innerWidth > 768 && sortedNews.length > 0 && sortedNews[0].image) {
+            // Start auto-slide for desktop (will set random initial background)
+            if (window.innerWidth > 768) {
+                startAutoSlide(sortedNews);
+                // Set initial random background immediately
+                if (newsImages.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * newsImages.length);
+                    currentRandomImage = newsImages[randomIndex];
+                    updateBackground(currentRandomImage);
+                }
+            } else if (window.innerWidth > 768 && sortedNews.length > 0 && sortedNews[0].image) {
+                // Fallback: use first image if auto-slide didn't set it
                 updateBackground(sortedNews[0].image);
             }
             
@@ -337,9 +469,9 @@
             function isMobileDevice() {
                 return window.innerWidth <= 768;
             }
-            
-            categoryCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
+
+        categoryCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
                     const newsHeroTitle = document.getElementById('newsHeroTitle');
                     const cardTitle = card.getAttribute('data-title') || '';
                     
@@ -355,15 +487,18 @@
                     
                     // Desktop: background changes, title stays "NEWS"
                     if (!isMobileDevice()) {
-                        const bgImage = card.getAttribute('data-bg');
-                        if (bgImage) {
-                            updateBackground(bgImage);
-                        }
+                        // Pause auto-slide on hover
+                        pauseAutoSlide();
                         
-                        // Remove active class from all cards
-                        categoryCards.forEach(c => c.classList.remove('active'));
-                        // Add active class to hovered card
-                        card.classList.add('active');
+                const bgImage = card.getAttribute('data-bg');
+                if (bgImage) {
+                    updateBackground(bgImage);
+                }
+                        
+                // Remove active class from all cards
+                categoryCards.forEach(c => c.classList.remove('active'));
+                // Add active class to hovered card
+                card.classList.add('active');
                     }
                 });
                 
@@ -378,6 +513,15 @@
                                 newsHeroTitle.textContent = 'NEWS';
                                 newsHeroTitle.style.opacity = '1';
                             }, 200);
+                        }
+                    } else {
+                        // Resume auto-slide on desktop when mouse leaves
+                        resumeAutoSlide();
+                        // Immediately show a random image when resuming
+                        if (newsImages.length > 0) {
+                            const randomIndex = Math.floor(Math.random() * newsImages.length);
+                            currentRandomImage = newsImages[randomIndex];
+                            updateBackground(currentRandomImage);
                         }
                     }
                 });
@@ -496,6 +640,16 @@
                 renderNewsCards(newsData);
             }
         }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                // Reload news to restart auto-slide if needed
+                loadNews();
+            } else {
+                stopAutoSlide();
+            }
+        });
         
         // Initialize
         loadNews();

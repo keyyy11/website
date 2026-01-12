@@ -694,10 +694,14 @@ footer {
 /* Scroll darkening overlay */
 .scroll-dark-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -50px; /* Extend beyond top */
+  left: -50px; /* Extend beyond left */
+  right: -50px; /* Extend beyond right */
+  bottom: -50px; /* Extend beyond bottom */
+  width: calc(100vw + 100px); /* Wider than viewport */
+  height: calc(100vh + 100px); /* Taller than viewport */
+  min-width: calc(100% + 100px);
+  min-height: calc(100% + 100px);
   background: rgba(5, 6, 10, 1);
   opacity: 0;
   pointer-events: none;
@@ -2311,7 +2315,7 @@ footer {
   background-attachment: fixed;
   filter: grayscale(100%) blur(1px);
   z-index: 0;
-  transition: background-image 0.5s ease;
+  transition: background-image 2s ease-in-out;
 }
 
 .news-background-wrapper::before {
@@ -7013,15 +7017,15 @@ footer {
 .mission-panel-content {
   position: absolute;
   bottom: 0;
-  left: 100px; /* Further increased left margin to make box even smaller */
-  right: 100px; /* Further increased right margin to make box even smaller */
-  padding: 18px 20px 12px 20px; /* Slightly reduced padding but keep text readable */
+  left: 140px; /* Further increased left margin to make box even smaller */
+  right: 140px; /* Further increased right margin to make box even smaller */
+  padding: 14px 12px 10px 12px; /* Reduced horizontal padding to allow wider text */
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%); /* Darker overlay */
   color: #f5f5f7;
   z-index: 2;
   border-radius: 8px; /* Add border radius for cleaner box */
   margin-bottom: 20px; /* Add bottom margin for spacing */
-  max-width: calc(100% - 200px); /* Further constrain width to make box smaller */
+  max-width: calc(100% - 280px); /* Further constrain width to make box even smaller */
   transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s ease, background 0.6s ease, justify-content 0.6s ease, left 0.6s ease, right 0.6s ease;
   opacity: 0;
   transform: translateY(20px);
@@ -7055,15 +7059,12 @@ footer {
   transform: translateY(0); /* Don't move up, stay in place */
   background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.4) 100%); /* Darker background on hover */
   justify-content: flex-start; /* Align content to top when description shows */
-  padding-top: 18px; /* Slightly reduced but keep readable */
-  padding-bottom: 18px; /* Slightly reduced but keep readable */
-  padding-left: 20px; /* Slightly reduced but keep readable */
-  padding-right: 20px; /* Slightly reduced but keep readable */
-  left: 100px; /* Further increased left margin */
-  right: 100px; /* Further increased right margin */
+  padding: 14px 12px 14px 12px; /* Reduced horizontal padding to allow wider text */
+  left: 140px; /* Further increased left margin */
+  right: 140px; /* Further increased right margin */
   min-height: auto; /* Don't fill entire panel height */
   margin-bottom: 20px; /* Keep bottom margin */
-  max-width: calc(100% - 200px); /* Further constrain width */
+  max-width: calc(100% - 280px); /* Further constrain width to make box even smaller */
 }
 
 .mission-panel-expanded-content {
@@ -7078,7 +7079,11 @@ footer {
   margin-top: 0;
   position: relative;
   z-index: 3;
-  max-width: 90%; /* Limit width to make box smaller */
+  width: 100%; /* Full width of panel */
+  max-width: 100%; /* Full width of panel */
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center; /* Center align text */
 }
 
 /* Show description on hover for desktop - animation from bottom to top */
@@ -7087,6 +7092,11 @@ footer {
   opacity: 1;
   transform: translateY(0); /* Slide up to position */
   margin-top: 14px; /* Reduced from 18px to fit in green box */
+  width: 100%; /* Full width of panel */
+  max-width: 100%; /* Full width of panel */
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center; /* Center align text */
 }
 
 /* Keep description hidden even if panel has active class (without hover) */
@@ -7097,12 +7107,24 @@ footer {
   margin-top: 0;
 }
 
+.mission-panel.expanded .mission-panel-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+  text-align: center; /* Center align text */
+}
+
 .mission-panel.expanded .mission-panel-expanded-content {
   max-height: 2000px;
   opacity: 1;
   transform: translateY(0);
   margin-top: 12px; /* Reduced from 14px to make box smaller */
-  max-width: 90%; /* Limit width to make box smaller */
+  width: 100%; /* Full width of panel */
+  max-width: 100%; /* Full width of panel */
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center; /* Center align text */
 }
 
 .mission-panel-description {
@@ -7110,14 +7132,26 @@ footer {
   line-height: 1.4; /* Reduced from 1.5 */
   color: #ffffff; /* Pure white for clarity */
   font-weight: 400;
-  margin: 0;
+  margin: 0; /* Full width */
+  width: 100%; /* Full width of content box */
+  max-width: 100%; /* Full width of content box */
+  padding: 0; /* No additional padding */
+  box-sizing: border-box; /* Include padding in width calculation */
+  text-align: center; /* Center align text */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5); /* Text shadow for clarity */
 }
 
 .mission-panel-description p {
   margin-bottom: 10px; /* Reduced from 12px to fit in green box */
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%; /* Full width */
+  padding-left: 0;
+  padding-right: 0;
   padding-bottom: 8px; /* Reduced from 10px */
   border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border separator */
+  text-align: center; /* Center align paragraphs */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .mission-panel-description p:last-child {
@@ -7131,8 +7165,12 @@ footer {
   font-weight: 700;
   display: block; /* Make title stand on its own line */
   margin-bottom: 3px; /* Reduced from 4px */
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%; /* Full width */
   font-size: 12px; /* Reduced from 13px to fit in green box */
   letter-spacing: 0.02em; /* Better letter spacing */
+  text-align: center; /* Center align strong text */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.6); /* Text shadow for clarity */
 }
 
@@ -7453,16 +7491,16 @@ footer {
   }
 
   .mission-panel-content {
-    padding: 16px 14px 12px 14px !important; /* Slightly reduced padding but keep text readable */
+    padding: 12px 14px 10px 14px !important; /* Adequate padding so text has space on all sides */
     position: absolute !important;
     bottom: 0 !important;
-    left: 50px !important; /* Further increased left margin to make box even smaller */
-    right: 50px !important; /* Further increased right margin to make box even smaller */
+    left: 70px !important; /* Further increased left margin to make box even smaller */
+    right: 70px !important; /* Further increased right margin to make box even smaller */
     background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%) !important; /* Darker overlay for mobile */
     backdrop-filter: blur(2px) !important; /* Less blur for more transparency */
     border-radius: 6px !important; /* Add border radius for cleaner box */
     margin-bottom: 16px !important; /* Add bottom margin for spacing */
-    max-width: calc(100% - 100px) !important; /* Further constrain width */
+    max-width: calc(100% - 140px) !important; /* Further constrain width to make box even smaller */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -7475,23 +7513,23 @@ footer {
   .mission-panel:hover .mission-panel-content,
   .mission-panel.active .mission-panel-content {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.2) 100%) !important; /* Darker on hover for text readability */
-    left: 50px !important; /* Further increased left margin */
-    right: 50px !important; /* Further increased right margin */
-    padding: 16px 14px 16px 14px !important; /* Slightly reduced but keep readable */
+    left: 70px !important; /* Further increased left margin */
+    right: 70px !important; /* Further increased right margin */
+    padding: 12px 14px 12px 14px !important; /* Adequate padding so text has space on all sides */
     margin-bottom: 16px !important; /* Keep bottom margin */
-    max-width: calc(100% - 100px) !important; /* Further constrain width */
+    max-width: calc(100% - 140px) !important; /* Further constrain width to make box even smaller */
   }
   
   .mission-panel.expanded .mission-panel-content {
     position: relative !important;
     bottom: auto !important;
     min-height: auto !important;
-    padding: 14px 14px 18px 14px !important; /* Slightly reduced but keep readable */
+    padding: 12px 14px 14px 14px !important; /* Adequate padding so text has space on all sides */
     justify-content: flex-start !important;
     background: rgba(5, 6, 10, 0.95) !important; /* Solid background when expanded */
-    left: 50px !important; /* Further increased left margin */
-    right: 50px !important; /* Further increased right margin */
-    max-width: calc(100% - 100px) !important; /* Further constrain width */
+    left: 70px !important; /* Further increased left margin */
+    right: 70px !important; /* Further increased right margin */
+    max-width: calc(100% - 140px) !important; /* Further constrain width to make box even smaller */
     margin-bottom: 16px !important; /* Add bottom margin for spacing */
     border-radius: 6px !important; /* Add border radius */
   }
@@ -10311,31 +10349,32 @@ body.menu-open {
   }
 
   .mission-panel-content {
-    padding: 14px 12px 10px 12px !important; /* Slightly reduced padding but keep text readable */
-    left: 40px !important; /* Further increased left margin to make box even smaller */
-    right: 40px !important; /* Further increased right margin to make box even smaller */
+    padding: 10px 8px 6px 8px !important; /* Further reduced padding for text */
+    left: 60px !important; /* Further increased left margin to make box even smaller */
+    right: 60px !important; /* Further increased right margin to make box even smaller */
+    padding: 10px 12px 8px 12px !important; /* Adequate padding so text has space on all sides */
     background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.15) 100%) !important; /* Darker overlay for mobile 480px */
     backdrop-filter: blur(2px) !important; /* Less blur */
     border-radius: 6px !important; /* Add border radius for cleaner box */
     margin-bottom: 14px !important; /* Add bottom margin for spacing */
-    max-width: calc(100% - 80px) !important; /* Further constrain width */
+    max-width: calc(100% - 120px) !important; /* Further constrain width to make box even smaller */
   }
 
   .mission-panel:hover .mission-panel-content,
   .mission-panel.active .mission-panel-content {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 30%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.25) 100%) !important; /* Darker on hover for mobile 480px */
-    left: 40px !important; /* Further increased left margin */
-    right: 40px !important; /* Further increased right margin */
-    padding: 14px 12px 14px 12px !important; /* Slightly reduced but keep readable */
+    left: 60px !important; /* Further increased left margin */
+    right: 60px !important; /* Further increased right margin */
+    padding: 10px 12px 10px 12px !important; /* Adequate padding so text has space on all sides */
     margin-bottom: 14px !important; /* Keep bottom margin */
-    max-width: calc(100% - 80px) !important; /* Further constrain width */
+    max-width: calc(100% - 120px) !important; /* Further constrain width to make box even smaller */
   }
   
   .mission-panel.expanded .mission-panel-content {
-    padding: 12px 12px 16px 12px !important; /* Slightly reduced but keep readable */
-    left: 40px !important; /* Further increased left margin */
-    right: 40px !important; /* Further increased right margin */
-    max-width: calc(100% - 80px) !important; /* Further constrain width */
+    padding: 10px 12px 12px 12px !important; /* Adequate padding so text has space on all sides */
+    left: 60px !important; /* Further increased left margin */
+    right: 60px !important; /* Further increased right margin */
+    max-width: calc(100% - 120px) !important; /* Further constrain width to make box even smaller */
     margin-bottom: 14px !important; /* Add bottom margin for spacing */
     border-radius: 6px !important; /* Add border radius */
   }
