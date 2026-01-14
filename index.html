@@ -176,37 +176,39 @@
             <!-- Our Story + Engineering Section (below video) -->
             <div class="home-story-section">
                 <div class="home-story-row top-row">
-                    <div class="home-story-card our-story-card">
-                        <div class="home-story-overlay">
-                            <h3>OUR STORY</h3>
-                            <p>
-                                We have come a long way from humble beginnings to becoming the selected few that have Part 23 Type Certificate ownership.
-                                The struggles and sacrifice is for the “Rakyat” and the country. The ambition of our Principle is the spark to building
-                                the Nation’s aerospace industry.
-                            </p>
-                            <button class="home-story-play-btn" type="button" aria-label="Play story video">▶</button>
+                    <div class="home-story-merged-card">
+                        <div class="home-story-card our-story-card">
+                            <div class="home-story-overlay">
+                                <h3>OUR STORY</h3>
+                                <p>
+                                    We have come a long way from humble beginnings to becoming the selected few that have Part 23 Type Certificate ownership.
+                                    The struggles and sacrifice is for the "Rakyat" and the country. The ambition of our Principle is the spark to building
+                                    the Nation's aerospace industry.
+                                </p>
+                                <button class="home-story-play-btn" type="button" aria-label="Play story video">▶</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="home-story-card story-gallery-card">
-                        <div class="home-story-overlay right-overlay">
-                            <h3>OUR JOURNEY IN MOTION</h3>
-                            <p>
-                                A visual timeline of our aircraft development, partnerships, and milestones in Malaysia’s aerospace landscape.
-                            </p>
+                        <div class="home-story-card story-gallery-card" id="storyGalleryCard">
+                            <div class="story-gallery-slides">
+                                <div class="story-gallery-slide active" style="background-image: url('assets/images/ʟᴏᴠᴇ°°° ғ𝟷_ 😘____.jpeg');"></div>
+                                <div class="story-gallery-slide" style="background-image: url('assets/images/download.jpeg');"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="home-story-row bottom-row">
-                    <div class="home-story-text">
-                        <h3>BUILT ON ENGINEERING.<br>DRIVEN BY STANDARDS.</h3>
-                        <p>
-                            We have come a long way from humble beginnings to becoming the selected few that have Part 23 Type Certificate ownership.
-                            The struggles and sacrifice is for the “Rakyat” and the country. The ambition of our Principle is the spark to building
-                            the Nation’s aerospace industry.
-                        </p>
+                    <div class="home-story-merged-card bottom-merged">
+                        <div class="home-story-text">
+                            <h3>BUILT ON ENGINEERING.<br>DRIVEN BY STANDARDS.</h3>
+                            <p>
+                                We have come a long way from humble beginnings to becoming the selected few that have Part 23 Type Certificate ownership.
+                                The struggles and sacrifice is for the "Rakyat" and the country. The ambition of our Principle is the spark to building
+                                the Nation's aerospace industry.
+                            </p>
+                        </div>
+                        <div class="home-story-image-bottom"></div>
                     </div>
-                    <div class="home-story-image-bottom"></div>
                 </div>
             </div>
 
@@ -887,6 +889,47 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        // Story Gallery Card Random Slideshow
+        (function() {
+            const galleryCard = document.getElementById('storyGalleryCard');
+            if (!galleryCard) return;
+
+            const slides = galleryCard.querySelectorAll('.story-gallery-slide');
+            if (slides.length < 2) return;
+
+            let currentIndex = 0;
+            let lastRandomIndex = -1;
+
+            function getRandomIndex() {
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * slides.length);
+                } while (randomIndex === lastRandomIndex && slides.length > 1);
+                lastRandomIndex = randomIndex;
+                return randomIndex;
+            }
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = getRandomIndex();
+                showSlide(currentIndex);
+            }
+
+            // Initialize with random slide
+            currentIndex = getRandomIndex();
+            showSlide(currentIndex);
+
+            // Auto-slide every 5 seconds
+            setInterval(nextSlide, 5000);
+        })();
     </script>
 </body>
 </html>
