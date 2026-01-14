@@ -10234,11 +10234,11 @@ body.menu-open {
   body.theme-company:not(.theme-contact),
   body.theme-mission:not(.theme-contact),
   body.theme-milestone:not(.theme-contact) {
-    background-image: url("../images/background%201.jpeg") !important;
+    background-image: url("../images/background 1.jpeg") !important;
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: scroll !important;
     background-color: #0a0d1a !important;
     min-height: 100vh !important;
     position: relative !important;
@@ -10258,7 +10258,7 @@ body.menu-open {
   body.theme-mission:not(.theme-contact)::before,
   body.theme-milestone:not(.theme-contact)::before {
     content: '' !important;
-    position: fixed !important;
+    position: absolute !important;
     inset: 0 !important;
     background: 
       radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.25) 0%, transparent 55%),
