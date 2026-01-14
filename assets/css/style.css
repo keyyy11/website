@@ -4574,6 +4574,15 @@ footer {
   min-height: 400px;
 }
 
+.story-gallery-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.65) 40%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.98) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .story-gallery-slides {
   position: absolute;
   inset: 0;
@@ -6213,7 +6222,7 @@ footer {
   align-items: flex-end;
   justify-content: flex-start;
   position: relative;
-  background: url("../images/twst3.jpeg") center center / cover no-repeat fixed !important;
+  background: url("../images/200jpeg.jpeg") center center / cover no-repeat fixed !important;
   background-color: rgba(5, 6, 10, 0.95) !important;
   background-size: cover !important;
   background-position: center !important;
@@ -6225,7 +6234,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("../images/twst3.jpeg") center center / cover no-repeat fixed;
+  background: url("../images/200jpeg.jpeg") center center / cover no-repeat fixed;
   z-index: 0;
 }
 
@@ -6233,7 +6242,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.9) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.65) 40%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.98) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -9193,7 +9202,7 @@ footer {
     padding: 80px 20px;
     padding-bottom: 60px;
     align-items: flex-end;
-    background-image: url("../images/twst3.jpeg") !important;
+    background-image: url("../images/200jpeg.jpeg") !important;
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
@@ -9211,7 +9220,7 @@ footer {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.9) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.65) 40%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.98) 100%);
     z-index: 1;
     pointer-events: none;
   }
@@ -10993,7 +11002,7 @@ body.menu-open {
   .company-hero-section {
     padding: 40px 16px 50px;
     align-items: flex-end;
-    background-image: url("../images/twst3.jpeg") !important;
+    background-image: url("../images/200jpeg.jpeg") !important;
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
@@ -11011,7 +11020,7 @@ body.menu-open {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.9) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.65) 40%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.98) 100%);
     z-index: 1;
     pointer-events: none;
   }
