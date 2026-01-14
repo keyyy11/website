@@ -80,20 +80,20 @@
                 <!-- Statistics Section -->
                 <div class="company-statistics">
                     <div class="stat-item">
-                        <span class="stat-label">DESIGNERS</span>
-                        <span class="stat-value">150+</span>
+                        <span class="stat-label">LOCATIONS</span>
+                        <span class="stat-value">10</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">CLIENTS</span>
-                        <span class="stat-value">500+</span>
+                        <span class="stat-label">YEARS OF EXPERIENCE</span>
+                        <span class="stat-value">20+</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">MASTERPIECES</span>
-                        <span class="stat-value">20K+</span>
+                        <span class="stat-label">MODELS</span>
+                        <span class="stat-value">3+</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">EVENTS</span>
-                        <span class="stat-value">50+</span>
+                        <span class="stat-label">1ST IN MALAYSIA</span>
+                        <span class="stat-value">1ST</span>
                     </div>
                 </div>
                 
@@ -125,31 +125,48 @@
         <!-- Our Advantages Section -->
         <section class="company-advantages-section">
             <div class="company-section-wrapper">
-                <h2 class="advantages-section-title">OUR ADVANTAGES</h2>
+                <h2 class="advantages-section-title">Engineering-First. Certification-Oriented. Manufacturing-Ready.</h2>
                 <div class="advantages-content-grid">
                     <div class="advantages-image-content">
                         <div class="advantages-image-placeholder"></div>
                     </div>
                     <div class="advantages-cards-content">
-                        <div class="advantage-card">
-                            <h3 class="advantage-title">INDEPENDENT DESIGNERS</h3>
-                            <p class="advantage-description">Ownership and utilization of FAA-certified AMT & Type Certificate Part 23</p>
-                            <a href="#" class="advantage-button">EXPLORE</a>
+                        <div class="advantage-text-content">
+                            <p class="advantage-intro">At Aeronas, every aircraft program follows a structured development philosophy:</p>
+                            <div class="advantage-list">
+                                <div class="advantage-item">
+                                    <h3 class="advantage-title">Engineering Discipline</h3>
+                                    <p class="advantage-description">Design decisions are driven by analysis, validation, and operational requirements.</p>
+                                </div>
+                                <div class="advantage-item">
+                                    <h3 class="advantage-title">Certification Alignment</h3>
+                                    <p class="advantage-description">Regulatory compliance is embedded from the earliest stages of development, ensuring clear certification pathways.</p>
+                                </div>
+                                <div class="advantage-item">
+                                    <h3 class="advantage-title">Manufacturing Readiness</h3>
+                                    <p class="advantage-description">Aircraft are designed not only to fly, but to be produced consistently, safely, and at scale.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="advantage-card">
-                            <h3 class="advantage-title">EXCLUSIVE & UNIQUITY</h3>
-                            <p class="advantage-description">Full-scale light aircraft manufacturing and assembly capabilities</p>
-                            <a href="#" class="advantage-button">EXPLORE</a>
-                        </div>
-                        <div class="advantage-card">
-                            <h3 class="advantage-title">HIGH QUALITY</h3>
-                            <p class="advantage-description">Aircraft design, engineering, fabrication and final assembly</p>
-                            <a href="#" class="advantage-button">EXPLORE</a>
-                        </div>
-                        <div class="advantage-card">
-                            <h3 class="advantage-title">ECO-FRIENDLY</h3>
-                            <p class="advantage-description">Global marketing, sales and distribution network with technology transfer</p>
-                            <a href="#" class="advantage-button">EXPLORE</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Building for the Future Section -->
+        <section class="company-future-section">
+            <div class="company-section-wrapper">
+                <h2 class="future-section-title">Building for the Future</h2>
+                <div class="future-content-grid">
+                    <div class="future-image-content">
+                        <div class="future-image-placeholder"></div>
+                    </div>
+                    <div class="future-text-content">
+                        <div class="future-content">
+                            <p class="future-text">Aeronas is built with a long-term perspective. We believe credibility in aviation is earned through consistency, compliance, and time.</p>
+                            <p class="future-text">Our commitment extends beyond individual aircraft programs—to developing sustainable manufacturing processes, nurturing engineering talent, and contributing to the broader aviation ecosystem.</p>
+                            <h3 class="future-subtitle">A Responsible Approach to Aircraft Manufacturing</h3>
+                            <p class="future-text">Aeronas exists to build aircraft responsibly—through disciplined engineering, regulatory alignment, and manufacturing integrity. As we grow, our focus remains unchanged: to deliver aircraft that meet the expectations of professional aviation stakeholders today and in the future</p>
                         </div>
                     </div>
                 </div>
@@ -205,11 +222,19 @@
         }, observerOptions);
 
         // Observe feature and advantage cards
-        document.querySelectorAll('.feature-card, .advantage-card').forEach(card => {
+        document.querySelectorAll('.feature-card, .advantage-card, .advantage-item').forEach(card => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
+        });
+
+        // Observe future section elements
+        document.querySelectorAll('.future-text, .future-subtitle, .future-image-content').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(element);
         });
     </script>
 

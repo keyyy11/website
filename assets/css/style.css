@@ -1652,10 +1652,10 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 40px;
+  padding: 100px 60px;
   position: relative;
   background-image: url('../images/aircraft001.jpeg');
-  background-size: cover;
+  background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -1682,7 +1682,7 @@ footer {
 .unveiling-content {
   text-align: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   position: relative;
   z-index: 10;
 }
@@ -4083,8 +4083,8 @@ footer {
 
 /* Social Media Icons Section */
 .social-icons-section {
-  margin: 20px 0 120px 0;
-  padding: 20px 0 80px 0;
+  margin: 20px 0 160px 0;
+  padding: 20px 0 100px 0;
   transition: opacity 0.5s ease, transform 0.5s ease;
   position: relative;
 }
@@ -4144,22 +4144,21 @@ footer {
 
   .home-manufacture-image {
     position: relative;
-    width: 100vw;
-    margin: 24px 0 32px 0;
-  max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  margin-bottom: 40px;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.65);
-  background-color: #000000;
-  aspect-ratio: 21 / 9;
-}
+    width: 100%;
+    max-width: 1400px;
+    margin: 72px auto 32px auto;
+    margin-bottom: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.65);
+    background-color: #000000;
+    min-height: 500px;
+  }
 
 .home-manufacture-image img {
   width: 100%;
   height: 100%;
+  min-height: 500px;
   display: block;
   object-fit: contain;
   object-position: center;
@@ -4394,6 +4393,7 @@ footer {
     font-size: 24px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
+  margin-top: 40px;
   margin-bottom: 16px;
   opacity: 0.95;
   color: #f5f5f7;
@@ -4422,6 +4422,10 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
 }
 
 .home-story-row {
@@ -4432,13 +4436,16 @@ footer {
 }
 
 .home-story-merged-card {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.7);
   background-color: #000000;
+  min-height: 400px;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .home-story-merged-card .home-story-card {
@@ -4459,10 +4466,29 @@ footer {
 
 .home-story-row.bottom-row {
   grid-template-columns: 1fr;
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .home-story-merged-card.bottom-merged {
-  grid-template-columns: 1.2fr 1fr;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 400px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.home-story-merged-card.bottom-merged .built-on-engineering-card {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.home-story-merged-card.bottom-merged .story-gallery-card-bottom {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .home-story-merged-card.bottom-merged .home-story-text {
@@ -4482,9 +4508,8 @@ footer {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  min-height: 0;
-  aspect-ratio: 16 / 9;
-  background-size: contain;
+  min-height: 400px;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.7);
@@ -4492,7 +4517,8 @@ footer {
 }
 
 .our-story-card {
-  background-image: url('../images/100.jpeg');
+  background-image: none;
+  background-color: #000000;
   background-size: cover;
   background-position: center;
 }
@@ -4501,16 +4527,51 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: transparent;
   z-index: 0;
   pointer-events: none;
+}
+
+.built-on-engineering-card {
+  background-image: none;
+  background-color: #000000;
+  background-size: cover;
+  background-position: center;
+}
+
+.built-on-engineering-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.built-on-engineering-card::before {
+  display: none;
+}
+
+.story-gallery-card-bottom {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.story-gallery-card-bottom::after {
+  display: none;
 }
 
 .story-gallery-card {
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
+  min-height: 400px;
 }
 
 .story-gallery-slides {
@@ -4527,6 +4588,7 @@ footer {
   background-repeat: no-repeat;
   opacity: 0;
   transition: opacity 1.5s ease-in-out;
+  min-height: 400px;
 }
 
 .story-gallery-slide.active {
@@ -4539,15 +4601,18 @@ footer {
 }
 
 .home-story-overlay {
-  position: absolute;
+  position: absolute !important;
   inset: 0;
-  padding: 40px 32px;
-  display: flex;
+  padding: 48px 40px;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.75), transparent);
-  color: #ffffff;
-  z-index: 2;
+  background: transparent;
+  color: #ffffff !important;
+  z-index: 2 !important;
+  text-align: left;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .home-story-overlay.right-overlay {
@@ -4569,17 +4634,20 @@ footer {
 }
 
 .home-story-overlay h3 {
-  font-size: 26px;
+  font-size: 24px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  text-align: left;
 }
 
 .home-story-overlay p {
   font-size: 14px;
   line-height: 1.7;
-  max-width: 420px;
+  max-width: 100%;
   opacity: 0.9;
+  text-align: left;
 }
 
 /* Play button removed - section now links to heritage page */
@@ -4594,16 +4662,32 @@ footer {
   transform: scale(1.02);
   opacity: 0.95;
 }
+
+.built-on-engineering-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.built-on-engineering-card:hover {
+  transform: scale(1.02);
+  opacity: 0.95;
+}
   border-color: #ffffff;
   transform: scale(1.05);
 }
 
 .home-story-text {
   background: rgba(6, 8, 18, 0.96);
-  border-radius: 16px;
-  padding: 36px 32px;
+  border-radius: 12px;
+  padding: 48px 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.04);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .home-story-text h3 {
@@ -4612,6 +4696,9 @@ footer {
   text-transform: uppercase;
   margin-bottom: 18px;
   color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
 }
 
 .home-story-text p {
@@ -4619,13 +4706,15 @@ footer {
   line-height: 1.7;
   opacity: 0.9;
   color: #f5f5f7;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .home-story-image-bottom {
   position: relative;
-  border-radius: 16px;
-  min-height: 0;
-  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  min-height: 400px;
   background-image: url('../images/100.jpeg');
   background-size: cover;
   background-position: center;
@@ -4635,8 +4724,7 @@ footer {
 }
 
 /* Fade top and bottom of images slightly */
-.home-story-card::before,
-.home-story-image-bottom::before {
+.home-story-card::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -4653,11 +4741,20 @@ footer {
   z-index: 1;
 }
 
+.home-story-image-bottom::before {
+  display: none;
+}
+
+.our-story-card::before {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .home-story-section {
     margin-top: 40px;
     margin-bottom: 60px;
     padding: 0 16px;
+    max-width: 100%;
   }
 
   .home-story-row,
@@ -4672,8 +4769,8 @@ footer {
 
   .home-story-merged-card .our-story-card,
   .home-story-merged-card .story-gallery-card,
-  .home-story-merged-card .home-story-text,
-  .home-story-merged-card .home-story-image-bottom {
+  .home-story-merged-card .built-on-engineering-card,
+  .home-story-merged-card .story-gallery-card-bottom {
     border-radius: 0 !important;
   }
 
@@ -4687,33 +4784,73 @@ footer {
     border-bottom-right-radius: 12px !important;
   }
 
-  .home-story-merged-card.bottom-merged .home-story-text {
+  .home-story-merged-card.bottom-merged .built-on-engineering-card {
     border-top-left-radius: 12px !important;
     border-top-right-radius: 12px !important;
   }
 
-  .home-story-merged-card.bottom-merged .home-story-image-bottom {
+  .home-story-merged-card.bottom-merged .story-gallery-card-bottom {
     border-bottom-left-radius: 12px !important;
     border-bottom-right-radius: 12px !important;
   }
 
   .home-story-overlay,
   .home-story-overlay.right-overlay {
-    padding: 28px 22px;
+    padding: 32px 24px;
+  }
+
+  .home-story-overlay h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .home-story-overlay p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .home-story-card,
+  .story-gallery-card,
+  .story-gallery-card-bottom,
+  .story-gallery-slide {
+    min-height: 300px;
+  }
+
+  .home-story-merged-card {
+    min-height: auto;
   }
 
   .home-story-text {
-    padding: 28px 22px;
+    padding: 32px 24px;
+    min-height: 300px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .home-story-text h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .home-story-text p {
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 100%;
   }
 
   .home-story-card {
-    aspect-ratio: 16 / 9;
-    min-height: 200px;
+    min-height: 300px;
   }
 
   .home-story-image-bottom {
-    aspect-ratio: 16 / 9;
-    min-height: 200px;
+    min-height: 300px;
+  }
+
+  .home-story-merged-card.bottom-merged {
+    max-width: 100%;
   }
 }
 
@@ -6130,12 +6267,12 @@ footer {
 .company-statistics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 40px;
   width: 100%;
   max-width: 1200px;
-  margin-bottom: 80px;
+  margin: 0 auto 80px auto;
   padding: 40px 0;
   position: relative;
   z-index: 4;
@@ -6151,13 +6288,16 @@ footer {
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   margin-bottom: 12px;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.3;
+  max-width: 100%;
+  text-align: center;
 }
 
 .stat-value {
@@ -6167,6 +6307,9 @@ footer {
   line-height: 1;
   letter-spacing: -0.03em;
   white-space: nowrap;
+  text-align: center;
+  display: block;
+  width: 100%;
 }
 
 /* Company Hero Content */
@@ -6317,7 +6460,7 @@ footer {
 }
 
 .advantages-section-title {
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 700;
   color: #ffffff;
   text-transform: uppercase;
@@ -6366,8 +6509,37 @@ footer {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
+.advantage-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.advantage-intro {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.advantage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.advantage-item {
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.advantage-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
 .advantage-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #ffffff;
   text-transform: uppercase;
@@ -6379,7 +6551,74 @@ footer {
   font-size: 14px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 16px 0;
+  margin: 0;
+}
+
+/* Building for the Future Section */
+.company-future-section {
+  padding: 100px 0;
+  background: #0a0d1a;
+}
+
+.future-section-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 60px 0;
+  text-align: center;
+}
+
+.future-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.future-image-content {
+  width: 100%;
+  height: 500px;
+}
+
+.future-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 12px;
+  background-image: url("../images/download.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+.future-text-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.future-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.future-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.future-subtitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 16px 0 0 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .advantage-button {
@@ -9002,15 +9241,21 @@ footer {
     flex: none !important;
     min-width: auto !important;
     position: relative;
+    text-align: center !important;
+    align-items: center !important;
   }
 
   .stat-label {
-    font-size: 11px;
+    font-size: 10px;
     margin-bottom: 10px;
+    white-space: normal;
+    line-height: 1.3;
+    text-align: center !important;
   }
 
   .stat-value {
     font-size: 38px;
+    text-align: center !important;
   }
 
   .company-hero-title {
@@ -9027,7 +9272,8 @@ footer {
 
   .company-features-section,
   .company-about-section,
-  .company-advantages-section {
+  .company-advantages-section,
+  .company-future-section {
     padding: 60px 0;
   }
 
@@ -9052,6 +9298,39 @@ footer {
   .advantages-section-title {
     font-size: 32px;
     margin-bottom: 40px;
+  }
+
+  .future-section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .future-content-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .future-image-content {
+    height: 300px;
+    order: 2;
+  }
+
+  .future-text-content {
+    order: 1;
+  }
+
+  .future-content {
+    gap: 20px;
+  }
+
+  .future-text {
+    font-size: 15px;
+  }
+
+  .future-subtitle {
+    font-size: 20px;
+    margin-top: 12px;
+    padding-top: 20px;
   }
 
   .advantages-content-grid {
@@ -10762,15 +11041,21 @@ body.menu-open {
     flex: none !important;
     min-width: auto !important;
     position: relative;
+    text-align: center !important;
+    align-items: center !important;
   }
 
   .stat-label {
-    font-size: 10px;
+    font-size: 9px;
     margin-bottom: 8px;
+    white-space: normal;
+    line-height: 1.3;
+    text-align: center !important;
   }
 
   .stat-value {
     font-size: 32px;
+    text-align: center !important;
   }
 
   .company-hero-title {
@@ -10787,7 +11072,8 @@ body.menu-open {
 
   .company-features-section,
   .company-about-section,
-  .company-advantages-section {
+  .company-advantages-section,
+  .company-future-section {
     padding: 40px 0;
   }
 
@@ -10811,6 +11097,33 @@ body.menu-open {
   .advantages-section-title {
     font-size: 24px;
     margin-bottom: 30px;
+  }
+
+  .future-section-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .future-content-grid {
+    gap: 30px;
+  }
+
+  .future-image-content {
+    height: 250px;
+  }
+
+  .future-content {
+    gap: 18px;
+  }
+
+  .future-text {
+    font-size: 14px;
+  }
+
+  .future-subtitle {
+    font-size: 18px;
+    margin-top: 10px;
+    padding-top: 18px;
   }
 
   .advantages-image-content {
@@ -11460,21 +11773,18 @@ body.menu-open {
   }
 
   .home-manufacture-image {
-    margin: 0 !important;
-    aspect-ratio: 16 / 9 !important;
+    margin: 0 auto 24px auto !important;
     display: block !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
-    margin-right: calc(-50vw + 50%) !important;
-    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px !important;
     overflow: hidden !important;
     position: relative !important;
   }
 
   .home-manufacture-image img {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     object-fit: cover !important;
     object-position: center center !important;
     display: block !important;
