@@ -6262,9 +6262,10 @@ footer {
   width: 100%;
   position: relative;
   z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
 }
 
 /* Hide motion background for new layout */
@@ -6275,13 +6276,12 @@ footer {
 /* Company Statistics Section */
 .company-statistics {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 80px auto;
   padding: 40px 0;
   position: relative;
   z-index: 4;
@@ -6324,7 +6324,6 @@ footer {
 /* Company Hero Content */
 .company-hero-content {
   width: 100%;
-  max-width: 800px;
   position: relative;
   z-index: 2;
 }
@@ -6495,7 +6494,7 @@ footer {
   height: 100%;
   background: #1a1a1a;
   border-radius: 12px;
-  background-image: url("../images/ʟᴏᴠᴇ°°° ғ𝟷_ 😘____.jpeg");
+  background-image: url("../images/engineerimage.jpeg");
   background-size: cover;
   background-position: center;
 }
@@ -6596,7 +6595,7 @@ footer {
   height: 100%;
   background: #1a1a1a;
   border-radius: 12px;
-  background-image: url("../images/download.jpeg");
+  background-image: url("../images/Buldingfuture.jpeg");
   background-size: cover;
   background-position: center;
 }
@@ -8652,7 +8651,7 @@ footer {
   align-items: center;
   justify-content: center;
   position: relative;
-  background: url("../images/twst3.jpeg") center center / cover no-repeat fixed;
+  background: url("../images/Heritage.jpeg") center center / cover no-repeat fixed;
   background-color: rgba(5, 6, 10, 0.95);
   background-size: cover;
   background-position: center;
@@ -8664,7 +8663,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -8863,6 +8862,8 @@ footer {
   font-weight: 700;
   color: #ffffff;
   font-family: 'Georgia', 'Times New Roman', serif;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
 }
 
 .heritage-intro-text {
@@ -9228,13 +9229,15 @@ footer {
   .company-content-wrapper {
     position: relative !important;
     z-index: 3 !important;
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
   }
 
   .company-statistics {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 24px !important;
-    margin-bottom: 50px;
+    margin-bottom: 0 !important;
     padding: 30px 0;
     justify-content: center;
     align-items: center;
@@ -11028,13 +11031,15 @@ body.menu-open {
   .company-content-wrapper {
     position: relative !important;
     z-index: 3 !important;
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
   }
 
   .company-statistics {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 24px !important;
-    margin-bottom: 40px;
+    gap: 20px !important;
+    margin-bottom: 0 !important;
     padding: 24px 0;
     width: 100% !important;
     max-width: 100%;
