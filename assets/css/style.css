@@ -6470,7 +6470,7 @@ body#aircraftPage .scroll-dark-overlay {
   height: 100%;
   background: #1a1a1a;
   border-radius: 12px;
-  background-image: url("../images/download.jpeg");
+  background-image: url("../images/911.jpeg");
   background-size: cover;
   background-position: center;
 }
@@ -8674,8 +8674,8 @@ body#aircraftPage .scroll-dark-overlay {
   min-height: 100vh;
   padding: 120px 40px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   position: relative;
   background: url("../images/Heritage.jpeg") center center / cover no-repeat fixed;
   background-color: rgba(5, 6, 10, 0.95);
@@ -8697,7 +8697,10 @@ body#aircraftPage .scroll-dark-overlay {
 .heritage-hero-content {
   position: relative;
   z-index: 2;
-  text-align: center;
+  text-align: left;
+  margin-left: 60px;
+  margin-bottom: 40px;
+  max-width: 800px;
 }
 
 .heritage-hero-title {
@@ -8709,6 +8712,7 @@ body#aircraftPage .scroll-dark-overlay {
   margin: 0 0 16px 0;
   line-height: 1.2;
   font-family: 'Georgia', 'Times New Roman', serif;
+  text-align: left;
 }
 
 .heritage-hero-subtitle {
@@ -8942,11 +8946,11 @@ body#aircraftPage .scroll-dark-overlay {
 }
 
 .heritage-intro-img-1 {
-  background-image: url("../images/011.jpeg");
+  background-image: url("../images/heritage102.jpeg");
 }
 
 .heritage-intro-img-2 {
-  background-image: url("../images/010.jpeg");
+  background-image: url("../images/contact us background.jpeg");
 }
 
 /* Heritage History Section */
@@ -11473,6 +11477,14 @@ body.menu-open {
     min-height: 60vh;
     padding: 80px 20px;
     background-attachment: scroll !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+  }
+
+  .heritage-hero-content {
+    margin-left: 20px !important;
+    margin-bottom: 60px !important;
+    max-width: calc(100% - 40px) !important;
   }
 
   .heritage-hero-title {
