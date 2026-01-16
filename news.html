@@ -113,13 +113,12 @@
         // Function to update background image
         function updateBackground(imagePath) {
             if (newsBackground && imagePath) {
-                // Clean image path
+                // Clean image path - ensure it uses cleanImagePath if available, otherwise clean it here
                 let cleanPath = imagePath.trim();
                 
                 // Remove file:// protocol if present
                 if (cleanPath.includes('file://')) {
                     cleanPath = cleanPath.replace(/^file:\/\/\/?/, '');
-                    // Extract just the filename
                     const filename = cleanPath.split(/[/\\]/).pop();
                     const cleanFilename = filename.split('?')[0].split('#')[0];
                     cleanPath = `assets/images/${cleanFilename}`;
@@ -137,9 +136,10 @@
                 // Remove URL encoding
                 cleanPath = cleanPath.replace(/%22/g, '').replace(/%20/g, ' ');
                 
-                // Ensure path is relative
+                // Ensure path is relative - handle plain filenames like "tengku.jpeg"
                 if (cleanPath && !cleanPath.startsWith('assets/') && !cleanPath.startsWith('/assets/') && !cleanPath.startsWith('./assets/') && !cleanPath.startsWith('http') && !cleanPath.startsWith('file://')) {
                     if (!cleanPath.includes('/')) {
+                        // Plain filename like "tengku.jpeg" - add assets/images/ prefix
                         cleanPath = `assets/images/${cleanPath}`;
                     } else {
                         const filename = cleanPath.split(/[/\\]/).pop();
@@ -200,7 +200,8 @@
                     'USIM.jpeg': 'USIM.jpeg',
                     'UTHM.jpeg': 'UTHM.jpeg',
                     'GMI.jpeg': 'GMI.jpeg',
-                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                    'tengku.jpeg': 'tengku.jpeg'
                 };
                 
                 const correctFilename = imageMap[cleanFilename] || cleanFilename;
@@ -348,7 +349,8 @@
                         'USIM.jpeg': 'USIM.jpeg',
                         'UTHM.jpeg': 'UTHM.jpeg',
                         'GMI.jpeg': 'GMI.jpeg',
-                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                        'tengku.jpeg': 'tengku.jpeg'
                     };
                     
                     const correctFilename = imageMap[cleanFilename] || cleanFilename;
