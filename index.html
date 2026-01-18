@@ -421,8 +421,8 @@
             // Clear grid
             grid.innerHTML = '';
             
-            // Render cards (max 6 cards)
-            const newsToShow = sortedNews.slice(0, 6);
+            // Render cards (max 5 cards)
+            const newsToShow = sortedNews.slice(0, 5);
             
             // Create style element for dynamic background images
             let styleElement = document.getElementById('dynamic-news-images');
@@ -435,10 +435,7 @@
             let styleContent = '';
             
             newsToShow.forEach((news, index) => {
-                // Fix image path - convert absolute Windows path to relative path
-                let imagePath = news.image || news.imageUrl || '';
-                
-                // Map news ID to correct image path FIRST (before any processing)
+                // Map news ID to correct image path FIRST (before any processing) - ALWAYS OVERRIDE Firebase/deleted images
                 const newsImageMap = {
                     'kktm': 'assets/images/KKTM.jpeg',
                     'utem': 'assets/images/UTEM.jpeg',
@@ -448,10 +445,18 @@
                     'chemtron': 'assets/images/CHEMTRON.jpeg'
                 };
                 
-                // Force correct image based on news ID at the start
+                // ALWAYS use correct image based on news.id - IGNORE Firebase image completely (including deleted images)
+                let imagePath = '';
                 if (newsImageMap[news.id]) {
                     imagePath = newsImageMap[news.id];
-                    console.log(`Index - News ${news.id} (${news.title}): Force mapped image at start: ${imagePath}`);
+                    // Also update news object to prevent Firebase/deleted image from being used
+                    news.image = newsImageMap[news.id];
+                    news.imageUrl = newsImageMap[news.id];
+                    console.log(`Index - News ${news.id} (${news.title}): FORCE override Firebase/deleted image with correct local image: ${imagePath}`);
+                } else {
+                    // Fallback to Firebase image if no mapping (shouldn't happen)
+                    imagePath = news.image || news.imageUrl || '';
+                    console.warn(`Index - News ${news.id} (${news.title}): No image mapping found, using Firebase image: ${imagePath}`);
                 }
                 
                 // Force GMI to use correct image at the start (before any processing)
@@ -565,9 +570,29 @@
                     console.log(`Index - News ${news.id} (${news.title}): Final force GMI image path AFTER all processing: ${imagePath}`);
                 }
                 
+                // FINAL OVERRIDE: Always use correct image based on news.id (for ALL news, not just GMI)
+                const finalImageMap = {
+                    'kktm': 'assets/images/KKTM.jpeg',
+                    'utem': 'assets/images/UTEM.jpeg',
+                    'usim': 'assets/images/USIM.jpeg',
+                    'uthm': 'assets/images/UTHM.jpeg',
+                    'gmi': 'assets/images/GMI.jpeg',
+                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                };
+                
+                if (finalImageMap[news.id]) {
+                    imagePath = finalImageMap[news.id];
+                    console.log(`Index - News ${news.id} (${news.title}): FINAL OVERRIDE - Using correct image: ${imagePath}`);
+                }
+                
                 const template = cardTemplates[index % cardTemplates.length];
                 const cardHtml = template.html(news);
                 grid.insertAdjacentHTML('beforeend', cardHtml);
+                
+                // Debug: Log card assignment (especially for card #6)
+                if (index === 5) {
+                    console.log(`Index - Card #6 (index 5): news.id=${news.id}, news.title=${news.title}, template.type=${template.type}, imagePath=${imagePath}`);
+                }
                 
                 // Set background image for the card
                 const card = grid.querySelector(`[data-news-id="${news.id}"]`);
@@ -639,9 +664,21 @@
                         console.log(`Index - News ${news.id}: Final force GMI cleanImagePath: ${cleanImagePath}`);
                     }
                     
+                    // Final validation - ensure CHEMTRON uses correct image (double check)
+                    if (news.id === 'chemtron' || news.title?.toLowerCase().includes('chemtron')) {
+                        cleanImagePath = 'assets/images/CHEMTRON.jpeg';
+                        imagePath = 'assets/images/CHEMTRON.jpeg';
+                        console.log(`Index - News ${news.id}: Final force CHEMTRON cleanImagePath: ${cleanImagePath}`);
+                    }
+                    
                     // Debug: Log GMI image path
                     if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
                         console.log(`Index - GMI Debug: news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, template.type=${template.type}`);
+                    }
+                    
+                    // Debug: Log CHEMTRON image path (card #6)
+                    if (news.id === 'chemtron' || news.title?.toLowerCase().includes('chemtron')) {
+                        console.log(`Index - CHEMTRON Debug (Card #6): news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, template.type=${template.type}, index=${index}`);
                     }
                     
                     // Debug: Log card-latest-split image path
@@ -711,12 +748,29 @@
                             `;
                             
                             // ALWAYS set directly on card element for ALL cards (especially for latest-split)
-                            card.style.setProperty('background-image', `url('${finalEscapedPath}${cacheBuster}')`, 'important');
+                            // FINAL OVERRIDE: Always use correct image based on news.id
+                            const forceImageMap = {
+                                'kktm': 'assets/images/KKTM.jpeg',
+                                'utem': 'assets/images/UTEM.jpeg',
+                                'usim': 'assets/images/USIM.jpeg',
+                                'uthm': 'assets/images/UTHM.jpeg',
+                                'gmi': 'assets/images/GMI.jpeg',
+                                'chemtron': 'assets/images/CHEMTRON.jpeg'
+                            };
+                            
+                            let forceImagePath = finalImagePath;
+                            if (forceImageMap[news.id]) {
+                                forceImagePath = forceImageMap[news.id];
+                                console.log(`Index - News ${news.id}: FORCE image override: ${forceImagePath}`);
+                            }
+                            
+                            const forceEscapedPath = forceImagePath.replace(/'/g, "\\'");
+                            card.style.setProperty('background-image', `url('${forceEscapedPath}${cacheBuster}')`, 'important');
                             card.style.setProperty('background-size', 'cover', 'important');
                             card.style.setProperty('background-position', 'center', 'important');
                             
                             if (template.type === 'latest-split') {
-                                console.log(`Index - Latest Split: Directly set image on card element: ${finalEscapedPath}${cacheBuster}, news.id=${news.id}, news.title=${news.title}`);
+                                console.log(`Index - Latest Split: Directly set image on card element: ${forceEscapedPath}${cacheBuster}, news.id=${news.id}, news.title=${news.title}`);
                             }
                         }
                         
@@ -770,6 +824,17 @@
                                     console.log(`Index - GMI: Directly set background image on card element`);
                                 }
                             }
+                            
+                            // Force CHEMTRON image directly on card element after image loads (card #6)
+                            if (news.id === 'chemtron' || news.title?.toLowerCase().includes('chemtron')) {
+                                const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
+                                if (cardElement) {
+                                    cardElement.style.backgroundImage = `url('assets/images/CHEMTRON.jpeg?force=${Date.now()}')`;
+                                    cardElement.style.backgroundSize = 'cover';
+                                    cardElement.style.backgroundPosition = 'center';
+                                    console.log(`Index - CHEMTRON (Card #6): Directly set background image on card element after image load`);
+                                }
+                            }
                         };
                         img.src = cleanImagePath;
                     }
@@ -794,21 +859,24 @@
                         'chemtron': 'assets/images/CHEMTRON.jpeg'
                     };
                     
+                    // ALWAYS use correct image based on news.id - this is the FINAL override
                     if (finalNewsImageMap[news.id]) {
                         const finalImagePath = finalNewsImageMap[news.id];
                         const finalCacheBuster = `?v=${Date.now()}&t=${news.id}&final`;
                         const finalEscapedPath = finalImagePath.replace(/'/g, "\\'");
                         
-                        // Force correct image on card element
+                        // Force correct image on card element for ALL card types
                         card.style.setProperty('background-image', `url('${finalEscapedPath}${finalCacheBuster}')`, 'important');
                         card.style.setProperty('background-size', 'cover', 'important');
                         card.style.setProperty('background-position', 'center', 'important');
                         
-                        // Also update CSS style element
+                        // Also update CSS style element for all card types
                         if (styleElement) {
                             const template = cardTemplates[index % cardTemplates.length];
                             const additionalStyle = `
+                                .card-latest-news[data-news-id="${news.id}"]::after,
                                 .card-news-updates[data-news-id="${news.id}"],
+                                .card-industry-news[data-news-id="${news.id}"]::after,
                                 .card-aerospace-news[data-news-id="${news.id}"],
                                 .card-news-ac[data-news-id="${news.id}"],
                                 .card-latest-split[data-news-id="${news.id}"] {
@@ -820,38 +888,62 @@
                             styleElement.textContent += additionalStyle;
                         }
                         
-                        if (card.classList.contains('card-latest-split')) {
-                            console.log(`Index - Final Fix Latest Split: news.id=${news.id}, news.title=${news.title}, image=${finalImagePath}`);
-                        }
+                        console.log(`Index - Final Fix ALL Cards: news.id=${news.id}, news.title=${news.title}, image=${finalImagePath}, card.className=${card.className}`);
+                    } else {
+                        console.warn(`Index - News ${news.id} (${news.title}): No image mapping found!`);
                     }
                 }
             });
             
-            // Force GMI image immediately (synchronous) - keep for backward compatibility
+            // Force ALL news images immediately (synchronous) - override Firebase/deleted images
             newsToShow.forEach((news, index) => {
-                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                const allNewsImageMap = {
+                    'kktm': 'assets/images/KKTM.jpeg',
+                    'utem': 'assets/images/UTEM.jpeg',
+                    'usim': 'assets/images/USIM.jpeg',
+                    'uthm': 'assets/images/UTHM.jpeg',
+                    'gmi': 'assets/images/GMI.jpeg',
+                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                };
+                
+                if (allNewsImageMap[news.id]) {
                     const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                     if (card) {
-                        // Directly set style on card element
-                        const escapedGmiPath = 'assets/images/GMI.jpeg'.replace(/'/g, "\\'");
-                        const gmiCacheBuster = `?v=${Date.now()}&force=${news.id}`;
-                        card.style.backgroundImage = `url('${escapedGmiPath}${gmiCacheBuster}')`;
+                        // Directly set style on card element - override Firebase/deleted images
+                        const correctImagePath = allNewsImageMap[news.id];
+                        const escapedPath = correctImagePath.replace(/'/g, "\\'");
+                        const cacheBuster = `?v=${Date.now()}&force=${news.id}&immediate`;
+                        card.style.backgroundImage = `url('${escapedPath}${cacheBuster}')`;
                         card.style.backgroundSize = 'cover';
                         card.style.backgroundPosition = 'center';
-                        console.log(`Index - GMI: Immediately set background image via card.style: ${escapedGmiPath}${gmiCacheBuster}`);
+                        console.log(`Index - News ${news.id}: Immediately set background image via card.style (override Firebase/deleted): ${escapedPath}${cacheBuster}`);
                     }
                 }
             });
             
-            // Force GMI styles after all styles applied (additional safety)
+            // Force ALL news cards to use correct images after all styles applied (additional safety)
             setTimeout(() => {
-                const gmiCards = grid.querySelectorAll('[data-news-id="gmi"], .card-latest-split[data-news-id="gmi"]');
-                gmiCards.forEach(card => {
-                    const gmiImagePath = `assets/images/GMI.jpeg?v=${Date.now()}&force2`;
-                    card.style.setProperty('background-image', `url('${gmiImagePath}')`, 'important');
-                    card.style.setProperty('background-size', 'cover', 'important');
-                    card.style.setProperty('background-position', 'center', 'important');
-                    console.log(`Index - GMI: Final force via setTimeout: ${gmiImagePath}`);
+                const allNewsImageMap = {
+                    'kktm': 'assets/images/KKTM.jpeg',
+                    'utem': 'assets/images/UTEM.jpeg',
+                    'usim': 'assets/images/USIM.jpeg',
+                    'uthm': 'assets/images/UTHM.jpeg',
+                    'gmi': 'assets/images/GMI.jpeg',
+                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                };
+                
+                // Force correct images for ALL news cards (especially to override Firebase deleted images)
+                newsToShow.forEach(news => {
+                    if (allNewsImageMap[news.id]) {
+                        const card = grid.querySelector(`[data-news-id="${news.id}"]`);
+                        if (card) {
+                            const correctImagePath = `${allNewsImageMap[news.id]}?v=${Date.now()}&force3&${news.id}`;
+                            card.style.setProperty('background-image', `url('${correctImagePath}')`, 'important');
+                            card.style.setProperty('background-size', 'cover', 'important');
+                            card.style.setProperty('background-position', 'center', 'important');
+                            console.log(`Index - News ${news.id}: Final force via setTimeout override Firebase/deleted image: ${correctImagePath}`);
+                        }
+                    }
                 });
             }, 100);
         }
@@ -861,6 +953,25 @@
             try {
                 const news = await loadNewsFromFirestore();
                 if (news && news.length > 0) {
+                    // Override images from Firebase with correct local images based on news.id
+                    const imageOverrideMap = {
+                        'kktm': 'assets/images/KKTM.jpeg',
+                        'utem': 'assets/images/UTEM.jpeg',
+                        'usim': 'assets/images/USIM.jpeg',
+                        'uthm': 'assets/images/UTHM.jpeg',
+                        'gmi': 'assets/images/GMI.jpeg',
+                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    };
+                    
+                    // Force override images for all news from Firebase
+                    news.forEach(newsItem => {
+                        if (imageOverrideMap[newsItem.id]) {
+                            newsItem.image = imageOverrideMap[newsItem.id];
+                            newsItem.imageUrl = imageOverrideMap[newsItem.id];
+                            console.log(`Index - Override Firebase image for ${newsItem.id}: ${imageOverrideMap[newsItem.id]}`);
+                        }
+                    });
+                    
                     renderNewsCards(news);
                 } else {
                     // Fallback to local data
