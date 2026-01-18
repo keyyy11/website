@@ -438,6 +438,28 @@
                 // Fix image path - convert absolute Windows path to relative path
                 let imagePath = news.image || news.imageUrl || '';
                 
+                // Map news ID to correct image path FIRST (before any processing)
+                const newsImageMap = {
+                    'kktm': 'assets/images/KKTM.jpeg',
+                    'utem': 'assets/images/UTEM.jpeg',
+                    'usim': 'assets/images/USIM.jpeg',
+                    'uthm': 'assets/images/UTHM.jpeg',
+                    'gmi': 'assets/images/GMI.jpeg',
+                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                };
+                
+                // Force correct image based on news ID at the start
+                if (newsImageMap[news.id]) {
+                    imagePath = newsImageMap[news.id];
+                    console.log(`Index - News ${news.id} (${news.title}): Force mapped image at start: ${imagePath}`);
+                }
+                
+                // Force GMI to use correct image at the start (before any processing)
+                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi') || news.title?.toUpperCase().includes('GMI')) {
+                    imagePath = 'assets/images/GMI.jpeg';
+                    console.log(`Index - News ${news.id} (${news.title}): Force GMI image to assets/images/GMI.jpeg at start`);
+                }
+                
                 // Map filename to correct image file (always use lowercase extension)
                 const imageMap = {
                     'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
@@ -537,6 +559,12 @@
                     }
                 }
                 
+                // Final force GMI check (after all processing, before template assignment)
+                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi') || news.title?.toUpperCase().includes('GMI')) {
+                    imagePath = 'assets/images/GMI.jpeg';
+                    console.log(`Index - News ${news.id} (${news.title}): Final force GMI image path AFTER all processing: ${imagePath}`);
+                }
+                
                 const template = cardTemplates[index % cardTemplates.length];
                 const cardHtml = template.html(news);
                 grid.insertAdjacentHTML('beforeend', cardHtml);
@@ -544,48 +572,288 @@
                 // Set background image for the card
                 const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                 if (card) {
+                    // Force correct image based on news ID (FIRST thing in card processing)
+                    const cardNewsImageMap = {
+                        'kktm': 'assets/images/KKTM.jpeg',
+                        'utem': 'assets/images/UTEM.jpeg',
+                        'usim': 'assets/images/USIM.jpeg',
+                        'uthm': 'assets/images/UTHM.jpeg',
+                        'gmi': 'assets/images/GMI.jpeg',
+                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    };
+                    
+                    if (cardNewsImageMap[news.id]) {
+                        imagePath = cardNewsImageMap[news.id];
+                        console.log(`Index - News ${news.id}: Force mapped image in card processing: ${imagePath}`);
+                    }
+                    
+                    // Force GMI to use correct image
+                    if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                        imagePath = 'assets/images/GMI.jpeg';
+                        console.log(`Index - News ${news.id}: Force GMI image to assets/images/GMI.jpeg`);
+                    }
+                    
                     // Clean imagePath - remove any quotes, encoding, or special characters
                     let cleanImagePath = imagePath.replace(/['"]/g, '').trim();
                     // Remove URL encoding
                     cleanImagePath = cleanImagePath.replace(/%22/g, '').replace(/%20/g, ' ');
                     // Ensure it's a valid relative path
                     if (!cleanImagePath.startsWith('assets/')) {
-                        cleanImagePath = `assets/images/${cleanImagePath.split(/[/\\]/).pop()}`;
+                        // Extract filename and map it
+                        const filename = cleanImagePath.split(/[/\\]/).pop();
+                        const imageMapForCleanup = {
+                            'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                            'UTEM.jpeg': 'UTEM.jpeg',
+                            'GMI.jpeg': 'GMI.jpeg',
+                            'GMI.Jpeg': 'GMI.jpeg',
+                            'GMI.JPEG': 'GMI.jpeg',
+                            'KKTM.jpeg': 'KKTM.jpeg',
+                            'USIM.jpeg': 'USIM.jpeg',
+                            'UTHM.jpeg': 'UTHM.jpeg',
+                            'CHEMTRON.jpeg': 'CHEMTRON.jpeg'
+                        };
+                        const correctFilename = imageMapForCleanup[filename] || filename;
+                        cleanImagePath = `assets/images/${correctFilename}`;
                     }
                     
-                    // Escape single quotes for CSS
-                    const escapedPath = cleanImagePath.replace(/'/g, "\\'");
+                    // Final validation - Map news ID to correct image path (ALWAYS OVERRIDE)
+                    const newsImageMap = {
+                        'kktm': 'assets/images/KKTM.jpeg',
+                        'utem': 'assets/images/UTEM.jpeg',
+                        'usim': 'assets/images/USIM.jpeg',
+                        'uthm': 'assets/images/UTHM.jpeg',
+                        'gmi': 'assets/images/GMI.jpeg',
+                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    };
                     
-                    // Set background image based on card type
-                    if (template.type === 'latest-news' || template.type === 'industry-news') {
-                        // For cards with ::after pseudo-element
-                        styleContent += `
-                            .card-latest-news[data-news-id="${news.id}"]::after,
-                            .card-industry-news[data-news-id="${news.id}"]::after {
-                                background-image: url('${escapedPath}') !important;
-                            }
-                        `;
+                    // ALWAYS force correct image based on news ID (this should override everything)
+                    if (newsImageMap[news.id]) {
+                        cleanImagePath = newsImageMap[news.id];
+                        imagePath = newsImageMap[news.id]; // Also update imagePath
+                        console.log(`Index - News ${news.id}: FORCE OVERRIDE mapped to correct image: ${cleanImagePath}`);
+                    }
+                    
+                    // Final validation - ensure GMI uses correct image (double check)
+                    if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                        cleanImagePath = 'assets/images/GMI.jpeg';
+                        console.log(`Index - News ${news.id}: Final force GMI cleanImagePath: ${cleanImagePath}`);
+                    }
+                    
+                    // Debug: Log GMI image path
+                    if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                        console.log(`Index - GMI Debug: news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, template.type=${template.type}`);
+                    }
+                    
+                    // Debug: Log card-latest-split image path
+                    if (template.type === 'latest-split') {
+                        console.log(`Index - Latest Split Debug: news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, original imagePath=${imagePath}`);
+                    }
+                    
+                    // Skip deleted images - check for common deleted file patterns
+                    const deletedImages = [
+                        'UTeM-Aeronas.jpeg',
+                        'UTeM-Aeronas.Jpeg',
+                        'UTeM-Aeronas.JPEG',
+                        'UTeM-Aeronas'
+                    ];
+                    const filename = cleanImagePath.split('/').pop();
+                    const filenameWithoutExt = filename.split('.').slice(0, -1).join('.');
+                    
+                    if (deletedImages.includes(filename) || deletedImages.includes(filenameWithoutExt)) {
+                        console.warn(`Index - News ${news.id}: Skipping deleted image: ${filename}`);
+                        // Use fallback background color instead of image
+                        card.style.backgroundImage = 'none';
+                        card.style.backgroundColor = '#1a1a1a';
                     } else {
-                        // Direct background image for other cards
-                        styleContent += `
-                            .card-news-updates[data-news-id="${news.id}"],
-                            .card-aerospace-news[data-news-id="${news.id}"],
-                            .card-news-ac[data-news-id="${news.id}"],
-                            .card-latest-split[data-news-id="${news.id}"] {
-                                background-image: url('${escapedPath}') !important;
-                                background-size: cover !important;
-                                background-position: center !important;
+                        // Escape single quotes for CSS
+                        const escapedPath = cleanImagePath.replace(/'/g, "\\'");
+                        // Add cache buster to prevent cached deleted images
+                        const cacheBuster = `?v=${Date.now()}&t=${news.id}`;
+                        
+                        // Set background image based on card type
+                        if (template.type === 'latest-news' || template.type === 'industry-news') {
+                            // For cards with ::after pseudo-element
+                            styleContent += `
+                                .card-latest-news[data-news-id="${news.id}"]::after,
+                                .card-industry-news[data-news-id="${news.id}"]::after {
+                                    background-image: url('${escapedPath}${cacheBuster}') !important;
+                                }
+                            `;
+                        } else {
+                            // Direct background image for other cards
+                            // FORCE correct image path one more time before setting style
+                            const finalNewsImageMap = {
+                                'kktm': 'assets/images/KKTM.jpeg',
+                                'utem': 'assets/images/UTEM.jpeg',
+                                'usim': 'assets/images/USIM.jpeg',
+                                'uthm': 'assets/images/UTHM.jpeg',
+                                'gmi': 'assets/images/GMI.jpeg',
+                                'chemtron': 'assets/images/CHEMTRON.jpeg'
+                            };
+                            
+                            let finalImagePath = cleanImagePath;
+                            if (finalNewsImageMap[news.id]) {
+                                finalImagePath = finalNewsImageMap[news.id];
+                                console.log(`Index - News ${news.id}: Final override for style: ${finalImagePath}, template.type=${template.type}`);
                             }
-                        `;
+                            
+                            const finalEscapedPath = finalImagePath.replace(/'/g, "\\'");
+                            
+                            styleContent += `
+                                .card-news-updates[data-news-id="${news.id}"],
+                                .card-aerospace-news[data-news-id="${news.id}"],
+                                .card-news-ac[data-news-id="${news.id}"],
+                                .card-latest-split[data-news-id="${news.id}"] {
+                                    background-image: url('${finalEscapedPath}${cacheBuster}') !important;
+                                    background-size: cover !important;
+                                    background-position: center !important;
+                                }
+                            `;
+                            
+                            // ALWAYS set directly on card element for ALL cards (especially for latest-split)
+                            card.style.setProperty('background-image', `url('${finalEscapedPath}${cacheBuster}')`, 'important');
+                            card.style.setProperty('background-size', 'cover', 'important');
+                            card.style.setProperty('background-position', 'center', 'important');
+                            
+                            if (template.type === 'latest-split') {
+                                console.log(`Index - Latest Split: Directly set image on card element: ${finalEscapedPath}${cacheBuster}, news.id=${news.id}, news.title=${news.title}`);
+                            }
+                        }
+                        
+                        // Add error handler for image loading (async check)
+                        const img = new Image();
+                        img.onerror = () => {
+                            console.warn(`Index - News ${news.id}: Image failed to load: ${cleanImagePath}`);
+                            const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
+                            if (cardElement) {
+                                cardElement.style.backgroundImage = 'none';
+                                cardElement.style.backgroundColor = '#1a1a1a';
+                            }
+                        };
+                        img.onload = () => {
+                            // Force correct image directly on card element after image loads (for ALL news)
+                            const onLoadNewsImageMap = {
+                                'kktm': 'assets/images/KKTM.jpeg',
+                                'utem': 'assets/images/UTEM.jpeg',
+                                'usim': 'assets/images/USIM.jpeg',
+                                'uthm': 'assets/images/UTHM.jpeg',
+                                'gmi': 'assets/images/GMI.jpeg',
+                                'chemtron': 'assets/images/CHEMTRON.jpeg'
+                            };
+                            
+                            let onLoadImagePath = cleanImagePath;
+                            if (onLoadNewsImageMap[news.id]) {
+                                onLoadImagePath = onLoadNewsImageMap[news.id];
+                            }
+                            
+                            // Set correct image on card after load (especially for latest-split)
+                            const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
+                            if (cardElement) {
+                                const onLoadCacheBuster = `?v=${Date.now()}&t=${news.id}&loaded`;
+                                const onLoadEscapedPath = onLoadImagePath.replace(/'/g, "\\'");
+                                cardElement.style.setProperty('background-image', `url('${onLoadEscapedPath}${onLoadCacheBuster}')`, 'important');
+                                cardElement.style.setProperty('background-size', 'cover', 'important');
+                                cardElement.style.setProperty('background-position', 'center', 'important');
+                                
+                                if (template.type === 'latest-split') {
+                                    console.log(`Index - Latest Split After Load: Set image on card: ${onLoadEscapedPath}${onLoadCacheBuster}, news.id=${news.id}`);
+                                }
+                            }
+                            
+                            // Force GMI image directly on card element after image loads
+                            if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                                const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
+                                if (cardElement) {
+                                    cardElement.style.backgroundImage = `url('assets/images/GMI.jpeg?force=${Date.now()}')`;
+                                    cardElement.style.backgroundSize = 'cover';
+                                    cardElement.style.backgroundPosition = 'center';
+                                    console.log(`Index - GMI: Directly set background image on card element`);
+                                }
+                            }
+                        };
+                        img.src = cleanImagePath;
                     }
-                    
-                    // Debug log
-                    console.log(`Index - News ${news.id}: Final image path: ${cleanImagePath}`);
                 }
             });
             
             // Apply all styles at once
-            styleElement.textContent = styleContent;
+            if (styleElement && styleContent) {
+                styleElement.textContent = styleContent;
+            }
+            
+            // AFTER all cards are rendered, FORCE correct images for ALL news cards (especially latest-split)
+            newsToShow.forEach((news, index) => {
+                const card = grid.querySelector(`[data-news-id="${news.id}"]`);
+                if (card) {
+                    const finalNewsImageMap = {
+                        'kktm': 'assets/images/KKTM.jpeg',
+                        'utem': 'assets/images/UTEM.jpeg',
+                        'usim': 'assets/images/USIM.jpeg',
+                        'uthm': 'assets/images/UTHM.jpeg',
+                        'gmi': 'assets/images/GMI.jpeg',
+                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    };
+                    
+                    if (finalNewsImageMap[news.id]) {
+                        const finalImagePath = finalNewsImageMap[news.id];
+                        const finalCacheBuster = `?v=${Date.now()}&t=${news.id}&final`;
+                        const finalEscapedPath = finalImagePath.replace(/'/g, "\\'");
+                        
+                        // Force correct image on card element
+                        card.style.setProperty('background-image', `url('${finalEscapedPath}${finalCacheBuster}')`, 'important');
+                        card.style.setProperty('background-size', 'cover', 'important');
+                        card.style.setProperty('background-position', 'center', 'important');
+                        
+                        // Also update CSS style element
+                        if (styleElement) {
+                            const template = cardTemplates[index % cardTemplates.length];
+                            const additionalStyle = `
+                                .card-news-updates[data-news-id="${news.id}"],
+                                .card-aerospace-news[data-news-id="${news.id}"],
+                                .card-news-ac[data-news-id="${news.id}"],
+                                .card-latest-split[data-news-id="${news.id}"] {
+                                    background-image: url('${finalEscapedPath}${finalCacheBuster}') !important;
+                                    background-size: cover !important;
+                                    background-position: center !important;
+                                }
+                            `;
+                            styleElement.textContent += additionalStyle;
+                        }
+                        
+                        if (card.classList.contains('card-latest-split')) {
+                            console.log(`Index - Final Fix Latest Split: news.id=${news.id}, news.title=${news.title}, image=${finalImagePath}`);
+                        }
+                    }
+                }
+            });
+            
+            // Force GMI image immediately (synchronous) - keep for backward compatibility
+            newsToShow.forEach((news, index) => {
+                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                    const card = grid.querySelector(`[data-news-id="${news.id}"]`);
+                    if (card) {
+                        // Directly set style on card element
+                        const escapedGmiPath = 'assets/images/GMI.jpeg'.replace(/'/g, "\\'");
+                        const gmiCacheBuster = `?v=${Date.now()}&force=${news.id}`;
+                        card.style.backgroundImage = `url('${escapedGmiPath}${gmiCacheBuster}')`;
+                        card.style.backgroundSize = 'cover';
+                        card.style.backgroundPosition = 'center';
+                        console.log(`Index - GMI: Immediately set background image via card.style: ${escapedGmiPath}${gmiCacheBuster}`);
+                    }
+                }
+            });
+            
+            // Force GMI styles after all styles applied (additional safety)
+            setTimeout(() => {
+                const gmiCards = grid.querySelectorAll('[data-news-id="gmi"], .card-latest-split[data-news-id="gmi"]');
+                gmiCards.forEach(card => {
+                    const gmiImagePath = `assets/images/GMI.jpeg?v=${Date.now()}&force2`;
+                    card.style.setProperty('background-image', `url('${gmiImagePath}')`, 'important');
+                    card.style.setProperty('background-size', 'cover', 'important');
+                    card.style.setProperty('background-position', 'center', 'important');
+                    console.log(`Index - GMI: Final force via setTimeout: ${gmiImagePath}`);
+                });
+            }, 100);
         }
         
         // Load news from Firestore or use local data

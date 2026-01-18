@@ -370,12 +370,43 @@
                 if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http') && !imagePath.startsWith('file://')) {
                     // If just filename, add assets/images/ prefix
                     if (!imagePath.includes('/')) {
-                        imagePath = `assets/images/${imagePath}`;
+                        // Check imageMap for correct filename mapping
+                        const imageMapForFilename = {
+                            'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                            'UTEM.jpeg': 'UTEM.jpeg',
+                            'KKTM.jpeg': 'KKTM.jpeg',
+                            'USIM.jpeg': 'USIM.jpeg',
+                            'UTHM.jpeg': 'UTHM.jpeg',
+                            'GMI.jpeg': 'GMI.jpeg',
+                            'GMI.Jpeg': 'GMI.jpeg',
+                            'GMI.JPEG': 'GMI.jpeg',
+                            'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                            'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
+                            'tengku.jpeg': 'tengku.jpeg'
+                        };
+                        const correctFilename = imageMapForFilename[imagePath] || imagePath;
+                        imagePath = `assets/images/${correctFilename}`;
                     } else {
                         // Extract filename from any path
                         const filename = imagePath.split(/[/\\]/).pop();
                         const cleanFilename = filename.split('?')[0].split('#')[0];
-                        imagePath = `assets/images/${cleanFilename}`;
+                        
+                        // Check imageMap for correct filename mapping
+                        const imageMapForFilename = {
+                            'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                            'UTEM.jpeg': 'UTEM.jpeg',
+                            'KKTM.jpeg': 'KKTM.jpeg',
+                            'USIM.jpeg': 'USIM.jpeg',
+                            'UTHM.jpeg': 'UTHM.jpeg',
+                            'GMI.jpeg': 'GMI.jpeg',
+                            'GMI.Jpeg': 'GMI.jpeg',
+                            'GMI.JPEG': 'GMI.jpeg',
+                            'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                            'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
+                            'tengku.jpeg': 'tengku.jpeg'
+                        };
+                        const correctFilename = imageMapForFilename[cleanFilename] || cleanFilename;
+                        imagePath = `assets/images/${correctFilename}`;
                     }
                 }
                 
@@ -383,7 +414,29 @@
                 if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
                     const filename = imagePath.split(/[/\\]/).pop();
                     const cleanFilename = filename.split('?')[0].split('#')[0];
-                    imagePath = `assets/images/${cleanFilename}`;
+                    
+                    // Check imageMap for correct filename mapping
+                    const imageMapForFilename = {
+                        'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
+                        'UTEM.jpeg': 'UTEM.jpeg',
+                        'KKTM.jpeg': 'KKTM.jpeg',
+                        'USIM.jpeg': 'USIM.jpeg',
+                        'UTHM.jpeg': 'UTHM.jpeg',
+                        'GMI.jpeg': 'GMI.jpeg',
+                        'GMI.Jpeg': 'GMI.jpeg',
+                        'GMI.JPEG': 'GMI.jpeg',
+                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
+                        'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
+                        'tengku.jpeg': 'tengku.jpeg'
+                    };
+                    const correctFilename = imageMapForFilename[cleanFilename] || cleanFilename;
+                    imagePath = `assets/images/${correctFilename}`;
+                }
+                
+                // Final validation - ensure GMI uses correct image
+                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                    imagePath = 'assets/images/GMI.jpeg';
+                    console.log(`News ${news.id}: Force GMI image path to assets/images/GMI.jpeg`);
                 }
                 
                 card.className = `news-category-card ${isActive ? 'active' : ''}`;
