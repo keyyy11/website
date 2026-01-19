@@ -812,6 +812,11 @@ footer {
   display: none;
 }
 
+/* Hide Aircraft link dalam navigation mobile di desktop */
+.header-nav > a.nav-mobile-aircraft {
+  display: none;
+}
+
 /* Hide mobile navigation logo di desktop */
 .mobile-nav-logo {
   display: none;
@@ -6121,11 +6126,21 @@ body#aircraftPage .scroll-dark-overlay {
   z-index: 100;
 }
 
+/* Aircraft sub-nav: Hide on desktop, show only on mobile */
+.aircraft-sub-nav {
+  display: none;
+}
+
 /* Pastikan sub-nav di belakang header navigation mobile */
 @media (max-width: 768px) {
   .sub-nav {
     z-index: 1 !important; /* Lower z-index untuk mobile - di belakang header nav */
     position: relative !important; /* Change dari sticky untuk mobile */
+  }
+
+  /* Show aircraft-sub-nav only on mobile */
+  .aircraft-sub-nav {
+    display: block !important;
   }
 
   /* Pastikan header navigation mobile di atas sub-nav */
@@ -6654,6 +6669,66 @@ body#aircraftPage .scroll-dark-overlay {
   margin: 16px 0 0 0;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Certification Section */
+.company-certification-section {
+  padding: 100px 0;
+  background: #05060a;
+}
+
+.certification-section-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 60px 0;
+  text-align: center;
+}
+
+.certification-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.certification-item {
+  padding: 40px 0;
+}
+
+.certification-item:first-child {
+  padding-top: 0;
+}
+
+.certification-item:last-child {
+  padding-bottom: 0;
+}
+
+.certification-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 16px 0;
+}
+
+.certification-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.certification-separator {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 20px 0;
+  margin: 0;
 }
 
 .advantage-button {
@@ -8753,7 +8828,7 @@ body#aircraftPage .scroll-dark-overlay {
   align-items: flex-end;
   justify-content: flex-start;
   position: relative;
-  background: url("../images/Heritage.jpeg") center center / cover no-repeat fixed;
+  background: url("../images/18.jpeg") center center / cover no-repeat fixed;
   background-color: rgba(5, 6, 10, 0.95);
   background-size: cover;
   background-position: center;
@@ -9390,7 +9465,8 @@ body#aircraftPage .scroll-dark-overlay {
   .company-features-section,
   .company-about-section,
   .company-advantages-section,
-  .company-future-section {
+  .company-future-section,
+  .company-certification-section {
     padding: 80px 0;
   }
 
@@ -9420,6 +9496,27 @@ body#aircraftPage .scroll-dark-overlay {
   .future-section-title {
     font-size: 32px;
     margin-bottom: 40px;
+  }
+
+  .certification-section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .certification-item {
+    padding: 32px 0;
+  }
+
+  .certification-title {
+    font-size: 18px;
+  }
+
+  .certification-description {
+    font-size: 15px;
+  }
+
+  .certification-separator {
+    padding: 18px 0;
   }
 
   .future-content-grid {
@@ -10511,6 +10608,32 @@ body.menu-open {
     border: none !important;
   }
 
+  /* Show Aircraft link in mobile menu */
+  .nav-mobile-aircraft {
+    display: flex !important;
+    visibility: visible !important;
+    width: 100% !important;
+    padding: 20px 16px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.5 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .nav-mobile-aircraft:hover,
+  .nav-mobile-aircraft:active,
+  .nav-mobile-aircraft:focus {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
+
   /* Aircraft main link - SAMA dengan items lain - COMPACT - MUAT DALAM SATU PAGE */
   .header-nav .nav-dropdown > a,
   .header-nav.mobile-open .nav-dropdown > a,
@@ -11268,7 +11391,8 @@ body.menu-open {
   .company-features-section,
   .company-about-section,
   .company-advantages-section,
-  .company-future-section {
+  .company-future-section,
+  .company-certification-section {
     padding: 40px 0;
   }
 
@@ -11323,6 +11447,33 @@ body.menu-open {
 
   .advantages-image-content {
     height: 250px;
+  }
+
+  .certification-section-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .certification-list {
+    gap: 0;
+  }
+
+  .certification-item {
+    padding: 24px 0;
+  }
+
+  .certification-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .certification-description {
+    font-size: 14px;
+  }
+
+  .certification-separator {
+    font-size: 20px;
+    padding: 16px 0;
   }
 
   .advantage-card {
