@@ -266,21 +266,27 @@
                 <h4>Get In Touch</h4>
                 <ul class="footer-contact-list">
                     <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="contact-icon">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                        </svg>
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                        </div>
                         <span>Malaysia</span>
                     </li>
                     <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="contact-icon">
-                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                        </svg>
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                        </div>
                         <a href="tel:074450444">07-4450444</a>
                     </li>
                     <li>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="contact-icon">
-                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                        </svg>
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                        </div>
                         <a href="mailto:admin@aeronasgrp.com">admin@aeronasgrp.com</a>
                     </li>
                 </ul>
@@ -486,6 +492,9 @@
             let styleContent = '';
             
             newsToShow.forEach((news, index) => {
+                // Normalize news.id to lowercase for consistent mapping
+                const normalizedId = (news.id || '').toLowerCase().trim();
+                
                 // Map news ID to correct image path FIRST (before any processing) - ALWAYS OVERRIDE Firebase/deleted images
                 const newsImageMap = {
                     'kktm': 'assets/images/KKTM.jpeg',
@@ -493,17 +502,71 @@
                     'usim': 'assets/images/USIM.jpeg',
                     'uthm': 'assets/images/UTHM.jpeg',
                     'gmi': 'assets/images/GMI.jpeg',
-                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    'chemtron': 'assets/images/CHEMTRON.jpeg',
+                    'happy-new-year': 'assets/images/firework.jpeg',
+                    'happynewyear': 'assets/images/firework.jpeg',
+                    'firework': 'assets/images/firework.jpeg'
                 };
                 
-                // ALWAYS use correct image based on news.id - IGNORE Firebase image completely (including deleted images)
+                // Auto-detect image based on title if ID not found
                 let imagePath = '';
-                if (newsImageMap[news.id]) {
-                    imagePath = newsImageMap[news.id];
-                    // Also update news object to prevent Firebase/deleted image from being used
-                    news.image = newsImageMap[news.id];
-                    news.imageUrl = newsImageMap[news.id];
+                const titleLower = (news.title || '').toLowerCase();
+                
+                // Check by normalized ID first
+                if (newsImageMap[normalizedId]) {
+                    imagePath = newsImageMap[normalizedId];
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
                     console.log(`Index - News ${news.id} (${news.title}): FORCE override Firebase/deleted image with correct local image: ${imagePath}`);
+                } else if (titleLower.includes('kktm')) {
+                    // Auto-detect KKTM by title
+                    imagePath = 'assets/images/KKTM.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected KKTM, using KKTM.jpeg`);
+                } else if (titleLower.includes('utem')) {
+                    // Auto-detect UTeM by title
+                    imagePath = 'assets/images/UTEM.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected UTeM, using UTEM.jpeg`);
+                } else if (titleLower.includes('usim')) {
+                    // Auto-detect USIM by title
+                    imagePath = 'assets/images/USIM.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected USIM, using USIM.jpeg`);
+                } else if (titleLower.includes('uthm')) {
+                    // Auto-detect UTHM by title
+                    imagePath = 'assets/images/UTHM.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected UTHM, using UTHM.jpeg`);
+                } else if (titleLower.includes('gmi')) {
+                    // Auto-detect GMI by title
+                    imagePath = 'assets/images/GMI.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected GMI, using GMI.jpeg`);
+                } else if (titleLower.includes('chemtron')) {
+                    // Auto-detect CHEMTRON by title
+                    imagePath = 'assets/images/CHEMTRON.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected CHEMTRON, using CHEMTRON.jpeg`);
+                } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                    // Auto-detect HAPPY NEW YEAR by title
+                    imagePath = 'assets/images/firework.jpeg';
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
+                    newsImageMap[normalizedId] = imagePath;
+                    console.log(`Index - News ${news.id} (${news.title}): Auto-detected HAPPY NEW YEAR, using firework.jpeg`);
                 } else {
                     // Fallback to Firebase image if no mapping (shouldn't happen)
                     imagePath = news.image || news.imageUrl || '';
@@ -649,18 +712,45 @@
                 const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                 if (card) {
                     // Force correct image based on news ID (FIRST thing in card processing)
+                    const normalizedId = (news.id || '').toLowerCase().trim();
+                    const titleLower = (news.title || '').toLowerCase();
                     const cardNewsImageMap = {
                         'kktm': 'assets/images/KKTM.jpeg',
                         'utem': 'assets/images/UTEM.jpeg',
                         'usim': 'assets/images/USIM.jpeg',
                         'uthm': 'assets/images/UTHM.jpeg',
                         'gmi': 'assets/images/GMI.jpeg',
-                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                        'chemtron': 'assets/images/CHEMTRON.jpeg',
+                        'happy-new-year': 'assets/images/firework.jpeg',
+                        'happynewyear': 'assets/images/firework.jpeg',
+                        'firework': 'assets/images/firework.jpeg'
                     };
                     
-                    if (cardNewsImageMap[news.id]) {
-                        imagePath = cardNewsImageMap[news.id];
+                    // Check by normalized ID first
+                    if (cardNewsImageMap[normalizedId]) {
+                        imagePath = cardNewsImageMap[normalizedId];
                         console.log(`Index - News ${news.id}: Force mapped image in card processing: ${imagePath}`);
+                    } else {
+                        // Auto-detect by title
+                        if (titleLower.includes('kktm')) {
+                            imagePath = 'assets/images/KKTM.jpeg';
+                        } else if (titleLower.includes('utem')) {
+                            imagePath = 'assets/images/UTEM.jpeg';
+                        } else if (titleLower.includes('usim')) {
+                            imagePath = 'assets/images/USIM.jpeg';
+                        } else if (titleLower.includes('uthm')) {
+                            imagePath = 'assets/images/UTHM.jpeg';
+                        } else if (titleLower.includes('gmi')) {
+                            imagePath = 'assets/images/GMI.jpeg';
+                        } else if (titleLower.includes('chemtron')) {
+                            imagePath = 'assets/images/CHEMTRON.jpeg';
+                        } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                            imagePath = 'assets/images/firework.jpeg';
+                        }
+                        
+                        if (imagePath) {
+                            console.log(`Index - News ${news.id}: Auto-detected image in card processing: ${imagePath}`);
+                        }
                     }
                     
                     // Force GMI to use correct image
@@ -693,20 +783,54 @@
                     }
                     
                     // Final validation - Map news ID to correct image path (ALWAYS OVERRIDE)
+                    // Reuse normalizedId and titleLower already declared above
                     const newsImageMap = {
                         'kktm': 'assets/images/KKTM.jpeg',
                         'utem': 'assets/images/UTEM.jpeg',
                         'usim': 'assets/images/USIM.jpeg',
                         'uthm': 'assets/images/UTHM.jpeg',
                         'gmi': 'assets/images/GMI.jpeg',
-                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                        'chemtron': 'assets/images/CHEMTRON.jpeg',
+                        'happy-new-year': 'assets/images/firework.jpeg',
+                        'happynewyear': 'assets/images/firework.jpeg',
+                        'firework': 'assets/images/firework.jpeg'
                     };
                     
-                    // ALWAYS force correct image based on news ID (this should override everything)
-                    if (newsImageMap[news.id]) {
-                        cleanImagePath = newsImageMap[news.id];
-                        imagePath = newsImageMap[news.id]; // Also update imagePath
+                    // Auto-detect image based on title if ID not found (titleLower already declared above)
+                    
+                    // Check by normalized ID first
+                    if (newsImageMap[normalizedId]) {
+                        cleanImagePath = newsImageMap[normalizedId];
+                        imagePath = newsImageMap[normalizedId];
                         console.log(`Index - News ${news.id}: FORCE OVERRIDE mapped to correct image: ${cleanImagePath}`);
+                    } else if (titleLower.includes('kktm')) {
+                        cleanImagePath = 'assets/images/KKTM.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected KKTM, using KKTM.jpeg`);
+                    } else if (titleLower.includes('utem')) {
+                        cleanImagePath = 'assets/images/UTEM.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected UTeM, using UTEM.jpeg`);
+                    } else if (titleLower.includes('usim')) {
+                        cleanImagePath = 'assets/images/USIM.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected USIM, using USIM.jpeg`);
+                    } else if (titleLower.includes('uthm')) {
+                        cleanImagePath = 'assets/images/UTHM.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected UTHM, using UTHM.jpeg`);
+                    } else if (titleLower.includes('gmi')) {
+                        cleanImagePath = 'assets/images/GMI.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected GMI, using GMI.jpeg`);
+                    } else if (titleLower.includes('chemtron')) {
+                        cleanImagePath = 'assets/images/CHEMTRON.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected CHEMTRON, using CHEMTRON.jpeg`);
+                    } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                        cleanImagePath = 'assets/images/firework.jpeg';
+                        imagePath = cleanImagePath;
+                        console.log(`Index - News ${news.id}: Auto-detected HAPPY NEW YEAR, using firework.jpeg`);
                     }
                     
                     // Final validation - ensure GMI uses correct image (double check)
@@ -901,18 +1025,50 @@
             newsToShow.forEach((news, index) => {
                 const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                 if (card) {
+                    // Normalize news.id to lowercase for consistent mapping
+                    const normalizedId = (news.id || '').toLowerCase().trim();
+                    const titleLower = (news.title || '').toLowerCase();
+                    
                     const finalNewsImageMap = {
                         'kktm': 'assets/images/KKTM.jpeg',
                         'utem': 'assets/images/UTEM.jpeg',
                         'usim': 'assets/images/USIM.jpeg',
                         'uthm': 'assets/images/UTHM.jpeg',
                         'gmi': 'assets/images/GMI.jpeg',
-                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                        'chemtron': 'assets/images/CHEMTRON.jpeg',
+                        'happy-new-year': 'assets/images/firework.jpeg',
+                        'happynewyear': 'assets/images/firework.jpeg',
+                        'firework': 'assets/images/firework.jpeg'
                     };
                     
                     // ALWAYS use correct image based on news.id - this is the FINAL override
-                    if (finalNewsImageMap[news.id]) {
-                        const finalImagePath = finalNewsImageMap[news.id];
+                    let finalImagePath = finalNewsImageMap[normalizedId];
+                    
+                    // Auto-detect image based on title if ID not found
+                    if (!finalImagePath) {
+                        if (titleLower.includes('kktm')) {
+                            finalImagePath = 'assets/images/KKTM.jpeg';
+                        } else if (titleLower.includes('utem')) {
+                            finalImagePath = 'assets/images/UTEM.jpeg';
+                        } else if (titleLower.includes('usim')) {
+                            finalImagePath = 'assets/images/USIM.jpeg';
+                        } else if (titleLower.includes('uthm')) {
+                            finalImagePath = 'assets/images/UTHM.jpeg';
+                        } else if (titleLower.includes('gmi')) {
+                            finalImagePath = 'assets/images/GMI.jpeg';
+                        } else if (titleLower.includes('chemtron')) {
+                            finalImagePath = 'assets/images/CHEMTRON.jpeg';
+                        } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                            finalImagePath = 'assets/images/firework.jpeg';
+                        }
+                        
+                        if (finalImagePath) {
+                            finalNewsImageMap[normalizedId] = finalImagePath; // Cache it
+                            console.log(`Index - News ${news.id} (${news.title}): Final override - Auto-detected by title, using ${finalImagePath}`);
+                        }
+                    }
+                    
+                    if (finalImagePath) {
                         const finalCacheBuster = `?v=${Date.now()}&t=${news.id}&final`;
                         const finalEscapedPath = finalImagePath.replace(/'/g, "\\'");
                         
@@ -941,7 +1097,36 @@
                         
                         console.log(`Index - Final Fix ALL Cards: news.id=${news.id}, news.title=${news.title}, image=${finalImagePath}, card.className=${card.className}`);
                     } else {
-                        console.warn(`Index - News ${news.id} (${news.title}): No image mapping found!`);
+                        // Last resort: Auto-detect by title
+                        const titleLower = (news.title || '').toLowerCase();
+                        let lastResortImage = '';
+                        
+                        if (titleLower.includes('kktm')) {
+                            lastResortImage = 'assets/images/KKTM.jpeg';
+                        } else if (titleLower.includes('utem')) {
+                            lastResortImage = 'assets/images/UTEM.jpeg';
+                        } else if (titleLower.includes('usim')) {
+                            lastResortImage = 'assets/images/USIM.jpeg';
+                        } else if (titleLower.includes('uthm')) {
+                            lastResortImage = 'assets/images/UTHM.jpeg';
+                        } else if (titleLower.includes('gmi')) {
+                            lastResortImage = 'assets/images/GMI.jpeg';
+                        } else if (titleLower.includes('chemtron')) {
+                            lastResortImage = 'assets/images/CHEMTRON.jpeg';
+                        } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                            lastResortImage = 'assets/images/firework.jpeg';
+                        }
+                        
+                        if (lastResortImage) {
+                            const finalCacheBuster = `?v=${Date.now()}&t=${news.id}&final-auto`;
+                            const finalEscapedPath = lastResortImage.replace(/'/g, "\\'");
+                            card.style.setProperty('background-image', `url('${finalEscapedPath}${finalCacheBuster}')`, 'important');
+                            card.style.setProperty('background-size', 'cover', 'important');
+                            card.style.setProperty('background-position', 'center', 'important');
+                            console.log(`Index - News ${news.id} (${news.title}): Last resort auto-detected by title, using ${lastResortImage}`);
+                        } else {
+                            console.warn(`Index - News ${news.id} (${news.title}): No image mapping found!`);
+                        }
                     }
                 }
             });
@@ -954,14 +1139,39 @@
                     'usim': 'assets/images/USIM.jpeg',
                     'uthm': 'assets/images/UTHM.jpeg',
                     'gmi': 'assets/images/GMI.jpeg',
-                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    'chemtron': 'assets/images/CHEMTRON.jpeg',
+                    'happy-new-year': 'assets/images/firework.jpeg',
+                    'happynewyear': 'assets/images/firework.jpeg',
+                    'firework': 'assets/images/firework.jpeg'
                 };
                 
-                if (allNewsImageMap[news.id]) {
+                // Normalize ID and auto-detect by title
+                const normalizedId = (news.id || '').toLowerCase().trim();
+                const titleLower = (news.title || '').toLowerCase();
+                
+                let correctImagePath = allNewsImageMap[normalizedId];
+                if (!correctImagePath) {
+                    if (titleLower.includes('kktm')) {
+                        correctImagePath = 'assets/images/KKTM.jpeg';
+                    } else if (titleLower.includes('utem')) {
+                        correctImagePath = 'assets/images/UTEM.jpeg';
+                    } else if (titleLower.includes('usim')) {
+                        correctImagePath = 'assets/images/USIM.jpeg';
+                    } else if (titleLower.includes('uthm')) {
+                        correctImagePath = 'assets/images/UTHM.jpeg';
+                    } else if (titleLower.includes('gmi')) {
+                        correctImagePath = 'assets/images/GMI.jpeg';
+                    } else if (titleLower.includes('chemtron')) {
+                        correctImagePath = 'assets/images/CHEMTRON.jpeg';
+                    } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                        correctImagePath = 'assets/images/firework.jpeg';
+                    }
+                }
+                
+                if (correctImagePath) {
                     const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                     if (card) {
                         // Directly set style on card element - override Firebase/deleted images
-                        const correctImagePath = allNewsImageMap[news.id];
                         const escapedPath = correctImagePath.replace(/'/g, "\\'");
                         const cacheBuster = `?v=${Date.now()}&force=${news.id}&immediate`;
                         card.style.backgroundImage = `url('${escapedPath}${cacheBuster}')`;
@@ -980,19 +1190,45 @@
                     'usim': 'assets/images/USIM.jpeg',
                     'uthm': 'assets/images/UTHM.jpeg',
                     'gmi': 'assets/images/GMI.jpeg',
-                    'chemtron': 'assets/images/CHEMTRON.jpeg'
+                    'chemtron': 'assets/images/CHEMTRON.jpeg',
+                    'happy-new-year': 'assets/images/firework.jpeg',
+                    'happynewyear': 'assets/images/firework.jpeg',
+                    'firework': 'assets/images/firework.jpeg'
                 };
                 
                 // Force correct images for ALL news cards (especially to override Firebase deleted images)
                 newsToShow.forEach(news => {
-                    if (allNewsImageMap[news.id]) {
+                    // Normalize ID and auto-detect by title
+                    const normalizedId = (news.id || '').toLowerCase().trim();
+                    const titleLower = (news.title || '').toLowerCase();
+                    
+                    let correctImagePath = allNewsImageMap[normalizedId];
+                    if (!correctImagePath) {
+                        if (titleLower.includes('kktm')) {
+                            correctImagePath = 'assets/images/KKTM.jpeg';
+                        } else if (titleLower.includes('utem')) {
+                            correctImagePath = 'assets/images/UTEM.jpeg';
+                        } else if (titleLower.includes('usim')) {
+                            correctImagePath = 'assets/images/USIM.jpeg';
+                        } else if (titleLower.includes('uthm')) {
+                            correctImagePath = 'assets/images/UTHM.jpeg';
+                        } else if (titleLower.includes('gmi')) {
+                            correctImagePath = 'assets/images/GMI.jpeg';
+                        } else if (titleLower.includes('chemtron')) {
+                            correctImagePath = 'assets/images/CHEMTRON.jpeg';
+                        } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                            correctImagePath = 'assets/images/firework.jpeg';
+                        }
+                    }
+                    
+                    if (correctImagePath) {
                         const card = grid.querySelector(`[data-news-id="${news.id}"]`);
                         if (card) {
-                            const correctImagePath = `${allNewsImageMap[news.id]}?v=${Date.now()}&force3&${news.id}`;
-                            card.style.setProperty('background-image', `url('${correctImagePath}')`, 'important');
+                            const finalPath = `${correctImagePath}?v=${Date.now()}&force3&${news.id}`;
+                            card.style.setProperty('background-image', `url('${finalPath}')`, 'important');
                             card.style.setProperty('background-size', 'cover', 'important');
                             card.style.setProperty('background-position', 'center', 'important');
-                            console.log(`Index - News ${news.id}: Final force via setTimeout override Firebase/deleted image: ${correctImagePath}`);
+                            console.log(`Index - News ${news.id}: Final force via setTimeout override Firebase/deleted image: ${finalPath}`);
                         }
                     }
                 });
@@ -1011,15 +1247,44 @@
                         'usim': 'assets/images/USIM.jpeg',
                         'uthm': 'assets/images/UTHM.jpeg',
                         'gmi': 'assets/images/GMI.jpeg',
-                        'chemtron': 'assets/images/CHEMTRON.jpeg'
+                        'chemtron': 'assets/images/CHEMTRON.jpeg',
+                        'happy-new-year': 'assets/images/firework.jpeg',
+                        'happynewyear': 'assets/images/firework.jpeg',
+                        'firework': 'assets/images/firework.jpeg'
                     };
                     
                     // Force override images for all news from Firebase
                     news.forEach(newsItem => {
-                        if (imageOverrideMap[newsItem.id]) {
-                            newsItem.image = imageOverrideMap[newsItem.id];
-                            newsItem.imageUrl = imageOverrideMap[newsItem.id];
-                            console.log(`Index - Override Firebase image for ${newsItem.id}: ${imageOverrideMap[newsItem.id]}`);
+                        // Normalize ID
+                        const normalizedId = (newsItem.id || '').toLowerCase().trim();
+                        const titleLower = (newsItem.title || '').toLowerCase();
+                        
+                        // Check by normalized ID first
+                        let imagePath = imageOverrideMap[normalizedId];
+                        
+                        // Auto-detect by title if ID not found
+                        if (!imagePath) {
+                            if (titleLower.includes('kktm')) {
+                                imagePath = 'assets/images/KKTM.jpeg';
+                            } else if (titleLower.includes('utem')) {
+                                imagePath = 'assets/images/UTEM.jpeg';
+                            } else if (titleLower.includes('usim')) {
+                                imagePath = 'assets/images/USIM.jpeg';
+                            } else if (titleLower.includes('uthm')) {
+                                imagePath = 'assets/images/UTHM.jpeg';
+                            } else if (titleLower.includes('gmi')) {
+                                imagePath = 'assets/images/GMI.jpeg';
+                            } else if (titleLower.includes('chemtron')) {
+                                imagePath = 'assets/images/CHEMTRON.jpeg';
+                            } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
+                                imagePath = 'assets/images/firework.jpeg';
+                            }
+                        }
+                        
+                        if (imagePath) {
+                            newsItem.image = imagePath;
+                            newsItem.imageUrl = imagePath;
+                            console.log(`Index - Override Firebase image for ${newsItem.id}: ${imagePath}`);
                         }
                     });
                     
