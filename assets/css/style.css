@@ -8891,29 +8891,29 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel[data-panel="2"] .mission-panel-description,
   .mission-panel[data-panel="3"] .mission-panel-description,
   .mission-panel-expanded-content p.mission-panel-description {
-    font-size: 14px !important; /* Increased for better readability */
-    line-height: 1.8 !important; /* Increased for better spacing */
-    color: #ffffff !important; /* Make text clearer/brighter */
-    font-weight: 400 !important; /* Normal weight for readability */
-    padding: 16px 18px !important; /* Increased padding for better spacing */
-    margin: 0 !important; /* No margin */
-    margin-top: 12px !important; /* Top margin after title/text */
-    margin-bottom: 0 !important; /* No bottom margin */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.7) !important; /* Text shadow for clarity */
+    font-size: 11px !important; /* Same as desktop */
+    line-height: 1.4 !important; /* Same as desktop */
+    color: #ffffff !important; /* Same as desktop */
+    font-weight: 400 !important; /* Same as desktop */
+    padding: 0 !important; /* Same as desktop - no padding */
+    margin: 0 !important; /* Same as desktop */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5) !important; /* Same as desktop */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     max-width: 100% !important; /* Ensure description doesn't overflow */
     width: 100% !important; /* Ensure width is set */
     box-sizing: border-box !important; /* Include padding in width */
-    text-align: left !important; /* Left align for better readability like desktop */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Visible border like desktop */
-    border-radius: 6px !important; /* Rounded corners */
+    text-align: center !important; /* Center align like desktop */
+    border: none !important; /* No border like desktop */
+    border-radius: 0 !important; /* No border radius like desktop */
     display: block !important; /* Ensure description is visible */
     opacity: 1 !important; /* Make sure description is visible */
     visibility: visible !important; /* Make sure description is visible */
-    background: rgba(0, 0, 0, 0.4) !important; /* Darker background for better readability */
+    background: transparent !important; /* No background like desktop */
     position: relative !important; /* Ensure positioning */
-    z-index: 4 !important; /* Above other elements */
+    z-index: 3 !important; /* Above other elements */
   }
   
   .mission-panel-description p,
