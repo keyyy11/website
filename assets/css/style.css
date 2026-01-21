@@ -8602,9 +8602,9 @@ body#aircraftPage .scroll-dark-overlay {
     max-width: calc(100% - 32px) !important; /* Centered with equal margins */
     width: calc(100% - 32px) !important; /* Centered with equal margins */
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
     align-items: center !important; /* Center content horizontally */
     text-align: center !important; /* Center text */
     min-height: auto !important;
@@ -8614,6 +8614,12 @@ body#aircraftPage .scroll-dark-overlay {
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .mission-panel-content * {
+    text-align: center !important; /* Center all child elements */
+    margin-left: auto !important; /* Auto margin for centering */
+    margin-right: auto !important; /* Auto margin for centering */
   }
 
   .mission-panel:hover .mission-panel-content,
@@ -8632,19 +8638,25 @@ body#aircraftPage .scroll-dark-overlay {
     align-items: center !important; /* Center content horizontally */
   }
   
+  .mission-panel:hover .mission-panel-content *,
+  .mission-panel.active .mission-panel-content * {
+    text-align: center !important; /* Center all child elements on hover */
+    margin-left: auto !important; /* Auto margin for centering */
+    margin-right: auto !important; /* Auto margin for centering */
+  }
+  
   .mission-panel.expanded .mission-panel-content {
     position: relative !important;
     bottom: auto !important;
     min-height: auto !important;
-    padding: 16px 16px 16px 16px !important; /* Reduced horizontal padding for better centering */
+    padding: 16px 16px 16px 16px !important; /* Symmetrical padding - same left and right */
     justify-content: flex-start !important;
     background: rgba(5, 6, 10, 0.95) !important; /* Solid background when expanded */
     left: auto !important; /* Reset left for relative positioning */
     transform: none !important; /* Reset transform for relative positioning */
-    transform: none !important; /* Remove center transform */
-    max-width: calc(100% - 64px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 64px) !important; /* Reduced width - smaller box */
-    margin: 16px 0 16px 32px !important; /* Top/bottom margin with left margin */
+    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
+    width: calc(100% - 32px) !important; /* Centered with equal margins */
+    margin: 16px auto !important; /* Top/bottom margin, centered horizontally */
     border-radius: 6px !important; /* Add border radius */
     overflow: hidden !important; /* Prevent content overflow */
     word-wrap: break-word !important; /* Break long words */
