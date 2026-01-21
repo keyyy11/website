@@ -102,9 +102,9 @@
                         <div class="mission-panel-overlay"></div>
                         <div class="mission-panel-content">
                             <h2 class="mission-panel-title">Our Vision</h2>
-                            <p class="mission-panel-text">Aims To Be The First Full Scale Part 23 Type Certificate Aircraft Manufacturer</p>
+                            <p class="mission-panel-text">We are an established full-scale Part 23 Type Certificate aircraft manufacturer.</p>
                             <div class="mission-panel-expanded-content">
-                                <p class="mission-panel-description">Our vision is to establish Malaysia as a leading force in the global aerospace industry. We aim to be the first full-scale Part 23 Type Certificate aircraft manufacturer in the region, creating world-class aircraft that meet the highest international standards.</p>
+                                <p class="mission-panel-description">Our vision is to position Malaysia as a leading force in the global aerospace industry by delivering world-class aircraft built to the highest international standards.</p>
                             </div>
                         </div>
                     </div>
@@ -258,6 +258,30 @@
                 activePanel = null;
             });
         }
+
+        // Auto-expand first panel on mobile by default
+        function initMobilePanels() {
+            if (window.innerWidth <= 768) {
+                // Remove expanded from all panels first
+                missionPanels.forEach(p => p.classList.remove('expanded'));
+                // Auto-expand first panel
+                const firstPanel = missionPanels[0];
+                if (firstPanel && !firstPanel.classList.contains('expanded')) {
+                    firstPanel.classList.add('expanded');
+                    activePanel = firstPanel.dataset.panel;
+                }
+            }
+        }
+        
+        // Initialize on load
+        initMobilePanels();
+        
+        // Re-initialize on resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(initMobilePanels, 250);
+        });
 
         // Click handler untuk expand/collapse (terutama untuk mobile)
         missionPanels.forEach(panel => {
