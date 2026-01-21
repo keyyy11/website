@@ -8162,15 +8162,12 @@ body#aircraftPage .scroll-dark-overlay {
 }
 
 .mission-panel-expanded-content {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(30px); /* Start from below */
-  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-              opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: 0;
+  max-height: none; /* No height limit - show all content */
+  overflow: visible; /* Allow content to be visible */
+  opacity: 1; /* Make visible by default */
+  transform: translateY(0); /* Start at correct position */
+  transition: opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: 14px; /* Add top margin for spacing */
   margin-bottom: 20px; /* Add bottom margin for border space */
   position: relative;
   z-index: 3;
@@ -8179,6 +8176,8 @@ body#aircraftPage .scroll-dark-overlay {
   margin-left: 0;
   margin-right: 0;
   text-align: center; /* Center align text */
+  display: block; /* Ensure displayed */
+  visibility: visible; /* Ensure visible */
 }
 
 /* Show description on hover for desktop - animation from bottom to top */
@@ -8195,12 +8194,18 @@ body#aircraftPage .scroll-dark-overlay {
   text-align: center; /* Center align text */
 }
 
-/* Keep description hidden even if panel has active class (without hover) */
-.mission-panel.active:not(:hover) .mission-panel-expanded-content {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(30px);
-  margin-top: 0;
+/* Show description for active panel (always visible) */
+.mission-panel.active .mission-panel-expanded-content {
+  max-height: 2000px !important; /* Large enough to fit all content */
+  opacity: 1 !important;
+  transform: translateY(0) !important; /* Slide up to position */
+  margin-top: 14px !important; /* Reduced from 18px to fit in green box */
+  margin-bottom: 20px !important; /* Add bottom margin for border space */
+  width: 100% !important; /* Full width of panel */
+  max-width: 100% !important; /* Full width of panel */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  text-align: center !important; /* Center align text */
 }
 
 .mission-panel.expanded .mission-panel-content {
@@ -8476,18 +8481,19 @@ body#aircraftPage .scroll-dark-overlay {
   
   .mission-panel {
     flex: 1;
-    min-height: 200px !important;
-    height: 200px !important;
+    min-height: 120px !important; /* Minimum height for collapsed state */
+    height: auto !important; /* Auto height for expanded content */
     width: 100% !important;
     max-width: 100% !important;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight - sama macam about */
     opacity: 1 !important;
-    margin: 0 !important;
+    margin: 0 0 24px 0 !important; /* Add bottom margin for spacing */
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden !important; /* Hide overflow for cleaner look */
+    border-radius: 8px !important; /* Rounded corners */
   }
   
   .mission-panel:nth-child(1),
@@ -8497,14 +8503,18 @@ body#aircraftPage .scroll-dark-overlay {
   }
   
   .mission-panel:hover,
-  .mission-panel.active {
+  .mission-panel.active,
+  .mission-panel.expanded {
     flex: 1 !important;
+    min-height: auto !important; /* Auto height for expanded content */
+    height: auto !important; /* Auto height for expanded content */
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
     opacity: 1 !important;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), 0 0 50px rgba(255, 255, 255, 0.2), 0 0 75px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.08) !important;
-    border: 2px solid rgba(255, 255, 255, 0.5) !important;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) !important;
-    /* No animation - static glow */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important; /* Subtle shadow */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Subtle border */
+    filter: none !important; /* Remove drop shadow */
+    overflow: visible !important; /* Allow content to be visible when expanded */
+    /* Smooth transition */
   }
 
   /* Mission panel static glow for mobile - no animations */
@@ -8591,29 +8601,30 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel-content {
-    padding: 16px 16px 14px 16px !important; /* Symmetrical padding - same left and right */
-    position: absolute !important;
-    bottom: 16px !important;
-    left: 50% !important; /* Center horizontally */
-    transform: translateX(-50%) !important; /* Center the content box */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%) !important; /* Darker overlay for mobile */
-    backdrop-filter: blur(2px) !important; /* Less blur for more transparency */
-    border-radius: 6px !important; /* Add border radius for cleaner box */
-    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
-    width: calc(100% - 32px) !important; /* Centered with equal margins */
+    padding: 24px 20px !important; /* Increased padding for better spacing */
+    position: relative !important; /* Use relative positioning for better layout */
+    bottom: auto !important;
+    left: auto !important; /* Reset left */
+    transform: none !important; /* Reset transform */
+    background: transparent !important; /* Transparent background - content will show */
+    backdrop-filter: none !important; /* Remove backdrop filter */
+    border-radius: 0 !important; /* No border radius on content */
+    max-width: 100% !important; /* Full width */
+    width: 100% !important; /* Full width */
     flex: 1;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important; /* Start from top */
     align-items: center !important; /* Center content horizontally */
     text-align: center !important; /* Center text */
     min-height: auto !important;
-    margin: 0 !important; /* Remove auto margin */
-    overflow: hidden !important; /* Prevent content overflow */
+    margin: 0 !important; /* Remove margin */
+    overflow: visible !important; /* Allow content to be fully visible */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 2 !important; /* Above image */
   }
   
   /* Force center ALL child elements in mission-panel-content */
@@ -8721,21 +8732,26 @@ body#aircraftPage .scroll-dark-overlay {
     position: relative !important;
     bottom: auto !important;
     min-height: auto !important;
-    padding: 16px 16px 16px 16px !important; /* Symmetrical padding - same left and right */
+    padding: 24px 20px !important; /* Increased padding for better spacing */
     justify-content: flex-start !important;
-    background: rgba(5, 6, 10, 0.95) !important; /* Solid background when expanded */
+    background: transparent !important; /* Transparent background */
     left: auto !important; /* Reset left for relative positioning */
     transform: none !important; /* Reset transform for relative positioning */
-    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
-    width: calc(100% - 32px) !important; /* Centered with equal margins */
-    margin: 16px auto !important; /* Top/bottom margin, centered horizontally */
-    border-radius: 6px !important; /* Add border radius */
-    overflow: hidden !important; /* Prevent content overflow */
+    max-width: 100% !important; /* Full width */
+    width: 100% !important; /* Full width */
+    margin: 0 !important; /* No margin */
+    border-radius: 0 !important; /* No border radius */
+    overflow: visible !important; /* Allow content to be fully visible */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
     text-align: center !important; /* Center text */
     align-items: center !important; /* Center content horizontally */
+  }
+  
+  .mission-panel.expanded .mission-panel-expanded-content {
+    max-height: 3000px !important; /* Increased to ensure all content is visible */
+    overflow: visible !important; /* Ensure content is not cut off */
   }
   
   .mission-panel.expanded .mission-panel-content * {
@@ -8833,58 +8849,93 @@ body#aircraftPage .scroll-dark-overlay {
     visibility: hidden !important;
   }
   
-  .mission-panel-expanded-content {
-    max-height: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    margin-top: 0 !important;
+  /* Show expanded content by default on mobile for better readability - FORCE VISIBLE */
+  .mission-panel-expanded-content,
+  .mission-panel .mission-panel-expanded-content,
+  .mission-panel.active .mission-panel-expanded-content,
+  .mission-panel:hover .mission-panel-expanded-content,
+  .mission-panel[data-panel="1"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="2"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="3"] .mission-panel-expanded-content {
+    max-height: none !important; /* No height limit - show all content */
+    overflow: visible !important; /* Allow content to be fully visible */
+    opacity: 1 !important; /* Make visible on mobile */
+    transition: opacity 0.3s ease, margin-top 0.3s ease !important;
+    margin-top: 16px !important; /* Add margin for spacing */
+    margin-bottom: 0 !important; /* No bottom margin */
     text-align: center !important; /* Center align all content */
     width: 100% !important;
+    transform: none !important; /* No transform */
+    display: block !important; /* Ensure content is displayed */
+    visibility: visible !important; /* Ensure content is visible */
+    position: relative !important; /* Ensure positioning */
+    z-index: 3 !important; /* Above other elements */
   }
   
   .mission-panel.expanded .mission-panel-expanded-content {
-    max-height: 1500px !important;
+    max-height: none !important; /* No height limit - show all content */
     opacity: 1 !important;
-    margin-top: 16px !important; /* Reduced from 20px to make box smaller */
-    max-width: 100% !important; /* Limit width */
+    margin-top: 16px !important; /* Consistent margin */
+    margin-bottom: 0 !important; /* No bottom margin */
+    max-width: 100% !important; /* Full width */
     text-align: center !important; /* Center align all content */
     width: 100% !important;
+    overflow: visible !important; /* Ensure content is not cut off */
+    transform: none !important; /* No transform */
+    display: block !important; /* Ensure content is displayed */
+    visibility: visible !important; /* Ensure content is visible */
   }
   
-  .mission-panel-description {
-    font-size: 11px !important; /* Reduced from 12px */
-    line-height: 1.5 !important; /* Reduced from 1.6 */
+  .mission-panel-description,
+  .mission-panel-expanded-content .mission-panel-description,
+  .mission-panel .mission-panel-expanded-content .mission-panel-description,
+  .mission-panel[data-panel="1"] .mission-panel-description,
+  .mission-panel[data-panel="2"] .mission-panel-description,
+  .mission-panel[data-panel="3"] .mission-panel-description,
+  .mission-panel-expanded-content p.mission-panel-description {
+    font-size: 14px !important; /* Increased for better readability */
+    line-height: 1.8 !important; /* Increased for better spacing */
     color: #ffffff !important; /* Make text clearer/brighter */
-    font-weight: 500 !important; /* Make font clearer/bolder */
-    padding: 12px 12px !important; /* Symmetrical padding - same left and right */
-    margin: 0 auto !important; /* Center margin */
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.6) !important; /* Text shadow for clarity */
+    font-weight: 400 !important; /* Normal weight for readability */
+    padding: 16px 18px !important; /* Increased padding for better spacing */
+    margin: 0 !important; /* No margin */
+    margin-top: 12px !important; /* Top margin after title/text */
+    margin-bottom: 0 !important; /* No bottom margin */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.7) !important; /* Text shadow for clarity */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     max-width: 100% !important; /* Ensure description doesn't overflow */
     width: 100% !important; /* Ensure width is set */
     box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Add border for spacing */
-    border-radius: 4px !important; /* Rounded corners */
+    text-align: left !important; /* Left align for better readability like desktop */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Visible border like desktop */
+    border-radius: 6px !important; /* Rounded corners */
+    display: block !important; /* Ensure description is visible */
+    opacity: 1 !important; /* Make sure description is visible */
+    visibility: visible !important; /* Make sure description is visible */
+    background: rgba(0, 0, 0, 0.4) !important; /* Darker background for better readability */
+    position: relative !important; /* Ensure positioning */
+    z-index: 4 !important; /* Above other elements */
   }
   
-  .mission-panel-description p {
-    margin-bottom: 12px !important; /* Reduced from 16px */
-    padding-bottom: 10px !important; /* Reduced from 12px */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    text-align: center !important; /* Center align paragraphs */
+  .mission-panel-description p,
+  .mission-panel-expanded-content .mission-panel-description p {
+    display: block !important; /* Ensure paragraphs are visible */
+    opacity: 1 !important; /* Make sure paragraphs are visible */
+    visibility: visible !important; /* Make sure paragraphs are visible */
+    margin-bottom: 12px !important; /* Space between paragraphs */
+    padding-bottom: 8px !important; /* Padding for readability */
+    text-align: left !important; /* Left align for better readability */
+    line-height: 1.7 !important; /* Better line spacing */
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
   
-  .mission-panel-description p:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-    border-bottom: none !important;
+  .mission-panel-description p:last-child,
+  .mission-panel-expanded-content .mission-panel-description p:last-child {
+    margin-bottom: 0 !important; /* No margin on last paragraph */
+    padding-bottom: 0 !important; /* No padding on last paragraph */
+    border-bottom: none !important; /* No border on last paragraph */
   }
   
   .mission-panel-description strong {
@@ -12029,13 +12080,18 @@ body.menu-open {
     width: calc(100% - 24px) !important; /* Centered with equal margins */
     margin: 14px auto !important; /* Top/bottom margin, centered horizontally */
     border-radius: 6px !important; /* Add border radius */
-    overflow: hidden !important; /* Prevent content overflow */
+    overflow: visible !important; /* Allow content to be fully visible */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
     text-align: center !important; /* Center text */
     align-items: center !important; /* Center content horizontally */
     justify-content: flex-start !important;
+  }
+  
+  .mission-panel.expanded .mission-panel-expanded-content {
+    max-height: 3000px !important; /* Increased to ensure all content is visible */
+    overflow: visible !important; /* Ensure content is not cut off */
   }
   
   .mission-panel.expanded .mission-panel-content * {
@@ -12141,16 +12197,43 @@ body.menu-open {
     visibility: hidden !important;
   }
   
-  .mission-panel.expanded .mission-panel-expanded-content {
-    margin-top: 18px !important; /* Reduced from 22px to make box smaller */
-    max-width: 100% !important; /* Limit width */
+  /* Show expanded content by default on mobile 480px for better readability */
+  .mission-panel-expanded-content,
+  .mission-panel .mission-panel-expanded-content,
+  .mission-panel.active .mission-panel-expanded-content,
+  .mission-panel:hover .mission-panel-expanded-content {
+    max-height: none !important; /* No height limit - show all content */
+    overflow: visible !important; /* Allow content to be fully visible */
+    opacity: 1 !important; /* Make visible on mobile */
+    transition: opacity 0.3s ease, margin-top 0.3s ease !important;
+    margin-top: 14px !important; /* Add margin for spacing */
+    margin-bottom: 0 !important; /* No bottom margin */
     text-align: center !important; /* Center align all content */
     width: 100% !important;
+    transform: none !important; /* No transform */
+    display: block !important; /* Ensure content is displayed */
+    visibility: visible !important; /* Ensure content is visible */
   }
   
-  .mission-panel-description {
-    font-size: 10px !important; /* Reduced from 11px */
-    line-height: 1.5 !important; /* Reduced from 1.6 */
+  .mission-panel.expanded .mission-panel-expanded-content {
+    max-height: none !important; /* No height limit - show all content */
+    opacity: 1 !important;
+    margin-top: 14px !important; /* Consistent margin */
+    margin-bottom: 0 !important; /* No bottom margin */
+    max-width: 100% !important; /* Full width */
+    text-align: center !important; /* Center align all content */
+    width: 100% !important;
+    overflow: visible !important; /* Ensure content is not cut off */
+    transform: none !important; /* No transform */
+    display: block !important; /* Ensure content is displayed */
+    visibility: visible !important; /* Ensure content is visible */
+  }
+  
+  .mission-panel-description,
+  .mission-panel-expanded-content .mission-panel-description,
+  .mission-panel .mission-panel-expanded-content .mission-panel-description {
+    font-size: 11px !important; /* Increased from 10px for better readability */
+    line-height: 1.6 !important; /* Increased from 1.5 for better spacing */
     color: #ffffff !important; /* Make text clearer/brighter */
     font-weight: 500 !important; /* Make font clearer/bolder */
     padding: 10px 10px !important; /* Symmetrical padding - same left and right */
@@ -12166,6 +12249,16 @@ body.menu-open {
     text-align: center !important; /* Center text */
     border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Add border for spacing */
     border-radius: 4px !important; /* Rounded corners */
+    display: block !important; /* Ensure description is visible */
+    opacity: 1 !important; /* Make sure description is visible */
+    visibility: visible !important; /* Make sure description is visible */
+  }
+  
+  .mission-panel-description p,
+  .mission-panel-expanded-content .mission-panel-description p {
+    display: block !important; /* Ensure paragraphs are visible */
+    opacity: 1 !important; /* Make sure paragraphs are visible */
+    visibility: visible !important; /* Make sure paragraphs are visible */
   }
   
   .mission-panel-description p {
