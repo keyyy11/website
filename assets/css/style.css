@@ -8487,7 +8487,7 @@ body#aircraftPage .scroll-dark-overlay {
     max-width: 100% !important;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight */
     opacity: 1 !important;
-    margin: 0 0 20px 0 !important; /* Add spacing between panels */
+    margin: 0 0 0 0 !important; /* No margin between panels - continuous */
     display: flex;
     flex-direction: column;
     position: relative;
@@ -8604,9 +8604,9 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel-content {
-    padding: 24px 20px 24px 20px !important; /* Better balanced padding */
+    padding: 20px 18px 20px 18px !important; /* Tighter padding */
     position: absolute !important; /* Absolute positioning like desktop */
-    bottom: 30px !important; /* Position at bottom with better spacing */
+    bottom: 20px !important; /* Position closer to bottom */
     top: auto !important;
     left: 50% !important; /* Center horizontally like desktop */
     right: auto !important;
@@ -8654,7 +8654,7 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel-title {
     font-size: 36px !important; /* Slightly smaller for mobile */
     font-weight: 900 !important; /* Same as desktop */
-    margin-bottom: 12px !important; /* Add spacing after title */
+    margin-bottom: 8px !important; /* Reduced spacing after title */
     margin-top: 0 !important;
     padding-top: 0 !important;
     text-transform: uppercase !important; /* Same as desktop */
@@ -8689,7 +8689,7 @@ body#aircraftPage .scroll-dark-overlay {
     margin-left: 0 !important;
     margin-right: 0 !important;
     margin-top: 0 !important;
-    margin-bottom: 12px !important; /* Add spacing before description */
+    margin-bottom: 8px !important; /* Reduced spacing before description */
     padding-left: 0 !important;
     padding-right: 0 !important;
     width: 100% !important;
