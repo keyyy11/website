@@ -8557,13 +8557,13 @@ body#aircraftPage .scroll-dark-overlay {
     padding: 16px 16px 14px 16px !important; /* Symmetrical padding - same left and right */
     position: absolute !important;
     bottom: 16px !important;
-    left: 32px !important; /* Position from left */
-    transform: none !important; /* Remove center transform */
+    left: 50% !important; /* Center horizontally */
+    transform: translateX(-50%) !important; /* Center the content box */
     background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%) !important; /* Darker overlay for mobile */
     backdrop-filter: blur(2px) !important; /* Less blur for more transparency */
     border-radius: 6px !important; /* Add border radius for cleaner box */
-    max-width: calc(100% - 64px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 64px) !important; /* Reduced width - smaller box */
+    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
+    width: calc(100% - 32px) !important; /* Centered with equal margins */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -8582,11 +8582,11 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel:hover .mission-panel-content,
   .mission-panel.active .mission-panel-content {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.2) 100%) !important; /* Darker on hover for text readability */
-    left: 32px !important; /* Position from left */
-    transform: none !important; /* Remove center transform */
+    left: 50% !important; /* Center horizontally */
+    transform: translateX(-50%) !important; /* Center the content box */
     padding: 16px 16px 14px 16px !important; /* Symmetrical padding - same left and right */
-    max-width: calc(100% - 64px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 64px) !important; /* Reduced width - smaller box */
+    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
+    width: calc(100% - 32px) !important; /* Centered with equal margins */
     overflow: hidden !important; /* Prevent content overflow */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
@@ -8603,6 +8603,7 @@ body#aircraftPage .scroll-dark-overlay {
     justify-content: flex-start !important;
     background: rgba(5, 6, 10, 0.95) !important; /* Solid background when expanded */
     left: auto !important; /* Reset left for relative positioning */
+    transform: none !important; /* Reset transform for relative positioning */
     transform: none !important; /* Remove center transform */
     max-width: calc(100% - 64px) !important; /* Reduced width - smaller box */
     width: calc(100% - 64px) !important; /* Reduced width - smaller box */
@@ -11738,13 +11739,13 @@ body.menu-open {
     padding: 14px 12px 12px 12px !important; /* Symmetrical padding - same left and right */
     position: absolute !important;
     bottom: 14px !important;
-    left: 24px !important; /* Position from left */
-    transform: none !important; /* Remove center transform */
+    left: 50% !important; /* Center horizontally */
+    transform: translateX(-50%) !important; /* Center the content box */
     background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.15) 100%) !important; /* Darker overlay for mobile 480px */
     backdrop-filter: blur(2px) !important; /* Less blur */
     border-radius: 6px !important; /* Add border radius for cleaner box */
-    max-width: calc(100% - 48px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 48px) !important; /* Reduced width - smaller box */
+    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
+    width: calc(100% - 24px) !important; /* Centered with equal margins */
     overflow: hidden !important; /* Prevent content overflow */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
@@ -11761,11 +11762,11 @@ body.menu-open {
   .mission-panel:hover .mission-panel-content,
   .mission-panel.active .mission-panel-content {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 30%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.25) 100%) !important; /* Darker on hover for mobile 480px */
-    left: 24px !important; /* Position from left */
-    transform: none !important; /* Remove center transform */
+    left: 50% !important; /* Center horizontally */
+    transform: translateX(-50%) !important; /* Center the content box */
     padding: 14px 12px 12px 12px !important; /* Symmetrical padding - same left and right */
-    max-width: calc(100% - 48px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 48px) !important; /* Reduced width - smaller box */
+    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
+    width: calc(100% - 24px) !important; /* Centered with equal margins */
     overflow: hidden !important; /* Prevent content overflow */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
@@ -11779,10 +11780,10 @@ body.menu-open {
     position: relative !important;
     bottom: auto !important;
     left: auto !important; /* Reset left for relative positioning */
-    transform: none !important; /* Remove center transform */
-    max-width: calc(100% - 48px) !important; /* Reduced width - smaller box */
-    width: calc(100% - 48px) !important; /* Reduced width - smaller box */
-    margin: 14px 0 14px 24px !important; /* Top/bottom margin with left margin */
+    transform: none !important; /* Reset transform for relative positioning */
+    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
+    width: calc(100% - 24px) !important; /* Centered with equal margins */
+    margin: 14px auto !important; /* Top/bottom margin, centered horizontally */
     border-radius: 6px !important; /* Add border radius */
     overflow: hidden !important; /* Prevent content overflow */
     word-wrap: break-word !important; /* Break long words */
