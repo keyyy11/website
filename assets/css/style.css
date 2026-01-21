@@ -8588,14 +8588,16 @@ body#aircraftPage .scroll-dark-overlay {
   }
   
   .mission-panel-image {
-    filter: brightness(0.65) contrast(1.1) !important; /* Darken images for mobile */
+    filter: brightness(0.7) contrast(1.1) !important; /* Same as desktop */
+    transform: scale(1) !important; /* Initial scale */
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Desktop transition */
   }
 
   .mission-panel-image::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4) !important; /* Darker overlay on image for mobile */
+    background: rgba(0, 0, 0, 0.3) !important; /* Same as desktop */
     z-index: 1;
     pointer-events: none;
   }
@@ -8817,36 +8819,31 @@ body#aircraftPage .scroll-dark-overlay {
     margin-right: 0 !important; /* No right margin */
     padding-left: 0 !important; /* No left padding */
     padding-right: 0 !important; /* No right padding */
-    opacity: 0 !important; /* Hidden by default */
-    max-height: 0 !important;
-    overflow: hidden !important;
-    display: none !important; /* Completely hide by default */
-    visibility: hidden !important; /* Additional hiding */
-    transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease, display 0.5s ease, visibility 0.5s ease !important;
-    pointer-events: none !important;
+    opacity: 1 !important; /* Visible like desktop */
+    max-height: none !important; /* No height limit */
+    overflow: visible !important; /* Visible */
+    display: block !important; /* Show by default like desktop */
+    visibility: visible !important; /* Visible */
+    transition: opacity 0.4s ease, margin-top 0.4s ease !important; /* Desktop transition */
+    pointer-events: auto !important;
     animation: none !important; /* Remove any animations */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
     text-align: center !important; /* Center text */
+    margin-bottom: 0 !important; /* No bottom margin */
   }
 
-  .mission-panel:hover .mission-panel-text {
-    opacity: 1 !important; /* Show text ONLY on hover */
-    max-height: 200px !important;
-    margin-top: 12px !important; /* Reduced from 14px */
+  .mission-panel:hover .mission-panel-text,
+  .mission-panel.active .mission-panel-text,
+  .mission-panel.expanded .mission-panel-text {
+    opacity: 1 !important; /* Always visible */
+    max-height: none !important;
+    margin-top: 0 !important;
     transform: translateY(0) !important;
     pointer-events: auto !important;
-    display: block !important; /* Show on hover */
-    visibility: visible !important; /* Make visible on hover */
-  }
-
-  /* Keep text hidden even if panel has active class (without hover) */
-  .mission-panel.active:not(:hover) .mission-panel-text {
-    opacity: 0 !important;
-    max-height: 0 !important;
-    display: none !important;
-    visibility: hidden !important;
+    display: block !important; /* Show */
+    visibility: visible !important; /* Make visible */
   }
   
   /* Show expanded content by default on mobile for better readability - FORCE VISIBLE */
