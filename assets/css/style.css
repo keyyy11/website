@@ -8921,12 +8921,16 @@ body#aircraftPage .scroll-dark-overlay {
     display: block !important; /* Ensure paragraphs are visible */
     opacity: 1 !important; /* Make sure paragraphs are visible */
     visibility: visible !important; /* Make sure paragraphs are visible */
-    margin-bottom: 12px !important; /* Space between paragraphs */
-    padding-bottom: 8px !important; /* Padding for readability */
-    text-align: left !important; /* Left align for better readability */
-    line-height: 1.7 !important; /* Better line spacing */
+    margin-bottom: 10px !important; /* Same as desktop */
+    padding-bottom: 8px !important; /* Same as desktop */
+    text-align: center !important; /* Center align like desktop */
+    line-height: 1.4 !important; /* Same as desktop */
     margin-left: 0 !important;
     margin-right: 0 !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important; /* Same as desktop */
   }
   
   .mission-panel-description p:last-child,
