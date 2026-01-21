@@ -8719,19 +8719,23 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel:hover .mission-panel-content,
-  .mission-panel.active .mission-panel-content {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.2) 100%) !important; /* Darker on hover for text readability */
+  .mission-panel.active .mission-panel-content,
+  .mission-panel.expanded .mission-panel-content {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.65) 30%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.4) 100%) !important; /* Same as default */
     left: 50% !important; /* Center horizontally */
     transform: translateX(-50%) !important; /* Center the content box */
-    padding: 16px 16px 14px 16px !important; /* Symmetrical padding - same left and right */
-    max-width: calc(100% - 32px) !important; /* Centered with equal margins */
-    width: calc(100% - 32px) !important; /* Centered with equal margins */
-    overflow: hidden !important; /* Prevent content overflow */
+    padding: 20px 18px 20px 18px !important; /* Same padding as default */
+    bottom: 20px !important; /* Same bottom position */
+    max-width: calc(100% - 32px) !important; /* Same width */
+    width: calc(100% - 32px) !important; /* Same width */
+    overflow: visible !important; /* Allow content to be fully visible */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     box-sizing: border-box !important; /* Include padding in width */
     text-align: center !important; /* Center text */
     align-items: center !important; /* Center content horizontally */
+    backdrop-filter: blur(12px) !important; /* Same backdrop */
+    border-radius: 10px !important; /* Same border radius */
   }
   
   .mission-panel:hover .mission-panel-content *,
