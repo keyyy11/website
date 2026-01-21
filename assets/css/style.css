@@ -12040,10 +12040,14 @@ body.menu-open {
   
   .mission-panel.expanded .mission-panel-content * {
     text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     display: block !important;
     width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
   }
   
   .mission-panel.expanded .mission-panel-title,
@@ -12051,15 +12055,20 @@ body.menu-open {
   .mission-panel.expanded .mission-panel-description,
   .mission-panel.expanded .mission-panel-expanded-content {
     text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    transform: none !important;
   }
   
-  .mission-panel-title {
+  .mission-panel-title,
+  .mission-panel-content h2,
+  .mission-panel-content .mission-panel-title {
     font-size: 30px !important; /* Slightly larger for clarity */
-    margin: 0 auto !important; /* Center margin - no left/right margin */
+    margin: 0 !important; /* Remove all margins */
     margin-bottom: 0 !important; /* No margin - text shows on hover */
     margin-top: 0 !important;
     margin-left: 0 !important; /* No left margin */
@@ -12078,6 +12087,10 @@ body.menu-open {
     width: 100% !important; /* Full width of container */
     text-align: center !important; /* Center text */
     box-sizing: border-box !important; /* Include padding in width */
+    display: block !important; /* Make sure it's block level for centering */
+    transform: none !important; /* Override desktop transform */
+    animation: none !important; /* Disable desktop animation on mobile */
+    opacity: 1 !important; /* Override desktop opacity */
   }
 
   .mission-panel:hover .mission-panel-title,
