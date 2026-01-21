@@ -8481,13 +8481,13 @@ body#aircraftPage .scroll-dark-overlay {
   
   .mission-panel {
     flex: 1;
-    min-height: 300px !important; /* Minimum height for better display */
-    height: 300px !important; /* Fixed height like desktop */
+    min-height: 350px !important; /* Increased height for better spacing */
+    height: 350px !important; /* Fixed height with more space */
     width: 100% !important;
     max-width: 100% !important;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight */
     opacity: 1 !important;
-    margin: 0 0 0 0 !important; /* No margin between panels */
+    margin: 0 0 20px 0 !important; /* Add spacing between panels */
     display: flex;
     flex-direction: column;
     position: relative;
@@ -8506,13 +8506,13 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel.active,
   .mission-panel.expanded {
     flex: 1 !important;
-    min-height: 300px !important; /* Keep same height */
-    height: 300px !important; /* Keep same height */
+    min-height: 350px !important; /* Keep same height */
+    height: 350px !important; /* Keep same height */
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
     opacity: 1 !important;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2), 0 0 90px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.08) !important; /* Desktop glow */
-    border: 2px solid rgba(255, 255, 255, 0.5) !important; /* Desktop border */
-    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)) !important; /* Desktop filter */
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.25), 0 0 50px rgba(255, 255, 255, 0.15), 0 0 75px rgba(255, 255, 255, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.06) !important; /* Subtle glow for mobile */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Subtle border for mobile */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)) !important; /* Subtle filter */
     overflow: hidden !important; /* Keep overflow hidden */
     /* Smooth transition */
   }
@@ -8604,18 +8604,18 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel-content {
-    padding: 20px 24px 30px 24px !important; /* Same as desktop */
+    padding: 24px 20px 24px 20px !important; /* Better balanced padding */
     position: absolute !important; /* Absolute positioning like desktop */
-    bottom: 40px !important; /* Position at bottom like desktop */
+    bottom: 30px !important; /* Position at bottom with better spacing */
     top: auto !important;
     left: 50% !important; /* Center horizontally like desktop */
     right: auto !important;
     transform: translateX(-50%) !important; /* Center like desktop */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%) !important; /* Desktop gradient */
-    backdrop-filter: blur(10px) !important; /* Desktop backdrop */
-    border-radius: 8px !important; /* Desktop border radius */
-    max-width: calc(100% - 40px) !important; /* Width with spacing like desktop */
-    width: calc(100% - 40px) !important; /* Width with spacing */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.65) 30%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.4) 100%) !important; /* Better contrast */
+    backdrop-filter: blur(12px) !important; /* Better backdrop */
+    border-radius: 10px !important; /* Slightly larger border radius */
+    max-width: calc(100% - 32px) !important; /* Better spacing from edges */
+    width: calc(100% - 32px) !important; /* Better spacing from edges */
     flex: 1;
     display: flex !important;
     flex-direction: column !important;
@@ -8652,20 +8652,20 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel-content h2,
   .mission-panel-content .mission-panel-title,
   .mission-panel-title {
-    font-size: 38px !important; /* Same as desktop */
+    font-size: 36px !important; /* Slightly smaller for mobile */
     font-weight: 900 !important; /* Same as desktop */
-    margin-bottom: 0 !important; /* Same as desktop */
+    margin-bottom: 12px !important; /* Add spacing after title */
     margin-top: 0 !important;
     padding-top: 0 !important;
     text-transform: uppercase !important; /* Same as desktop */
-    letter-spacing: 0.08em !important; /* Same as desktop */
+    letter-spacing: 0.06em !important; /* Slightly tighter for mobile */
     color: #ffffff !important; /* Same as desktop */
     line-height: 1.2 !important; /* Same as desktop */
     text-align: center !important; /* Same as desktop */
     text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.8),
-      0 0 25px rgba(255, 255, 255, 0.7),
-      0 0 45px rgba(255, 255, 255, 0.5) !important; /* Same as desktop */
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(255, 255, 255, 0.4) !important; /* Better text shadow */
     transition: text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease !important; /* Same as desktop */
     opacity: 1 !important; /* Always visible like desktop */
     transform: translateX(0) !important; /* Same as desktop */
@@ -8682,16 +8682,19 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel-content p,
   .mission-panel-content .mission-panel-text,
   .mission-panel-text {
-    font-size: 15px !important; /* Same as desktop */
-    line-height: 1.6 !important; /* Same as desktop */
+    font-size: 14px !important; /* Slightly smaller for mobile */
+    line-height: 1.5 !important; /* Better line height for mobile */
     display: block !important; /* Block level for centering */
     text-align: center !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 12px !important; /* Add spacing before description */
     padding-left: 0 !important;
     padding-right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    opacity: 0.95 !important; /* Slightly softer */
   }
   
   .mission-panel-title,
@@ -8878,8 +8881,8 @@ body#aircraftPage .scroll-dark-overlay {
     overflow: visible !important; /* Allow content to be fully visible */
     opacity: 1 !important; /* Make visible on mobile */
     transition: opacity 0.3s ease, margin-top 0.3s ease !important;
-    margin-top: 14px !important; /* Same as desktop */
-    margin-bottom: 20px !important; /* Same as desktop */
+    margin-top: 0 !important; /* No top margin - already spaced by text */
+    margin-bottom: 0 !important; /* No bottom margin */
     text-align: center !important; /* Center align all content */
     width: 100% !important;
     transform: translateY(0) !important; /* Same as desktop */
@@ -8910,15 +8913,15 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel[data-panel="2"] .mission-panel-description,
   .mission-panel[data-panel="3"] .mission-panel-description,
   .mission-panel-expanded-content p.mission-panel-description {
-    font-size: 11px !important; /* Same as desktop */
-    line-height: 1.4 !important; /* Same as desktop */
+    font-size: 13px !important; /* Better readable size for mobile */
+    line-height: 1.6 !important; /* Better line height for readability */
     color: #ffffff !important; /* Same as desktop */
     font-weight: 400 !important; /* Same as desktop */
     padding: 0 !important; /* Same as desktop - no padding */
     margin: 0 !important; /* Same as desktop */
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5) !important; /* Same as desktop */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.6) !important; /* Better text shadow */
     word-wrap: break-word !important; /* Break long words */
     overflow-wrap: break-word !important; /* Break long words */
     max-width: 100% !important; /* Ensure description doesn't overflow */
@@ -8940,16 +8943,17 @@ body#aircraftPage .scroll-dark-overlay {
     display: block !important; /* Ensure paragraphs are visible */
     opacity: 1 !important; /* Make sure paragraphs are visible */
     visibility: visible !important; /* Make sure paragraphs are visible */
-    margin-bottom: 10px !important; /* Same as desktop */
-    padding-bottom: 8px !important; /* Same as desktop */
+    margin-bottom: 8px !important; /* Better spacing for mobile */
+    padding-bottom: 0 !important; /* No padding */
     text-align: center !important; /* Center align like desktop */
-    line-height: 1.4 !important; /* Same as desktop */
+    line-height: 1.6 !important; /* Better line height for mobile */
     margin-left: 0 !important;
     margin-right: 0 !important;
+    margin-top: 0 !important;
     width: 100% !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important; /* Same as desktop */
+    border-bottom: none !important; /* No border for cleaner look */
   }
   
   .mission-panel-description p:last-child,
