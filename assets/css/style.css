@@ -8616,12 +8616,28 @@ body#aircraftPage .scroll-dark-overlay {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
-  .mission-panel-content * {
+  .mission-panel-content *,
+  .mission-panel-content h2,
+  .mission-panel-content p,
+  .mission-panel-content div {
     text-align: center !important; /* Center all child elements */
     margin-left: auto !important; /* Auto margin for centering */
     margin-right: auto !important; /* Auto margin for centering */
-    display: block !important; /* Make sure elements are block level for centering */
     width: 100% !important; /* Full width for proper centering */
+    max-width: 100% !important; /* Full width */
+    box-sizing: border-box !important;
+  }
+  
+  .mission-panel-content h2,
+  .mission-panel-content .mission-panel-title {
+    display: block !important; /* Block level for centering */
+    text-align: center !important;
+  }
+  
+  .mission-panel-content p,
+  .mission-panel-content .mission-panel-text {
+    display: block !important; /* Block level for centering */
+    text-align: center !important;
   }
   
   .mission-panel-title,
@@ -8633,6 +8649,7 @@ body#aircraftPage .scroll-dark-overlay {
     margin-right: auto !important;
     width: 100% !important;
     max-width: 100% !important;
+    display: block !important;
   }
 
   .mission-panel:hover .mission-panel-content,
@@ -8744,7 +8761,9 @@ body#aircraftPage .scroll-dark-overlay {
       0 0 45px rgba(255, 255, 255, 0.6) !important; /* Enhanced on hover */
   }
   
-  .mission-panel-text {
+  .mission-panel-text,
+  .mission-panel-content p,
+  .mission-panel-content .mission-panel-text {
     font-size: 14px !important; /* Reduced from 16px to make text smaller */
     line-height: 1.5 !important; /* Reduced from 1.6 */
     max-width: 100% !important;
