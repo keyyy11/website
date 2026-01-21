@@ -8620,6 +8620,19 @@ body#aircraftPage .scroll-dark-overlay {
     text-align: center !important; /* Center all child elements */
     margin-left: auto !important; /* Auto margin for centering */
     margin-right: auto !important; /* Auto margin for centering */
+    display: block !important; /* Make sure elements are block level for centering */
+    width: 100% !important; /* Full width for proper centering */
+  }
+  
+  .mission-panel-title,
+  .mission-panel-text,
+  .mission-panel-description,
+  .mission-panel-expanded-content {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .mission-panel:hover .mission-panel-content,
@@ -8643,6 +8656,21 @@ body#aircraftPage .scroll-dark-overlay {
     text-align: center !important; /* Center all child elements on hover */
     margin-left: auto !important; /* Auto margin for centering */
     margin-right: auto !important; /* Auto margin for centering */
+    display: block !important; /* Make sure elements are block level for centering */
+    width: 100% !important; /* Full width for proper centering */
+  }
+  
+  .mission-panel:hover .mission-panel-title,
+  .mission-panel:hover .mission-panel-text,
+  .mission-panel:hover .mission-panel-description,
+  .mission-panel.active .mission-panel-title,
+  .mission-panel.active .mission-panel-text,
+  .mission-panel.active .mission-panel-description {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   .mission-panel.expanded .mission-panel-content {
@@ -8664,6 +8692,25 @@ body#aircraftPage .scroll-dark-overlay {
     box-sizing: border-box !important; /* Include padding in width */
     text-align: center !important; /* Center text */
     align-items: center !important; /* Center content horizontally */
+  }
+  
+  .mission-panel.expanded .mission-panel-content * {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  .mission-panel.expanded .mission-panel-title,
+  .mission-panel.expanded .mission-panel-text,
+  .mission-panel.expanded .mission-panel-description,
+  .mission-panel.expanded .mission-panel-expanded-content {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   .mission-panel-title {
