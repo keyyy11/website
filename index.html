@@ -81,7 +81,7 @@
             <a href="index.html">Home</a>
             <a href="aircraft.html" class="nav-mobile-aircraft">Aircraft</a>
             <div class="nav-dropdown">
-            <a href="aircraft.html">Aircraft</a>
+                <a href="aircraft.html">Aircraft</a>
                 <div class="dropdown-menu">
                     <a href="aircraft.html#manufacturing">Manufacturing</a>
                     <a href="technology.html">Technology</a>
@@ -171,8 +171,8 @@
                         <span class="mute-icon">🔇</span>
                         <span class="unmute-icon" style="display: none;">🔊</span>
                     </button>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
             <!-- Our Story + Engineering Section (below video) -->
             <div class="home-story-section">
@@ -232,7 +232,7 @@
                 <div class="footer-logo">
                     <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="footer-logo-img">
                     <span class="footer-brand-text">Aeronas Aerocraft</span>
-                </div>
+            </div>
                 <p class="footer-description">Leading aerospace innovation and excellence in aircraft manufacturing, technology, and compliance solutions.</p>
                 <div class="footer-social">
                     <a href="https://www.linkedin.com/in/aeronas-aerocraft-341b8939b" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
@@ -243,6 +243,11 @@
                     <a href="https://www.instagram.com/aeronasaerocraft" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/share/17ikZkTuhd/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                         </svg>
                     </a>
                 </div>
@@ -326,16 +331,10 @@
                     return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-latest-news" data-news-id="${news.id}">
                         <div class="mockup-sidebar red-sidebar">
-                            <p class="sidebar-text vertical">AERONAS.COM</p>
-                            <p class="sidebar-text-bottom">NEWS</p>
                         </div>
                         <div class="mockup-content">
                             <div class="mockup-overlay">
                                 <h3>${title}</h3>
-                                <div class="mockup-brand">
-                                    <span class="brand-aeronas">AERONAS</span>
-                                    <span class="brand-aerocraft">AEROCRAFT</span>
-                                </div>
                             </div>
                         </div>
                     </a>
@@ -362,10 +361,6 @@
                     <a href="news.html?news=${news.id}" class="mockup-card card-news-updates" data-news-id="${news.id}">
                         <div class="mockup-overlay-full">
                             <h3>${titleHtml}</h3>
-                            <div class="mockup-brand">
-                                <span class="brand-aeronas">AERONAS</span>
-                                <span class="brand-aerocraft">AEROCRAFT</span>
-                            </div>
                         </div>
                     </a>
                 `;
@@ -387,16 +382,10 @@
                     return `
                     <a href="news.html?news=${news.id}" class="mockup-card card-industry-news" data-news-id="${news.id}">
                         <div class="mockup-sidebar blue-sidebar">
-                            <p class="sidebar-text vertical">AERONAS.COM</p>
-                            <p class="sidebar-text-bottom">NEWS</p>
                         </div>
                         <div class="mockup-content">
                             <div class="mockup-overlay">
                                 <h3>${titleHtml}</h3>
-                                <div class="mockup-brand">
-                                    <span class="brand-aeronas">AERONAS</span>
-                                    <span class="brand-aerocraft">AEROCRAFT</span>
-                                </div>
                             </div>
                         </div>
                     </a>
@@ -411,9 +400,6 @@
                     <a href="news.html?news=${news.id}" class="mockup-card card-aerospace-news" data-news-id="${news.id}">
                         <div class="mockup-overlay-full">
                             <h3>${title}</h3>
-                            <div class="mockup-brand">
-                                <span class="brand-aerocraft">AEROCRAFT</span>
-                            </div>
                         </div>
                     </a>
                 `;
@@ -429,7 +415,6 @@
                     <a href="news.html?news=${news.id}" class="mockup-card card-news-ac" data-news-id="${news.id}">
                         <div class="mockup-overlay-split">
                             <span class="text-right">${title}</span>
-                            <span class="text-ac">AC</span>
                         </div>
                     </a>
                 `;
@@ -453,10 +438,8 @@
                         <div class="mockup-split-bottom">
                             <div class="split-left-red">
                                 <h3>${firstLine}<br>${secondLine}</h3>
-                                <p>AERONAS.COM</p>
                             </div>
                             <div class="split-right-blue">
-                                <h3>NEWS</h3>
                             </div>
                         </div>
                     </a>
@@ -478,8 +461,8 @@
             // Clear grid
             grid.innerHTML = '';
             
-            // Render cards (max 5 cards)
-            const newsToShow = sortedNews.slice(0, 5);
+            // Render cards (max 6 cards)
+            const newsToShow = sortedNews.slice(0, 6);
             
             // Create style element for dynamic background images
             let styleElement = document.getElementById('dynamic-news-images');
@@ -494,6 +477,15 @@
             newsToShow.forEach((news, index) => {
                 // Normalize news.id to lowercase for consistent mapping
                 const normalizedId = (news.id || '').toLowerCase().trim();
+                const titleLower = (news.title || '').toLowerCase();
+                
+                // CRITICAL: Force GMI image FIRST before any other processing - Use correct path
+                if (normalizedId === 'gmi' || titleLower.includes('gmi')) {
+                    const gmiImagePath = 'assets/images/GMI.jpeg';
+                    news.image = gmiImagePath;
+                    news.imageUrl = gmiImagePath;
+                    console.log(`Index - GMI CRITICAL OVERRIDE: Force GMI image to ${gmiImagePath} BEFORE all processing`);
+                }
                 
                 // Map news ID to correct image path FIRST (before any processing) - ALWAYS OVERRIDE Firebase/deleted images
                 const newsImageMap = {
@@ -510,7 +502,6 @@
                 
                 // Auto-detect image based on title if ID not found
                 let imagePath = '';
-                const titleLower = (news.title || '').toLowerCase();
                 
                 // Check by normalized ID first
                 if (newsImageMap[normalizedId]) {
@@ -678,10 +669,13 @@
                     }
                 }
                 
-                // Final force GMI check (after all processing, before template assignment)
-                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi') || news.title?.toUpperCase().includes('GMI')) {
-                    imagePath = 'assets/images/GMI.jpeg';
-                    console.log(`Index - News ${news.id} (${news.title}): Final force GMI image path AFTER all processing: ${imagePath}`);
+                // CRITICAL: Final force GMI check (after all processing, before template assignment) - Ensure correct path
+                if (normalizedId === 'gmi' || titleLower.includes('gmi')) {
+                    const gmiImagePath = 'assets/images/GMI.jpeg';
+                    imagePath = gmiImagePath;
+                    news.image = gmiImagePath;
+                    news.imageUrl = gmiImagePath;
+                    console.log(`Index - GMI FINAL OVERRIDE: Force GMI image to ${gmiImagePath} AFTER all processing`);
                 }
                 
                 // FINAL OVERRIDE: Always use correct image based on news.id (for ALL news, not just GMI)
@@ -694,19 +688,16 @@
                     'chemtron': 'assets/images/CHEMTRON.jpeg'
                 };
                 
-                if (finalImageMap[news.id]) {
-                    imagePath = finalImageMap[news.id];
+                if (finalImageMap[normalizedId]) {
+                    imagePath = finalImageMap[normalizedId];
+                    news.image = imagePath;
+                    news.imageUrl = imagePath;
                     console.log(`Index - News ${news.id} (${news.title}): FINAL OVERRIDE - Using correct image: ${imagePath}`);
                 }
                 
                 const template = cardTemplates[index % cardTemplates.length];
                 const cardHtml = template.html(news);
                 grid.insertAdjacentHTML('beforeend', cardHtml);
-                
-                // Debug: Log card assignment (especially for card #6)
-                if (index === 5) {
-                    console.log(`Index - Card #6 (index 5): news.id=${news.id}, news.title=${news.title}, template.type=${template.type}, imagePath=${imagePath}`);
-                }
                 
                 // Set background image for the card
                 const card = grid.querySelector(`[data-news-id="${news.id}"]`);
@@ -851,11 +842,6 @@
                         console.log(`Index - GMI Debug: news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, template.type=${template.type}`);
                     }
                     
-                    // Debug: Log CHEMTRON image path (card #6)
-                    if (news.id === 'chemtron' || news.title?.toLowerCase().includes('chemtron')) {
-                        console.log(`Index - CHEMTRON Debug (Card #6): news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, template.type=${template.type}, index=${index}`);
-                    }
-                    
                     // Debug: Log card-latest-split image path
                     if (template.type === 'latest-split') {
                         console.log(`Index - Latest Split Debug: news.id=${news.id}, news.title=${news.title}, cleanImagePath=${cleanImagePath}, original imagePath=${imagePath}`);
@@ -989,25 +975,30 @@
                                 }
                             }
                             
-                            // Force GMI image directly on card element after image loads
-                            if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
+                            // CRITICAL: Force GMI image directly on card element after image loads
+                            const normalizedIdCheck = (news.id || '').toLowerCase().trim();
+                            const titleLowerCheck = (news.title || '').toLowerCase();
+                            if (normalizedIdCheck === 'gmi' || titleLowerCheck.includes('gmi')) {
                                 const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
                                 if (cardElement) {
-                                    cardElement.style.backgroundImage = `url('assets/images/GMI.jpeg?force=${Date.now()}')`;
-                                    cardElement.style.backgroundSize = 'cover';
-                                    cardElement.style.backgroundPosition = 'center';
-                                    console.log(`Index - GMI: Directly set background image on card element`);
-                                }
-                            }
-                            
-                            // Force CHEMTRON image directly on card element after image loads (card #6)
-                            if (news.id === 'chemtron' || news.title?.toLowerCase().includes('chemtron')) {
-                                const cardElement = grid.querySelector(`[data-news-id="${news.id}"]`);
-                                if (cardElement) {
-                                    cardElement.style.backgroundImage = `url('assets/images/CHEMTRON.jpeg?force=${Date.now()}')`;
-                                    cardElement.style.backgroundSize = 'cover';
-                                    cardElement.style.backgroundPosition = 'center';
-                                    console.log(`Index - CHEMTRON (Card #6): Directly set background image on card element after image load`);
+                                    // Use absolute path to ensure correct image is loaded
+                                    const gmiImagePath = `assets/images/GMI.jpeg?v=${Date.now()}&gmi=true`;
+                                    cardElement.style.setProperty('background-image', `url('${gmiImagePath}')`, 'important');
+                                    cardElement.style.setProperty('background-size', 'cover', 'important');
+                                    cardElement.style.setProperty('background-position', 'center', 'important');
+                                    console.log(`Index - GMI CRITICAL: Force set GMI image: ${gmiImagePath}`);
+                                    
+                                    // Also set via CSS style tag as backup
+                                    if (styleContent && !styleContent.includes(`card-news-ac[data-news-id="${news.id}"]`)) {
+                                        styleContent += `
+                                            [data-news-id="${news.id}"] {
+                                                background-image: url('assets/images/GMI.jpeg?v=${Date.now()}') !important;
+                                                background-size: cover !important;
+                                                background-position: center !important;
+                                            }
+                                        `;
+                                        styleElement.textContent = styleContent;
+                                    }
                                 }
                             }
                         };
@@ -1197,7 +1188,7 @@
                 };
                 
                 // Force correct images for ALL news cards (especially to override Firebase deleted images)
-                newsToShow.forEach(news => {
+                newsToShow.forEach((news, index) => {
                     // Normalize ID and auto-detect by title
                     const normalizedId = (news.id || '').toLowerCase().trim();
                     const titleLower = (news.title || '').toLowerCase();
@@ -1254,7 +1245,7 @@
                     };
                     
                     // Force override images for all news from Firebase
-                    news.forEach(newsItem => {
+                    news.forEach((newsItem, idx) => {
                         // Normalize ID
                         const normalizedId = (newsItem.id || '').toLowerCase().trim();
                         const titleLower = (newsItem.title || '').toLowerCase();
@@ -1303,7 +1294,7 @@
         // Initialize news cards
         loadNews();
     </script>
-
+    
     <script>
         // Scroll effect: background gets darker as you scroll down
         const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
