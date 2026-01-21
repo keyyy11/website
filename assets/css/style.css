@@ -8534,12 +8534,13 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel:hover .mission-panel-image,
-  .mission-panel.active .mission-panel-image {
+  .mission-panel.active .mission-panel-image,
+  .mission-panel.expanded .mission-panel-image {
+    transform: scale(1.1) !important; /* Same as desktop */
     filter: brightness(1.15) contrast(1.2) saturate(1.1) 
-      drop-shadow(0 0 25px rgba(255, 255, 255, 0.3)) 
-      drop-shadow(0 0 45px rgba(255, 255, 255, 0.2)) 
-      drop-shadow(0 0 65px rgba(255, 255, 255, 0.15)) !important;
-    /* No animation */
+      drop-shadow(0 0 30px rgba(255, 255, 255, 0.4)) 
+      drop-shadow(0 0 50px rgba(255, 255, 255, 0.3)) 
+      drop-shadow(0 0 70px rgba(255, 255, 255, 0.2)) !important; /* Desktop filter */
   }
   
   .mission-panel.expanded {
