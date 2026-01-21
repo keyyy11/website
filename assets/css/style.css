@@ -8604,7 +8604,7 @@ body#aircraftPage .scroll-dark-overlay {
   }
 
   .mission-panel-content {
-    padding: 18px 16px 18px 16px !important; /* Compact padding */
+    padding: 14px 14px 14px 14px !important; /* Tighter padding */
     position: absolute !important; /* Absolute positioning like desktop */
     bottom: 20px !important; /* Position closer to bottom */
     top: auto !important;
@@ -8654,13 +8654,13 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel-title {
     font-size: 36px !important; /* Slightly smaller for mobile */
     font-weight: 900 !important; /* Same as desktop */
-    margin-bottom: 8px !important; /* Reduced spacing after title */
+    margin-bottom: 4px !important; /* Tighter spacing after title */
     margin-top: 0 !important;
     padding-top: 0 !important;
     text-transform: uppercase !important; /* Same as desktop */
     letter-spacing: 0.06em !important; /* Slightly tighter for mobile */
     color: #ffffff !important; /* Same as desktop */
-    line-height: 1.2 !important; /* Same as desktop */
+    line-height: 1.1 !important; /* Tighter line height */
     text-align: center !important; /* Same as desktop */
     text-shadow: 
       2px 2px 4px rgba(0, 0, 0, 0.9),
@@ -8727,7 +8727,7 @@ body#aircraftPage .scroll-dark-overlay {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.85) 30%, rgba(0, 0, 0, 0.75) 60%, rgba(0, 0, 0, 0.65) 100%) !important; /* Darker on hover for better text readability */
     left: 50% !important; /* Center horizontally */
     transform: translateX(-50%) !important; /* Center the content box */
-    padding: 20px 18px 20px 18px !important; /* Slightly more padding on hover */
+    padding: 16px 14px 16px 14px !important; /* Tighter padding on hover */
     bottom: 20px !important; /* Same bottom position */
     max-width: calc(100% - 32px) !important; /* Same width */
     width: calc(100% - 32px) !important; /* Same width */
@@ -8871,7 +8871,7 @@ body#aircraftPage .scroll-dark-overlay {
     opacity: 1 !important; /* Show on hover */
     max-height: 200px !important; /* Allow expansion */
     margin-top: 0 !important;
-    margin-bottom: 8px !important; /* Spacing before description */
+    margin-bottom: 4px !important; /* Tighter spacing before description */
     transform: translateY(0) !important;
     pointer-events: auto !important;
     display: block !important; /* Show on hover */
@@ -8903,7 +8903,7 @@ body#aircraftPage .scroll-dark-overlay {
     max-height: 500px !important; /* Allow expansion */
     overflow: visible !important; /* Allow content to be fully visible */
     opacity: 1 !important; /* Make visible on hover */
-    margin-top: 8px !important; /* Spacing after text */
+    margin-top: 4px !important; /* Tighter spacing after text */
     margin-bottom: 0 !important; /* No bottom margin */
     visibility: visible !important; /* Make visible on hover */
   }
@@ -8911,7 +8911,7 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel:hover .mission-panel-expanded-content {
     max-height: 500px !important; /* Allow expansion on hover */
     opacity: 1 !important;
-    margin-top: 8px !important; /* Spacing after text */
+    margin-top: 4px !important; /* Tighter spacing after text */
     margin-bottom: 0 !important; /* No bottom margin */
     max-width: 100% !important; /* Full width */
     text-align: center !important; /* Center align all content */
