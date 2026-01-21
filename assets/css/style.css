@@ -8856,7 +8856,8 @@ body#aircraftPage .scroll-dark-overlay {
   .mission-panel:hover .mission-panel-expanded-content,
   .mission-panel[data-panel="1"] .mission-panel-expanded-content,
   .mission-panel[data-panel="2"] .mission-panel-expanded-content,
-  .mission-panel[data-panel="3"] .mission-panel-expanded-content {
+  .mission-panel[data-panel="3"] .mission-panel-expanded-content,
+  .mission-panel.expanded .mission-panel-expanded-content {
     max-height: none !important; /* No height limit - show all content */
     overflow: visible !important; /* Allow content to be fully visible */
     opacity: 1 !important; /* Make visible on mobile */
@@ -8870,6 +8871,18 @@ body#aircraftPage .scroll-dark-overlay {
     visibility: visible !important; /* Ensure content is visible */
     position: relative !important; /* Ensure positioning */
     z-index: 3 !important; /* Above other elements */
+  }
+  
+  /* Hide expanded content for non-expanded panels on mobile (accordion effect) */
+  .mission-panel:not(.expanded) .mission-panel-expanded-content {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    display: none !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin-top 0.3s ease !important;
   }
   
   .mission-panel.expanded .mission-panel-expanded-content {
