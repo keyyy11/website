@@ -8744,6 +8744,18 @@ body#aircraftPage .scroll-dark-overlay {
     transition: none !important; /* No transition needed */
   }
   
+  /* Our Vision panel specific sizing - match dimensions 457.6 × 241.31 */
+  .mission-panel[data-panel="2"] .mission-panel-content,
+  .mission-panel[data-panel="2"].active .mission-panel-content,
+  .mission-panel[data-panel="2"]:hover .mission-panel-content {
+    padding: 14px 12px 14px 12px !important; /* Match: 14px 12px */
+    width: 457.6px !important; /* Match width dimension */
+    max-width: 457.6px !important; /* Match max-width */
+    min-height: 241.31px !important; /* Match height dimension */
+    height: auto !important; /* Allow height to adjust with content */
+    margin: 14px 12px !important; /* Match margin */
+  }
+  
   .mission-panel:hover .mission-panel-content *,
   .mission-panel.active .mission-panel-content * {
     text-align: center !important; /* Center all child elements on hover */
