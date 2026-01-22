@@ -8137,6 +8137,16 @@ body#aircraftPage .scroll-dark-overlay {
   }
 }
 
+/* Disable contentFadeIn animation for mobile */
+@media (max-width: 768px) {
+  @keyframes contentFadeIn {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 .mission-panel:hover .mission-panel-content,
 .mission-panel.active .mission-panel-content {
   transform: translateX(-50%) translateY(0);
@@ -8379,6 +8389,64 @@ body#aircraftPage .scroll-dark-overlay {
 
 
 @media (max-width: 768px) {
+  /* Override all desktop animations and opacity for mobile - MUST BE FIRST */
+  .mission-panel-content,
+  .mission-panel .mission-panel-content,
+  .mission-panel[data-panel="1"] .mission-panel-content,
+  .mission-panel[data-panel="2"] .mission-panel-content,
+  .mission-panel[data-panel="3"] .mission-panel-content,
+  .mission-panel.active .mission-panel-content,
+  .mission-panel:hover .mission-panel-content,
+  .mission-panel.expanded .mission-panel-content {
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    position: relative !important;
+    transform: none !important;
+  }
+  
+  .mission-panel-title,
+  .mission-panel .mission-panel-title,
+  .mission-panel-content .mission-panel-title,
+  .mission-panel-content h2,
+  .mission-panel[data-panel="1"] .mission-panel-title,
+  .mission-panel[data-panel="2"] .mission-panel-title,
+  .mission-panel[data-panel="3"] .mission-panel-title,
+  .mission-panel.active .mission-panel-title,
+  .mission-panel:hover .mission-panel-title {
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    color: #ffffff !important;
+  }
+  
+  .mission-panel-expanded-content,
+  .mission-panel .mission-panel-expanded-content,
+  .mission-panel[data-panel="1"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="2"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="3"] .mission-panel-expanded-content,
+  .mission-panel.active .mission-panel-expanded-content,
+  .mission-panel:hover .mission-panel-expanded-content,
+  .mission-panel.expanded .mission-panel-expanded-content {
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    max-height: none !important;
+    transform: none !important;
+  }
+  
   .mission-main {
     padding-top: 0 !important;
     margin-top: 0 !important;
@@ -8392,15 +8460,23 @@ body#aircraftPage .scroll-dark-overlay {
   }
   
   .mission-main::before {
-    display: none; /* Remove overlay untuk mobile */
+    content: '' !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(5, 6, 10, 0.85) !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    display: block !important;
   }
   
   .mission-panels-section {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+    margin: 0;
+    padding: 0;
     flex-direction: column;
     height: auto;
     min-height: auto;
+    gap: 0;
+    background: transparent;
   }
   
   /* Hide menu untuk mobile */
@@ -8411,32 +8487,39 @@ body#aircraftPage .scroll-dark-overlay {
   
   .mission-panels-container {
     flex-direction: column;
-    height: auto !important;
-    min-height: auto !important;
-    margin-left: 0 !important;
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    width: 100% !important;
+    height: auto;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    width: 100%;
     gap: 0;
     display: flex;
-    flex-direction: column;
+    background: transparent;
   }
   
   .mission-panel {
     flex: 1;
-    min-height: 350px !important; /* Increased height for better spacing */
-    height: 350px !important; /* Fixed height with more space */
-    width: 100% !important;
-    max-width: 100% !important;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight */
-    opacity: 1 !important;
-    margin: 0 0 0 0 !important; /* No margin between panels - continuous */
+    min-height: auto;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+    clip-path: none !important;
+    opacity: 1;
+    margin: 0;
+    padding: 40px 24px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    overflow: hidden !important; /* Hide overflow */
-    border-radius: 0 !important; /* No border radius like desktop */
+    transition: none;
+    overflow: visible;
+    border-radius: 0;
+    background: #000000;
+  }
+  
+  .mission-panel:last-child {
+    border-bottom: none;
   }
   
   .mission-panel:nth-child(1),
@@ -8445,488 +8528,384 @@ body#aircraftPage .scroll-dark-overlay {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important; /* Straight - sama macam about */
   }
   
-  .mission-panel:hover,
-  .mission-panel.active,
-  .mission-panel.expanded {
-    flex: 1 !important;
-    min-height: 350px !important; /* Keep same height */
-    height: 350px !important; /* Keep same height */
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
-    opacity: 1 !important;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.25), 0 0 50px rgba(255, 255, 255, 0.15), 0 0 75px rgba(255, 255, 255, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.06) !important; /* Subtle glow for mobile */
-    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Subtle border for mobile */
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)) !important; /* Subtle filter */
-    overflow: hidden !important; /* Keep overflow hidden */
-    /* Smooth transition */
-  }
-
-  /* Mission panel static glow for mobile - no animations */
-  .mission-panel:hover::before,
-  .mission-panel.active::before {
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.04) 0%, 
-      rgba(255, 255, 255, 0.03) 50%, 
-      rgba(255, 255, 255, 0.02) 100%) !important;
-    /* No animation */
-  }
-
-  .mission-panel:hover::after,
-  .mission-panel.active::after {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 70%) !important;
-    /* No animation */
-  }
-
-  .mission-panel:hover .mission-panel-image,
-  .mission-panel.active .mission-panel-image,
-  .mission-panel.expanded .mission-panel-image {
-    transform: scale(1.1) !important; /* Same as desktop */
-    filter: brightness(1.15) contrast(1.2) saturate(1.1) 
-      drop-shadow(0 0 30px rgba(255, 255, 255, 0.4)) 
-      drop-shadow(0 0 50px rgba(255, 255, 255, 0.3)) 
-      drop-shadow(0 0 70px rgba(255, 255, 255, 0.2)) !important; /* Desktop filter */
-  }
-  
-  .mission-panel.expanded {
+  /* Hide background images but keep content visible */
+  .mission-panel-image {
+    display: flex !important;
+    background-image: none !important;
+    background: transparent !important;
+    position: relative !important;
     min-height: auto !important;
     height: auto !important;
     width: 100% !important;
-    max-width: 100% !important;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) !important;
-    overflow: hidden !important; /* Prevent content overflow */
+    filter: none !important;
+    transform: none !important;
+    flex-direction: column !important;
   }
   
-  .mission-panel-image {
-    min-height: 200px !important;
-    height: 200px !important;
-    width: 100% !important;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    transition: min-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-  }
-  
-  .mission-panel.expanded .mission-panel-image {
-    min-height: 200px !important;
-    height: auto !important;
+  .mission-panel-image::after {
+    display: none !important;
   }
   
   .mission-panel-overlay {
-    position: absolute;
-    inset: 0;
-    background: transparent !important; /* No overlay - full image display */
-    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none !important;
   }
   
-  .mission-panel:hover .mission-panel-overlay,
-  .mission-panel.active .mission-panel-overlay {
-    background: rgba(255, 255, 255, 0.03) !important; /* Further reduced overlay for mobile */
-    box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.08), inset 0 0 40px rgba(255, 255, 255, 0.04) !important;
+  .mission-panel::before,
+  .mission-panel::after {
+    display: none !important;
   }
   
-  .mission-panel:hover .mission-panel-title,
-  .mission-panel.active .mission-panel-title {
-    text-shadow: 0 0 25px rgba(255, 255, 255, 0.7), 0 0 50px rgba(255, 255, 255, 0.4) !important;
-  }
-  
-  .mission-panel-image {
-    filter: brightness(0.7) contrast(1.1) !important; /* Same as desktop */
-    transform: scale(1) !important; /* Initial scale */
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Desktop transition */
-  }
-
-  .mission-panel-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3) !important; /* Same as desktop */
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .mission-panel-content {
-    padding: 14px 14px 14px 14px !important; /* Tighter padding */
-    position: absolute !important; /* Absolute positioning like desktop */
-    bottom: 20px !important; /* Position closer to bottom */
-    top: auto !important;
-    left: 50% !important; /* Center horizontally like desktop */
+  /* CRITICAL: Override desktop animation and opacity FIRST */
+  .mission-panel-image .mission-panel-content,
+  .mission-panel .mission-panel-image .mission-panel-content,
+  .mission-panel[data-panel="1"] .mission-panel-image .mission-panel-content,
+  .mission-panel[data-panel="2"] .mission-panel-image .mission-panel-content,
+  .mission-panel[data-panel="3"] .mission-panel-image .mission-panel-content {
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-fill-mode: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    position: relative !important;
+    transform: none !important;
+    left: auto !important;
     right: auto !important;
-    transform: translateX(-50%) !important; /* Center like desktop */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.5) 100%) !important; /* Cleaner overlay */
-    backdrop-filter: blur(10px) !important; /* Clean backdrop */
-    border-radius: 8px !important; /* Clean border radius */
-    max-width: calc(100% - 32px) !important; /* Better spacing from edges */
-    width: calc(100% - 32px) !important; /* Better spacing from edges */
-    flex: 1;
+    top: auto !important;
+    bottom: auto !important;
+  }
+  
+  .mission-panel-content {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-end !important; /* Align to bottom like desktop */
-    align-items: center !important; /* Center content horizontally */
-    text-align: center !important; /* Center text */
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    overflow: visible !important;
+    opacity: 1 !important;
     min-height: auto !important;
-    margin: 0 !important; /* Remove margin */
-    overflow: visible !important; /* Allow content to be fully visible */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth transition */
-    z-index: 2 !important; /* Above image */
-    opacity: 1 !important; /* Always visible like desktop */
+    max-height: none !important;
+    box-shadow: none !important;
+    z-index: 2 !important;
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-fill-mode: none !important;
+    visibility: visible !important;
+    color: #ffffff !important;
   }
   
-  /* Force center ALL child elements in mission-panel-content */
-  .mission-panel-content *,
-  .mission-panel-content h2,
-  .mission-panel-content p,
-  .mission-panel-content div,
-  .mission-panel-content span {
-    text-align: center !important; /* Center all child elements */
-    margin-left: auto !important; /* Auto margin for centering */
-    margin-right: auto !important; /* Auto margin for centering */
-    width: 100% !important; /* Full width for proper centering */
-    max-width: 100% !important; /* Full width */
+  .mission-panel-content * {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
-    padding-left: 0 !important; /* Remove left padding */
-    padding-right: 0 !important; /* Remove right padding */
-  }
-  
-  .mission-panel-content h2,
-  .mission-panel-content .mission-panel-title,
-  .mission-panel-title {
-    font-size: 36px !important; /* Slightly smaller for mobile */
-    font-weight: 900 !important; /* Same as desktop */
-    margin-bottom: 4px !important; /* Tighter spacing after title */
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    text-transform: uppercase !important; /* Same as desktop */
-    letter-spacing: 0.06em !important; /* Slightly tighter for mobile */
-    color: #ffffff !important; /* Same as desktop */
-    line-height: 1.1 !important; /* Tighter line height */
-    text-align: center !important; /* Same as desktop */
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.9),
-      0 0 20px rgba(255, 255, 255, 0.6),
-      0 0 40px rgba(255, 255, 255, 0.4) !important; /* Better text shadow */
-    transition: text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease !important; /* Same as desktop */
-    opacity: 1 !important; /* Always visible like desktop */
-    transform: translateX(0) !important; /* Same as desktop */
-    animation: none !important; /* Remove animation */
-    display: block !important; /* Block level for centering */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mission-panel-content p,
-  .mission-panel-content .mission-panel-text,
-  .mission-panel-text {
-    font-size: 14px !important; /* Slightly smaller for mobile */
-    line-height: 1.5 !important; /* Better line height for mobile */
-    display: block !important; /* Always visible */
-    text-align: center !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 4px !important; /* Spacing before description */
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    opacity: 1 !important; /* Always visible */
-    max-height: none !important; /* Always visible */
-    overflow: visible !important; /* Show overflow */
-    visibility: visible !important; /* Always visible */
-    transition: none !important; /* No transition needed */
+    position: relative !important;
+    z-index: auto !important;
   }
   
   .mission-panel-title,
-  .mission-panel-text,
-  .mission-panel-description,
-  .mission-panel-expanded-content {
-    text-align: center !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
+  .mission-panel-content .mission-panel-title,
+  .mission-panel-content h2 {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #ffffff !important;
+    line-height: 1.4 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
     display: block !important;
-    transform: none !important; /* Override desktop transform */
-  }
-  
-  /* Override desktop animation and transform for mobile */
-  .mission-panel-title {
-    transform: none !important; /* Override desktop translateX(0) */
-    animation: none !important; /* Disable desktop animation on mobile */
-  }
-
-  /* Content box always same - no hover changes needed */
-  .mission-panel:hover .mission-panel-content,
-  .mission-panel.active .mission-panel-content,
-  .mission-panel .mission-panel-content {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.5) 100%) !important; /* Same as default */
-    left: 50% !important; /* Center horizontally */
-    transform: translateX(-50%) !important; /* Center the content box */
-    padding: 14px 14px 14px 14px !important; /* Same padding */
-    bottom: 20px !important; /* Same bottom position */
-    max-width: calc(100% - 32px) !important; /* Same width */
-    width: calc(100% - 32px) !important; /* Same width */
-    overflow: visible !important; /* Allow content to be fully visible */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    align-items: center !important; /* Center content horizontally */
-    backdrop-filter: blur(10px) !important; /* Same backdrop */
-    border-radius: 8px !important; /* Same border radius */
-    transition: none !important; /* No transition needed */
-  }
-  
-  /* Our Vision panel specific sizing - match dimensions 457.6 × 241.31 */
-  .mission-panel[data-panel="2"] .mission-panel-content,
-  .mission-panel[data-panel="2"].active .mission-panel-content,
-  .mission-panel[data-panel="2"]:hover .mission-panel-content {
-    padding: 14px 12px 14px 12px !important; /* Match: 14px 12px */
-    width: 457.6px !important; /* Match width dimension */
-    max-width: 457.6px !important; /* Match max-width */
-    min-height: 241.31px !important; /* Match height dimension */
-    height: auto !important; /* Allow height to adjust with content */
-    margin: 14px 12px !important; /* Match margin */
-  }
-  
-  .mission-panel:hover .mission-panel-content *,
-  .mission-panel.active .mission-panel-content * {
-    text-align: center !important; /* Center all child elements on hover */
-    margin-left: auto !important; /* Auto margin for centering */
-    margin-right: auto !important; /* Auto margin for centering */
-    display: block !important; /* Make sure elements are block level for centering */
-    width: 100% !important; /* Full width for proper centering */
-  }
-  
-  .mission-panel:hover .mission-panel-title,
-  .mission-panel:hover .mission-panel-text,
-  .mission-panel:hover .mission-panel-description,
-  .mission-panel.active .mission-panel-title,
-  .mission-panel.active .mission-panel-text,
-  .mission-panel.active .mission-panel-description {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
     width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mission-panel.expanded .mission-panel-content,
-  .mission-panel:hover .mission-panel-content,
-  .mission-panel.active .mission-panel-content {
-    transform: translateX(-50%) !important; /* Center like desktop */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.6) 60%, rgba(0, 0, 0, 0.4) 100%) !important; /* Darker on hover like desktop */
-    justify-content: flex-end !important; /* Align to bottom like desktop */
-    padding: 20px 24px 30px 24px !important; /* Same padding as desktop */
-    left: 50% !important; /* Center horizontally */
-    right: auto !important;
-    bottom: 40px !important; /* Keep at bottom */
-    top: auto !important;
+    text-align: left !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+    clear: both !important;
+    height: auto !important;
     min-height: auto !important;
-    max-width: calc(100% - 40px) !important; /* Width with spacing */
-    width: calc(100% - 40px) !important; /* Width with spacing */
-    align-items: center !important; /* Center horizontally */
-    text-align: center !important; /* Center align text */
+    max-height: none !important;
   }
   
-  .mission-panel.expanded .mission-panel-expanded-content {
-    max-height: 3000px !important; /* Increased to ensure all content is visible */
-    overflow: visible !important; /* Ensure content is not cut off */
+  .mission-panel-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    z-index: -1 !important;
   }
   
-  .mission-panel.expanded .mission-panel-content * {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    display: block !important;
-    width: 100% !important;
-  }
-  
-  .mission-panel.expanded .mission-panel-title,
-  .mission-panel.expanded .mission-panel-text,
-  .mission-panel.expanded .mission-panel-description,
-  .mission-panel.expanded .mission-panel-expanded-content {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mission-panel-title {
-    font-size: 30px !important; /* Slightly larger for clarity */
-    margin: 0 auto !important; /* Center margin - no left/right margin */
-    margin-bottom: 0 !important; /* No margin - text shows on hover */
-    margin-top: 0 !important;
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    padding-left: 0 !important; /* No left padding */
-    padding-right: 0 !important; /* No right padding */
-    line-height: 1.3 !important;
-    letter-spacing: 0.06em !important; /* Increased letter spacing */
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.8),
-      0 0 20px rgba(255, 255, 255, 0.6),
-      0 0 35px rgba(255, 255, 255, 0.4) !important; /* Stronger text shadow for clarity */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    max-width: 100% !important; /* Ensure title doesn't overflow */
-    width: 100% !important; /* Full width of container */
-    text-align: center !important; /* Center text */
-    box-sizing: border-box !important; /* Include padding in width */
-  }
-
-  .mission-panel:hover .mission-panel-title,
-  .mission-panel.active .mission-panel-title {
-    text-shadow: 
-      2px 2px 6px rgba(0, 0, 0, 0.9),
-      0 0 25px rgba(255, 255, 255, 0.8),
-      0 0 45px rgba(255, 255, 255, 0.6) !important; /* Enhanced on hover */
-  }
-  
-  .mission-panel-text,
-  .mission-panel-content p,
-  .mission-panel-content .mission-panel-text {
-    font-size: 14px !important; /* Reduced from 16px to make text smaller */
-    line-height: 1.5 !important; /* Reduced from 1.6 */
-    max-width: 100% !important;
-    width: 100% !important; /* Ensure width is set */
-    margin: 0 auto !important; /* Center margin - no left/right margin */
-    margin-top: 0 !important;
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    padding-left: 0 !important; /* No left padding */
-    padding-right: 0 !important; /* No right padding */
-    opacity: 1 !important; /* Visible like desktop */
-    max-height: none !important; /* No height limit */
-    overflow: visible !important; /* Visible */
-    display: block !important; /* Show by default like desktop */
-    visibility: visible !important; /* Visible */
-    transition: opacity 0.4s ease, margin-top 0.4s ease !important; /* Desktop transition */
-    pointer-events: auto !important;
-    animation: none !important; /* Remove any animations */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    margin-bottom: 0 !important; /* No bottom margin */
-  }
-
-  /* Text always visible - no hover needed */
-  .mission-panel:hover .mission-panel-text,
-  .mission-panel:hover .mission-panel-content .mission-panel-text,
-  .mission-panel:hover .mission-panel-content p.mission-panel-text,
+  .mission-panel-content .mission-panel-text,
   .mission-panel .mission-panel-text,
-  .mission-panel .mission-panel-content .mission-panel-text {
-    opacity: 1 !important; /* Always visible */
-    max-height: none !important; /* Always visible */
-    margin-top: 0 !important;
-    margin-bottom: 4px !important; /* Spacing before description */
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
-    display: block !important; /* Always visible */
-    visibility: visible !important; /* Always visible */
+  .mission-panel[data-panel="1"] .mission-panel-text,
+  .mission-panel[data-panel="2"] .mission-panel-text,
+  .mission-panel[data-panel="3"] .mission-panel-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    z-index: -1 !important;
   }
   
-  /* Show expanded content always on mobile - no hover needed */
-  .mission-panel-expanded-content,
-  .mission-panel .mission-panel-expanded-content,
-  .mission-panel .mission-panel-content .mission-panel-expanded-content,
-  .mission-panel:hover .mission-panel-expanded-content,
-  .mission-panel:hover .mission-panel-content .mission-panel-expanded-content {
-    max-height: none !important; /* Always visible */
-    overflow: visible !important; /* Show overflow */
-    opacity: 1 !important; /* Always visible */
-    transition: none !important; /* No transition needed */
-    margin-top: 4px !important; /* Spacing after text */
-    margin-bottom: 0 !important; /* No bottom margin */
-    text-align: center !important; /* Center align all content */
+  .mission-panel-expanded-content {
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
     width: 100% !important;
-    transform: translateY(0) !important;
-    display: block !important; /* Always visible */
-    visibility: visible !important; /* Always visible */
-    position: relative !important; /* Ensure positioning */
-    z-index: 3 !important; /* Above other elements */
+    transform: none !important;
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+    transition: none !important;
+    clear: both !important;
   }
   
-  .mission-panel-description,
-  .mission-panel-expanded-content .mission-panel-description,
-  .mission-panel .mission-panel-expanded-content .mission-panel-description,
-  .mission-panel[data-panel="1"] .mission-panel-description,
-  .mission-panel[data-panel="2"] .mission-panel-description,
-  .mission-panel[data-panel="3"] .mission-panel-description,
-  .mission-panel-expanded-content p.mission-panel-description {
-    font-size: 13px !important; /* Better readable size for mobile */
-    line-height: 1.6 !important; /* Better line height for readability */
-    color: #ffffff !important; /* Same as desktop */
-    font-weight: 400 !important; /* Same as desktop */
-    padding: 0 !important; /* Same as desktop - no padding */
-    margin: 0 !important; /* Same as desktop */
+  .mission-panel-description {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    color: #ffffff !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    margin: 0 !important;
     margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.6) !important; /* Better text shadow */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    max-width: 100% !important; /* Ensure description doesn't overflow */
-    width: 100% !important; /* Ensure width is set */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center align like desktop */
-    border: none !important; /* No border like desktop */
-    border-radius: 0 !important; /* No border radius like desktop */
-    display: block !important; /* Ensure description is visible */
-    opacity: 1 !important; /* Make sure description is visible when expanded */
-    visibility: visible !important; /* Make sure description is visible when expanded */
-    background: transparent !important; /* No background like desktop */
-    position: relative !important; /* Ensure positioning */
-    z-index: 3 !important; /* Above other elements */
-  }
-  
-  .mission-panel-description p,
-  .mission-panel-expanded-content .mission-panel-description p {
-    display: block !important; /* Ensure paragraphs are visible */
-    opacity: 1 !important; /* Make sure paragraphs are visible */
-    visibility: visible !important; /* Make sure paragraphs are visible */
-    margin-bottom: 8px !important; /* Better spacing for mobile */
-    padding-bottom: 0 !important; /* No padding */
-    text-align: center !important; /* Center align like desktop */
-    line-height: 1.6 !important; /* Better line height for mobile */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
+    text-shadow: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
     width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    border-bottom: none !important; /* No border for cleaner look */
+    box-sizing: border-box !important;
+    text-align: left !important;
+    border: none !important;
+    border-radius: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    position: relative !important;
+    z-index: 1 !important;
+    clear: both !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
   }
   
-  .mission-panel-description p:last-child,
-  .mission-panel-expanded-content .mission-panel-description p:last-child {
-    margin-bottom: 0 !important; /* No margin on last paragraph */
-    padding-bottom: 0 !important; /* No padding on last paragraph */
-    border-bottom: none !important; /* No border on last paragraph */
+  .mission-panel-description p {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 0 16px 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    line-height: 1.7 !important;
+    width: 100% !important;
+    border-bottom: none !important;
+    color: #ffffff !important;
+    clear: both !important;
+    position: relative !important;
+    z-index: 1 !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+  
+  .mission-panel-description p:last-child {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-bottom: none !important;
   }
   
   .mission-panel-description strong {
     color: #ffffff !important;
-    font-weight: 700 !important;
-    font-size: 12px !important; /* Reduced from 13px */
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    line-height: 1.7 !important;
+    text-shadow: none !important;
+    text-align: left !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Ensure all panels are visible */
+  .mission-panel[data-panel="1"],
+  .mission-panel[data-panel="2"],
+  .mission-panel[data-panel="3"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-content,
+  .mission-panel[data-panel="2"] .mission-panel-content,
+  .mission-panel[data-panel="3"] .mission-panel-content {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    animation: none !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-title,
+  .mission-panel[data-panel="2"] .mission-panel-title,
+  .mission-panel[data-panel="3"] .mission-panel-title {
     display: block !important;
-    margin-bottom: 6px !important; /* Reduced from 8px */
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    line-height: 1.3 !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 7px rgba(0, 0, 0, 0.6) !important; /* Text shadow for clarity */
-    text-align: center !important; /* Center align strong text */
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="2"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="3"] .mission-panel-expanded-content {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-description,
+  .mission-panel[data-panel="2"] .mission-panel-description,
+  .mission-panel[data-panel="3"] .mission-panel-description {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-description p,
+  .mission-panel[data-panel="2"] .mission-panel-description p,
+  .mission-panel[data-panel="3"] .mission-panel-description p {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+  }
+  
+  /* FINAL OVERRIDE - Force all content visible - MUST BE LAST */
+  .mission-panel * {
+    color: #ffffff !important;
+  }
+  
+  .mission-panel-image,
+  .mission-panel .mission-panel-image {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .mission-panel-content,
+  .mission-panel .mission-panel-content,
+  .mission-panel-image .mission-panel-content,
+  .mission-panel .mission-panel-image .mission-panel-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    position: relative !important;
+    transform: none !important;
+    animation: none !important;
+    animation-name: none !important;
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    animation-fill-mode: none !important;
+  }
+  
+  .mission-panel-content * {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    color: #ffffff !important;
+  }
+  
+  .mission-panel-title,
+  .mission-panel-content h2,
+  .mission-panel .mission-panel-title,
+  .mission-panel-content .mission-panel-title {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #ffffff !important;
+    animation: none !important;
+  }
+  
+  .mission-panel-expanded-content,
+  .mission-panel .mission-panel-expanded-content,
+  .mission-panel-description,
+  .mission-panel .mission-panel-description {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #ffffff !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  
+  .mission-panel-description p,
+  .mission-panel .mission-panel-description p {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #ffffff !important;
   }
 }
 
@@ -11930,42 +11909,65 @@ body.menu-open {
     text-align: center;
   }
 
-  /* Mission Page Mobile - Better spacing and text size */
+  /* Mission Page Mobile - Black background only */
+  .mission-panel {
+    padding: 32px 20px !important;
+    background: #000000 !important;
+  }
+  
   .mission-panel-image {
-    filter: brightness(0.6) contrast(1.1) !important; /* Darken images for mobile 480px */
+    display: flex !important;
+    background-image: none !important;
+    background: transparent !important;
+    position: relative !important;
+    min-height: auto !important;
+    height: auto !important;
+    width: 100% !important;
+    filter: none !important;
+    transform: none !important;
+    flex-direction: column !important;
   }
-
+  
   .mission-panel-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45) !important; /* Darker overlay on image for mobile 480px */
-    z-index: 1;
-    pointer-events: none;
+    display: none !important;
   }
 
+  .mission-panel-overlay {
+    display: none !important;
+  }
+  
+  .mission-panel::before,
+  .mission-panel::after {
+    display: none !important;
+  }
+  
   .mission-panel-content {
-    padding: 14px 12px 12px 12px !important; /* Symmetrical padding - same left and right */
-    position: absolute !important;
-    bottom: 14px !important;
-    left: 50% !important; /* Center horizontally */
-    transform: translateX(-50%) !important; /* Center the content box */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.15) 100%) !important; /* Darker overlay for mobile 480px */
-    backdrop-filter: blur(2px) !important; /* Less blur */
-    border-radius: 6px !important; /* Add border radius for cleaner box */
-    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
-    width: calc(100% - 24px) !important; /* Centered with equal margins */
-    overflow: hidden !important; /* Prevent content overflow */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-end !important;
-    align-items: center !important; /* Center content horizontally */
-    text-align: center !important; /* Center text */
-    margin: 0 !important; /* Remove auto margin */
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    min-height: auto !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    z-index: 2 !important;
+    animation: none !important;
+    visibility: visible !important;
   }
   
   /* Force center ALL child elements in mission-panel-content for mobile 480px */
@@ -11997,274 +11999,204 @@ body.menu-open {
     max-width: 100% !important;
   }
   
-  .mission-panel-content p,
+  .mission-panel-content p {
+    display: block !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
   .mission-panel-content .mission-panel-text,
   .mission-panel-text {
-    display: block !important; /* Block level for centering */
-    text-align: center !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    z-index: -1 !important;
+  }
+  
+  .mission-panel-content * {
+    text-align: left !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-  }
-
-  .mission-panel:hover .mission-panel-content,
-  .mission-panel.active .mission-panel-content {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 30%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.25) 100%) !important; /* Darker on hover for mobile 480px */
-    left: 50% !important; /* Center horizontally */
-    transform: translateX(-50%) !important; /* Center the content box */
-    padding: 14px 12px 12px 12px !important; /* Symmetrical padding - same left and right */
-    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
-    width: calc(100% - 24px) !important; /* Centered with equal margins */
-    overflow: hidden !important; /* Prevent content overflow */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    align-items: center !important; /* Center content horizontally */
+    box-sizing: border-box !important;
   }
   
-  .mission-panel:hover .mission-panel-content *,
-  .mission-panel.active .mission-panel-content * {
-    text-align: center !important; /* Center all child elements on hover */
-    margin-left: auto !important; /* Auto margin for centering */
-    margin-right: auto !important; /* Auto margin for centering */
-    display: block !important; /* Make sure elements are block level for centering */
-    width: 100% !important; /* Full width for proper centering */
-  }
-  
-  .mission-panel:hover .mission-panel-title,
-  .mission-panel:hover .mission-panel-text,
-  .mission-panel:hover .mission-panel-description,
-  .mission-panel.active .mission-panel-title,
-  .mission-panel.active .mission-panel-text,
-  .mission-panel.active .mission-panel-description {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .mission-panel.expanded .mission-panel-content {
-    padding: 14px 12px 14px 12px !important; /* Symmetrical padding - same left and right */
-    position: relative !important;
-    bottom: auto !important;
-    left: auto !important; /* Reset left for relative positioning */
-    transform: none !important; /* Reset transform for relative positioning */
-    max-width: calc(100% - 24px) !important; /* Centered with equal margins */
-    width: calc(100% - 24px) !important; /* Centered with equal margins */
-    margin: 14px auto !important; /* Top/bottom margin, centered horizontally */
-    border-radius: 6px !important; /* Add border radius */
-    overflow: visible !important; /* Allow content to be fully visible */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    align-items: center !important; /* Center content horizontally */
-    justify-content: flex-start !important;
-  }
-  
-  .mission-panel.expanded .mission-panel-expanded-content {
-    max-height: 3000px !important; /* Increased to ensure all content is visible */
-    overflow: visible !important; /* Ensure content is not cut off */
-  }
-  
-  .mission-panel.expanded .mission-panel-content * {
-    text-align: center !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  .mission-panel-title {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
     display: block !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
     width: 100% !important;
-    max-width: 100% !important;
-    transform: none !important;
+    text-align: left !important;
   }
   
-  .mission-panel.expanded .mission-panel-title,
-  .mission-panel.expanded .mission-panel-text,
-  .mission-panel.expanded .mission-panel-description,
-  .mission-panel.expanded .mission-panel-expanded-content {
-    text-align: center !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  .mission-panel-text {
+    display: none !important;
+  }
+  
+  .mission-panel-expanded-content {
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
     width: 100% !important;
-    max-width: 100% !important;
     transform: none !important;
+    display: block !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+    transition: none !important;
+  }
+  
+  .mission-panel-description {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #ffffff !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-shadow: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    border: none !important;
+    border-radius: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
   .mission-panel-title,
-  .mission-panel-content h2,
-  .mission-panel-content .mission-panel-title {
-    font-size: 30px !important; /* Slightly larger for clarity */
-    margin: 0 !important; /* Remove all margins */
-    margin-bottom: 0 !important; /* No margin - text shows on hover */
+  .mission-panel-content .mission-panel-title,
+  .mission-panel-content h2 {
+    margin: 0 0 18px 0 !important;
+    line-height: 1.4 !important;
+    clear: both !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  .mission-panel-expanded-content {
     margin-top: 0 !important;
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    padding-left: 0 !important; /* No left padding */
-    padding-right: 0 !important; /* No right padding */
-    line-height: 1.3 !important;
-    letter-spacing: 0.06em !important; /* Increased letter spacing */
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.8),
-      0 0 20px rgba(255, 255, 255, 0.6),
-      0 0 35px rgba(255, 255, 255, 0.4) !important; /* Stronger text shadow for clarity */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    max-width: 100% !important; /* Ensure title doesn't overflow */
-    width: 100% !important; /* Full width of container */
-    text-align: center !important; /* Center text */
-    box-sizing: border-box !important; /* Include padding in width */
-    display: block !important; /* Make sure it's block level for centering */
-    transform: none !important; /* Override desktop transform */
-    animation: none !important; /* Disable desktop animation on mobile */
-    opacity: 1 !important; /* Override desktop opacity */
-  }
-
-  .mission-panel:hover .mission-panel-title,
-  .mission-panel.active .mission-panel-title {
-    text-shadow: 
-      2px 2px 6px rgba(0, 0, 0, 0.9),
-      0 0 25px rgba(255, 255, 255, 0.8),
-      0 0 45px rgba(255, 255, 255, 0.6) !important; /* Enhanced on hover */
+    clear: both !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
-  .mission-panel-text {
-    font-size: 15px !important; /* Reduced from 17px to make text smaller */
-    line-height: 1.6 !important; /* Reduced from 1.7 */
-    margin: 0 auto !important; /* Center margin - no left/right margin */
-    margin-top: 0 !important;
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    padding-left: 0 !important; /* No left padding */
-    padding-right: 0 !important; /* No right padding */
-    opacity: 0 !important; /* Hidden by default */
-    max-height: 0 !important;
-    overflow: hidden !important;
-    transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, margin-top 0.5s ease !important;
-    pointer-events: none !important;
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    max-width: 100% !important; /* Ensure text doesn't overflow */
-    width: 100% !important; /* Ensure width is set */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-  }
-
-  .mission-panel:hover .mission-panel-text {
-    opacity: 1 !important; /* Show text ONLY on hover */
-    max-height: 250px !important;
-    margin-top: 14px !important; /* Reduced from 16px */
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
-    display: block !important; /* Show on hover */
-    visibility: visible !important; /* Make visible on hover */
-  }
-
-  /* Keep text hidden even if panel has active class (without hover) */
-  .mission-panel.active:not(:hover) .mission-panel-text {
-    opacity: 0 !important;
-    max-height: 0 !important;
-    display: none !important;
-    visibility: hidden !important;
-  }
-  
-  /* Show expanded content by default on mobile 480px for better readability */
-  .mission-panel-expanded-content,
-  .mission-panel .mission-panel-expanded-content,
-  .mission-panel.active .mission-panel-expanded-content,
-  .mission-panel:hover .mission-panel-expanded-content {
-    max-height: none !important; /* No height limit - show all content */
-    overflow: visible !important; /* Allow content to be fully visible */
-    opacity: 1 !important; /* Make visible on mobile */
-    transition: opacity 0.3s ease, margin-top 0.3s ease !important;
-    margin-top: 14px !important; /* Add margin for spacing */
-    margin-bottom: 0 !important; /* No bottom margin */
-    text-align: center !important; /* Center align all content */
-    width: 100% !important;
-    transform: none !important; /* No transform */
-    display: block !important; /* Ensure content is displayed */
-    visibility: visible !important; /* Ensure content is visible */
-  }
-  
-  .mission-panel.expanded .mission-panel-expanded-content {
-    max-height: none !important; /* No height limit - show all content */
-    opacity: 1 !important;
-    margin-top: 14px !important; /* Consistent margin */
-    margin-bottom: 0 !important; /* No bottom margin */
-    max-width: 100% !important; /* Full width */
-    text-align: center !important; /* Center align all content */
-    width: 100% !important;
-    overflow: visible !important; /* Ensure content is not cut off */
-    transform: none !important; /* No transform */
-    display: block !important; /* Ensure content is displayed */
-    visibility: visible !important; /* Ensure content is visible */
-  }
-  
-  .mission-panel-description,
-  .mission-panel-expanded-content .mission-panel-description,
-  .mission-panel .mission-panel-expanded-content .mission-panel-description {
-    font-size: 11px !important; /* Increased from 10px for better readability */
-    line-height: 1.6 !important; /* Increased from 1.5 for better spacing */
-    color: #ffffff !important; /* Make text clearer/brighter */
-    font-weight: 500 !important; /* Make font clearer/bolder */
-    padding: 10px 10px !important; /* Symmetrical padding - same left and right */
-    margin: 0 auto !important; /* Center margin */
-    margin-left: 0 !important; /* No left margin */
-    margin-right: 0 !important; /* No right margin */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.7) !important; /* Text shadow for clarity */
-    word-wrap: break-word !important; /* Break long words */
-    overflow-wrap: break-word !important; /* Break long words */
-    max-width: 100% !important; /* Ensure description doesn't overflow */
-    width: 100% !important; /* Ensure width is set */
-    box-sizing: border-box !important; /* Include padding in width */
-    text-align: center !important; /* Center text */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Add border for spacing */
-    border-radius: 4px !important; /* Rounded corners */
-    display: block !important; /* Ensure description is visible */
-    opacity: 1 !important; /* Make sure description is visible */
-    visibility: visible !important; /* Make sure description is visible */
-  }
-  
-  .mission-panel-description p,
-  .mission-panel-expanded-content .mission-panel-description p {
-    display: block !important; /* Ensure paragraphs are visible */
-    opacity: 1 !important; /* Make sure paragraphs are visible */
-    visibility: visible !important; /* Make sure paragraphs are visible */
+  .mission-panel-description {
+    line-height: 1.7 !important;
+    clear: both !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
   .mission-panel-description p {
-    margin-bottom: 10px !important; /* Reduced from 14px */
-    padding-bottom: 8px !important; /* Reduced from 10px */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    text-align: center !important; /* Center align paragraphs */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    line-height: 1.7 !important;
+    width: 100% !important;
+    border-bottom: none !important;
+    color: #ffffff !important;
+    clear: both !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
   .mission-panel-description p:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     border-bottom: none !important;
   }
   
   .mission-panel-description strong {
-    font-size: 11px !important; /* Reduced from 12px */
-    margin-bottom: 5px !important; /* Reduced from 6px */
-    line-height: 1.3 !important; /* Reduced line height */
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    line-height: 1.7 !important;
+    text-shadow: none !important;
+    text-align: left !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Ensure all panels are visible for 480px */
+  .mission-panel[data-panel="1"],
+  .mission-panel[data-panel="2"],
+  .mission-panel[data-panel="3"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-content,
+  .mission-panel[data-panel="2"] .mission-panel-content,
+  .mission-panel[data-panel="3"] .mission-panel-content {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-title,
+  .mission-panel[data-panel="2"] .mission-panel-title,
+  .mission-panel[data-panel="3"] .mission-panel-title {
     display: block !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    font-weight: 700 !important; /* Make titles clearer/bolder */
-    color: #ffffff !important; /* Ensure white color */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7) !important; /* Text shadow for clarity */
-    text-align: center !important; /* Center align strong text */
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .mission-panel[data-panel="1"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="2"] .mission-panel-expanded-content,
+  .mission-panel[data-panel="3"] .mission-panel-expanded-content {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .company-content-wrapper {
