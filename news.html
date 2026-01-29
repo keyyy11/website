@@ -392,113 +392,46 @@
             sortedNews.forEach((news, index) => {
                 const isActive = index === 0; // First card is active by default
                 const card = document.createElement('div');
-                // Fix image path - convert absolute Windows path to relative path
+                // Get image path from Firestore
                 let imagePath = news.image || news.imageUrl || '';
                 
-                // If path contains Windows absolute path, convert to relative
-                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
-                    // Extract filename from absolute path
-                    const filename = imagePath.split(/[/\\]/).pop();
+                // Only clean path if it's not already correct
+                if (imagePath) {
+                    imagePath = imagePath.trim();
                     
-                    // Remove any query parameters or fragments
-                    const cleanFilename = filename.split('?')[0].split('#')[0];
-                    
-                    // Map filename to correct image file
-                    const imageMap = {
-                        'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
-                        'UTEM.jpeg': 'UTEM.jpeg',
-                        'KKTM.jpeg': 'KKTM.jpeg',
-                        'USIM.jpeg': 'USIM.jpeg',
-                        'UTHM.jpeg': 'UTHM.jpeg',
-                        'GMI.jpeg': 'GMI.jpeg',
-                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
-                        'tengku.jpeg': 'tengku.jpeg'
-                    };
-                    
-                    const correctFilename = imageMap[cleanFilename] || cleanFilename;
-                    imagePath = `assets/images/${correctFilename}`;
-                }
-                
-                // Remove file:// protocol if present
-                if (imagePath.includes('file://')) {
-                    imagePath = imagePath.replace(/^file:\/\/\/?/, '');
-                    // Extract just the filename
-                    const filename = imagePath.split(/[/\\]/).pop();
-                    const cleanFilename = filename.split('?')[0].split('#')[0];
-                    imagePath = `assets/images/${cleanFilename}`;
-                }
-                
-                // Ensure path is relative (starts with assets/)
-                if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http') && !imagePath.startsWith('file://')) {
-                    // If just filename, add assets/images/ prefix
-                    if (!imagePath.includes('/')) {
-                        // Check imageMap for correct filename mapping
-                        const imageMapForFilename = {
-                            'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
-                            'UTEM.jpeg': 'UTEM.jpeg',
-                            'KKTM.jpeg': 'KKTM.jpeg',
-                            'USIM.jpeg': 'USIM.jpeg',
-                            'UTHM.jpeg': 'UTHM.jpeg',
-                            'GMI.jpeg': 'GMI.jpeg',
-                            'GMI.Jpeg': 'GMI.jpeg',
-                            'GMI.JPEG': 'GMI.jpeg',
-                            'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
-                            'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
-                            'tengku.jpeg': 'tengku.jpeg'
-                        };
-                        const correctFilename = imageMapForFilename[imagePath] || imagePath;
-                        imagePath = `assets/images/${correctFilename}`;
+                    // If path already correct (starts with assets/), keep it as is
+                    if (imagePath.startsWith('assets/') || imagePath.startsWith('./assets/')) {
+                        // Just remove ./ if present
+                        imagePath = imagePath.replace(/^\.\//, '');
+                    } else if (imagePath.startsWith('http') || imagePath.startsWith('//')) {
+                        // Keep HTTP/HTTPS URLs as is
+                        // Do nothing
                     } else {
-                        // Extract filename from any path
-                        const filename = imagePath.split(/[/\\]/).pop();
-                        const cleanFilename = filename.split('?')[0].split('#')[0];
+                        // Need to clean: handle absolute paths, file://, or plain filenames
+                        if (imagePath.includes('file://')) {
+                            imagePath = imagePath.replace(/^file:\/\/\/?/, '');
+                        }
                         
-                        // Check imageMap for correct filename mapping
-                        const imageMapForFilename = {
-                            'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
-                            'UTEM.jpeg': 'UTEM.jpeg',
-                            'KKTM.jpeg': 'KKTM.jpeg',
-                            'USIM.jpeg': 'USIM.jpeg',
-                            'UTHM.jpeg': 'UTHM.jpeg',
-                            'GMI.jpeg': 'GMI.jpeg',
-                            'GMI.Jpeg': 'GMI.jpeg',
-                            'GMI.JPEG': 'GMI.jpeg',
-                            'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
-                            'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
-                            'tengku.jpeg': 'tengku.jpeg'
-                        };
-                        const correctFilename = imageMapForFilename[cleanFilename] || cleanFilename;
-                        imagePath = `assets/images/${correctFilename}`;
+                        // Remove absolute Windows paths
+                        if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                            const filename = imagePath.split(/[/\\]/).pop();
+                            imagePath = `assets/images/${filename.split('?')[0].split('#')[0]}`;
+                        } else if (!imagePath.includes('/')) {
+                            // Plain filename - add assets/images/ prefix
+                            imagePath = `assets/images/${imagePath.split('?')[0].split('#')[0]}`;
+                        } else {
+                            // Has path but not starting with assets/ - extract filename
+                            const filename = imagePath.split(/[/\\]/).pop();
+                            imagePath = `assets/images/${filename.split('?')[0].split('#')[0]}`;
+                        }
                     }
                 }
                 
-                // Final cleanup - ensure no absolute paths
-                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
-                    const filename = imagePath.split(/[/\\]/).pop();
-                    const cleanFilename = filename.split('?')[0].split('#')[0];
-                    
-                    // Check imageMap for correct filename mapping
-                    const imageMapForFilename = {
-                        'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
-                        'UTEM.jpeg': 'UTEM.jpeg',
-                        'KKTM.jpeg': 'KKTM.jpeg',
-                        'USIM.jpeg': 'USIM.jpeg',
-                        'UTHM.jpeg': 'UTHM.jpeg',
-                        'GMI.jpeg': 'GMI.jpeg',
-                        'GMI.Jpeg': 'GMI.jpeg',
-                        'GMI.JPEG': 'GMI.jpeg',
-                        'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
-                        'CHEMTRON.Jpeg': 'CHEMTRON.jpeg',
-                        'tengku.jpeg': 'tengku.jpeg'
-                    };
-                    const correctFilename = imageMapForFilename[cleanFilename] || cleanFilename;
-                    imagePath = `assets/images/${correctFilename}`;
-                }
-                
-                // Final validation - ensure GMI uses correct image
-                if (news.id === 'gmi' || news.title?.toLowerCase().includes('gmi')) {
-                    imagePath = 'assets/images/GMI.jpeg';
-                    console.log(`News ${news.id}: Force GMI image path to assets/images/GMI.jpeg`);
+                // Debug log
+                if (imagePath) {
+                    console.log(`News ${news.id} (${news.title}): Image path = ${imagePath}`);
+                } else {
+                    console.warn(`News ${news.id} (${news.title}): No image path found!`);
                 }
                 
                 card.className = `news-category-card ${isActive ? 'active' : ''}`;
@@ -651,33 +584,42 @@
                     let cardImage = card.getAttribute('data-image') || card.getAttribute('data-bg') || '';
                     const cardDate = card.querySelector('p') ? card.querySelector('p').textContent : '';
                     
-                    // Clean cardImage path before using
+                    // Clean cardImage path - use same logic as renderNewsCards
                     if (cardImage) {
                         cardImage = cardImage.trim();
-                        // Remove file:// protocol if present
-                        if (cardImage.includes('file://')) {
-                            cardImage = cardImage.replace(/^file:\/\/\/?/, '');
-                            const filename = cardImage.split(/[/\\]/).pop();
-                            const cleanFilename = filename.split('?')[0].split('#')[0];
-                            cardImage = `assets/images/${cleanFilename}`;
-                        }
-                        // Remove absolute Windows paths
-                        if (cardImage.includes('C:\\') || cardImage.includes('C:/') || cardImage.includes('\\')) {
-                            const filename = cardImage.split(/[/\\]/).pop();
-                            const cleanFilename = filename.split('?')[0].split('#')[0];
-                            cardImage = `assets/images/${cleanFilename}`;
-                        }
-                        // Ensure relative path
-                        if (cardImage && !cardImage.startsWith('assets/') && !cardImage.startsWith('/assets/') && !cardImage.startsWith('./assets/') && !cardImage.startsWith('http') && !cardImage.startsWith('file://')) {
-                            if (!cardImage.includes('/')) {
-                                cardImage = `assets/images/${cardImage}`;
-                            } else {
+                        
+                        // If path already correct (starts with assets/), keep it as is
+                        if (cardImage.startsWith('assets/') || cardImage.startsWith('./assets/')) {
+                            // Just remove ./ if present
+                            cardImage = cardImage.replace(/^\.\//, '');
+                        } else if (cardImage.startsWith('http') || cardImage.startsWith('//')) {
+                            // Keep HTTP/HTTPS URLs as is
+                            // Do nothing
+                        } else {
+                            // Need to clean: handle absolute paths, file://, or plain filenames
+                            if (cardImage.includes('file://')) {
+                                cardImage = cardImage.replace(/^file:\/\/\/?/, '');
+                            }
+                            
+                            // Remove absolute Windows paths
+                            if (cardImage.includes('C:\\') || cardImage.includes('C:/') || cardImage.includes('\\')) {
                                 const filename = cardImage.split(/[/\\]/).pop();
-                                const cleanFilename = filename.split('?')[0].split('#')[0];
-                                cardImage = `assets/images/${cleanFilename}`;
+                                cardImage = `assets/images/${filename.split('?')[0].split('#')[0]}`;
+                            } else if (!cardImage.includes('/')) {
+                                // Plain filename - add assets/images/ prefix
+                                cardImage = `assets/images/${cardImage.split('?')[0].split('#')[0]}`;
+                            } else {
+                                // Has path but not starting with assets/ - extract filename
+                                const filename = cardImage.split(/[/\\]/).pop();
+                                cardImage = `assets/images/${filename.split('?')[0].split('#')[0]}`;
                             }
                         }
                     }
+                    
+                    // Debug: Check image path
+                    console.log('News:', cardTitle);
+                    console.log('Image path:', cardImage);
+                    console.log('Has image:', !!cardImage);
                     
                     // For mobile: always show fullscreen, with or without image
                     // For desktop: only show if image exists
@@ -690,9 +632,10 @@
                         
                         // Show fullscreen view dengan layout: image kiri, text kanan
                         if (cardImage) {
-                            newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#2a2a2a';">`;
+                            newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="console.error('Image failed to load:', '${cardImage}'); this.style.display='none'; this.parentElement.style.backgroundColor='#2a2a2a';">`;
                         } else {
                             // No image - show dark gray background
+                            console.warn('No image path for news:', cardTitle);
                             newsFullscreenImage.innerHTML = '';
                             newsFullscreenImage.style.backgroundColor = '#2a2a2a';
                         }
