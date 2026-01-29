@@ -3009,17 +3009,20 @@ body#aircraftPage .scroll-dark-overlay {
   width: 100%;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 80px 60px;
   overflow-y: auto;
+  overflow-x: hidden;
   background: rgba(5, 6, 10, 0.95);
+  -webkit-overflow-scrolling: touch;
 }
 
 .news-fullscreen-text {
   max-width: 700px;
   width: 100%;
   color: rgba(255, 255, 255, 0.9);
+  padding-bottom: 40px;
 }
 
 .news-fullscreen-title {
@@ -3081,7 +3084,12 @@ body#aircraftPage .scroll-dark-overlay {
   .news-fullscreen-text-wrapper {
     height: auto;
     min-height: 50vh;
+    max-height: 100vh;
     padding: 40px 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    align-items: flex-start;
   }
 
   .news-fullscreen-title {
