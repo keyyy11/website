@@ -185,8 +185,8 @@
             const documentHeight = document.documentElement.scrollHeight;
             const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
             
-            // Calculate opacity: 0 at top, up to 0.6 at bottom
-            const opacity = Math.min(scrollPercentage * 0.6, 0.6);
+            // Calculate opacity: 0 at top, up to 0.3 at bottom
+            const opacity = Math.min(scrollPercentage * 0.3, 0.3);
             scrollDarkOverlay.style.opacity = opacity;
         });
 
