@@ -1880,10 +1880,19 @@ body#aircraftPage {
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   background-color: #05060a !important;
+  position: relative;
 }
 
 body#aircraftPage::before {
-  display: none !important;
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+  pointer-events: none;
 }
 
 body#aircraftPage .scroll-dark-overlay {
@@ -1906,11 +1915,12 @@ body#aircraftPage .scroll-dark-overlay {
   width: 100%;
   min-height: calc(100vh - 200px);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 60px 60px 100px 60px;
   position: relative;
   z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .old-plan-image {
@@ -1937,10 +1947,14 @@ body#aircraftPage .scroll-dark-overlay {
   max-width: 1400px;
   position: relative;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
 }
 
 .unveiling-title {
-  font-size: 48px;
+  font-size: 96px;
   font-weight: 300;
   color: #ffffff;
   text-transform: uppercase;
