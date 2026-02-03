@@ -217,9 +217,16 @@
                 </div>
             </div>
 
-            <div class="mockups-grid" id="newsCardsGrid">
-                <!-- News cards will be dynamically loaded here -->
-            </div>
+            <!-- Latest News Section -->
+            <section class="latest-news-section">
+                <div class="latest-news-header">
+                    <h2 class="latest-news-title">News & Events</h2>
+                    <p class="latest-news-subtitle">Stay updated with the latest trends, tips, and insights in web design through our informative and inspiring blog articles.</p>
+                </div>
+                <div class="latest-news-grid" id="newsCardsGrid">
+                    <!-- News cards will be dynamically loaded here -->
+                </div>
+            </section>
         </section>
 
     </main>
@@ -451,18 +458,75 @@
         // Function to render news cards with images
         function renderNewsCards(newsArray) {
             const grid = document.getElementById('newsCardsGrid');
-            if (!grid) return;
+            if (!grid) {
+                console.error('News grid not found!');
+                return;
+            }
             
-            // Sort by date (newest first)
-            const sortedNews = [...newsArray].sort((a, b) => {
-                return new Date(b.dateSort) - new Date(a.dateSort);
-            });
+            if (!newsArray || newsArray.length === 0) {
+                console.warn('No news data available');
+                grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No news available at the moment.</p>';
+                return;
+            }
+            
+            console.log(`Rendering ${newsArray.length} news items`);
+            
+            // Randomize news array
+            const shuffledNews = [...newsArray].sort(() => Math.random() - 0.5);
             
             // Clear grid
             grid.innerHTML = '';
             
-            // Render cards (max 6 cards)
-            const newsToShow = sortedNews.slice(0, 6);
+            // Render cards (max 6 cards) - randomly selected
+            const newsToShow = shuffledNews.slice(0, 6);
+            console.log(`Showing ${newsToShow.length} news cards`);
+            
+            // Helper function to clean image path
+            function cleanImagePath(imagePath, newsId, title) {
+                if (!imagePath) return '';
+                
+                const normalizedId = (newsId || '').toLowerCase().trim();
+                const titleLower = (title || '').toLowerCase();
+                
+                // Map news ID to correct image path
+                const newsImageMap = {
+                    'kktm': 'assets/images/KKTM.jpeg',
+                    'utem': 'assets/images/UTEM.jpeg',
+                    'usim': 'assets/images/USIM.jpeg',
+                    'uthm': 'assets/images/UTHM.jpeg',
+                    'gmi': 'assets/images/GMI.jpeg',
+                    'chemtron': 'assets/images/CHEMTRON.jpeg',
+                    'happy-new-year': 'assets/images/firework.jpeg',
+                    'happynewyear': 'assets/images/firework.jpeg',
+                    'firework': 'assets/images/firework.jpeg'
+                };
+                
+                // Check by normalized ID first
+                if (newsImageMap[normalizedId]) {
+                    return newsImageMap[normalizedId];
+                }
+                
+                // Auto-detect by title
+                if (titleLower.includes('kktm')) return 'assets/images/KKTM.jpeg';
+                if (titleLower.includes('utem')) return 'assets/images/UTEM.jpeg';
+                if (titleLower.includes('usim')) return 'assets/images/USIM.jpeg';
+                if (titleLower.includes('uthm')) return 'assets/images/UTHM.jpeg';
+                if (titleLower.includes('gmi')) return 'assets/images/GMI.jpeg';
+                if (titleLower.includes('chemtron')) return 'assets/images/CHEMTRON.jpeg';
+                if (titleLower.includes('happy new year') || titleLower.includes('firework')) return 'assets/images/firework.jpeg';
+                
+                // Clean path if it exists
+                if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
+                    const filename = imagePath.split(/[/\\]/).pop();
+                    return `assets/images/${filename}`;
+                }
+                
+                if (imagePath.startsWith('assets/')) {
+                    return imagePath;
+                }
+                
+                return imagePath ? `assets/images/${imagePath.split(/[/\\]/).pop()}` : '';
+            }
             
             // Create style element for dynamic background images
             let styleElement = document.getElementById('dynamic-news-images');
@@ -475,19 +539,80 @@
             let styleContent = '';
             
             newsToShow.forEach((news, index) => {
-                // Normalize news.id to lowercase for consistent mapping
-                const normalizedId = (news.id || '').toLowerCase().trim();
-                const titleLower = (news.title || '').toLowerCase();
+                // Get clean image path
+                const imagePath = cleanImagePath(news.image || news.imageUrl || '', news.id, news.title);
                 
-                // CRITICAL: Force GMI image FIRST before any other processing - Use correct path
-                if (normalizedId === 'gmi' || titleLower.includes('gmi')) {
-                    const gmiImagePath = 'assets/images/GMI.jpeg';
-                    news.image = gmiImagePath;
-                    news.imageUrl = gmiImagePath;
-                    console.log(`Index - GMI CRITICAL OVERRIDE: Force GMI image to ${gmiImagePath} BEFORE all processing`);
+                // Get title and description
+                const title = news.title || 'Latest News';
+                const description = news.description || news.content || 'Stay updated with our latest developments and achievements.';
+                
+                // Truncate description if too long
+                const shortDescription = description.length > 100 ? description.substring(0, 100) + '...' : description;
+                
+                // Create card HTML
+                const cardHtml = `
+                    <a href="news.html?news=${news.id}" class="latest-news-card">
+                        <div class="latest-news-card-image">
+                            <img src="${imagePath || 'assets/images/logo.png'}" alt="${title}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+                            <span class="latest-news-badge">Update</span>
+                        </div>
+                        <div class="latest-news-card-content">
+                            <h3 class="latest-news-card-title">${title}</h3>
+                            <p class="latest-news-card-description">${shortDescription}</p>
+                        </div>
+                    </a>
+                `;
+                
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+            
+            console.log(`Successfully rendered ${newsToShow.length} news cards`);
+        }
+        
+        // Load news from Firestore or use local data
+        async function loadNews() {
+            console.log('Loading news...');
+            try {
+                const news = await loadNewsFromFirestore();
+                console.log('News from Firestore:', news);
+                if (news && news.length > 0) {
+                    console.log(`Loaded ${news.length} news items from Firestore`);
+                    renderNewsCards(news);
+                } else {
+                    console.log('No news from Firestore, using local data');
+                    // Fallback to local data
+                    renderNewsCards(newsData);
                 }
-                
-                // Map news ID to correct image path FIRST (before any processing) - ALWAYS OVERRIDE Firebase/deleted images
+            } catch (error) {
+                console.error('Error loading news:', error);
+                // Fallback to local data
+                console.log('Using local news data as fallback');
+                renderNewsCards(newsData);
+            }
+        }
+        
+        // Initialize news cards when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadNews);
+        } else {
+            loadNews();
+        }
+    </script>
+    
+    <script>
+        // Scroll effect: background gets darker as you scroll down
+        const scrollDarkOverlay = document.getElementById('scrollDarkOverlay');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+            
+            // Calculate opacity: 0 at top, up to 0.3 at bottom
+            const opacity = Math.min(scrollPercentage * 0.3, 0.3);
+            scrollDarkOverlay.style.opacity = opacity;
+        }, { passive: true });
                 const newsImageMap = {
                     'kktm': 'assets/images/KKTM.jpeg',
                     'utem': 'assets/images/UTEM.jpeg',
@@ -1225,74 +1350,6 @@
                 });
             }, 100);
         }
-        
-        // Load news from Firestore or use local data
-        async function loadNews() {
-            try {
-                const news = await loadNewsFromFirestore();
-                if (news && news.length > 0) {
-                    // Override images from Firebase with correct local images based on news.id
-                    const imageOverrideMap = {
-                        'kktm': 'assets/images/KKTM.jpeg',
-                        'utem': 'assets/images/UTEM.jpeg',
-                        'usim': 'assets/images/USIM.jpeg',
-                        'uthm': 'assets/images/UTHM.jpeg',
-                        'gmi': 'assets/images/GMI.jpeg',
-                        'chemtron': 'assets/images/CHEMTRON.jpeg',
-                        'happy-new-year': 'assets/images/firework.jpeg',
-                        'happynewyear': 'assets/images/firework.jpeg',
-                        'firework': 'assets/images/firework.jpeg'
-                    };
-                    
-                    // Force override images for all news from Firebase
-                    news.forEach((newsItem, idx) => {
-                        // Normalize ID
-                        const normalizedId = (newsItem.id || '').toLowerCase().trim();
-                        const titleLower = (newsItem.title || '').toLowerCase();
-                        
-                        // Check by normalized ID first
-                        let imagePath = imageOverrideMap[normalizedId];
-                        
-                        // Auto-detect by title if ID not found
-                        if (!imagePath) {
-                            if (titleLower.includes('kktm')) {
-                                imagePath = 'assets/images/KKTM.jpeg';
-                            } else if (titleLower.includes('utem')) {
-                                imagePath = 'assets/images/UTEM.jpeg';
-                            } else if (titleLower.includes('usim')) {
-                                imagePath = 'assets/images/USIM.jpeg';
-                            } else if (titleLower.includes('uthm')) {
-                                imagePath = 'assets/images/UTHM.jpeg';
-                            } else if (titleLower.includes('gmi')) {
-                                imagePath = 'assets/images/GMI.jpeg';
-                            } else if (titleLower.includes('chemtron')) {
-                                imagePath = 'assets/images/CHEMTRON.jpeg';
-                            } else if (titleLower.includes('happy new year') || titleLower.includes('firework')) {
-                                imagePath = 'assets/images/firework.jpeg';
-                            }
-                        }
-                        
-                        if (imagePath) {
-                            newsItem.image = imagePath;
-                            newsItem.imageUrl = imagePath;
-                            console.log(`Index - Override Firebase image for ${newsItem.id}: ${imagePath}`);
-                        }
-                    });
-                    
-                    renderNewsCards(news);
-                } else {
-                    // Fallback to local data
-                    renderNewsCards(newsData);
-                }
-            } catch (error) {
-                console.error('Error loading news:', error);
-                // Fallback to local data
-                renderNewsCards(newsData);
-            }
-        }
-        
-        // Initialize news cards
-        loadNews();
     </script>
     
     <script>

@@ -55,31 +55,82 @@
 
     <!-- Main Content -->
     <main class="news-page-main" id="newsPageMain">
-        <div class="news-background-wrapper" id="newsBackground">
-            <section class="news-hero-section" id="newsHeroSection">
-                <div class="news-hero-content">
-                    <p class="news-hero-label">ALL FIELDS OF APPLICATION</p>
-                    <h1 class="news-hero-title" id="newsHeroTitle">NEWS</h1>
+        <!-- Desktop Split Container -->
+        <div class="news-split-container">
+            <!-- Left Panel: Background Image with Content -->
+            <div class="news-left-panel" id="newsLeftPanel">
+                <div class="news-background-image" id="newsBackgroundImage"></div>
+                <div class="news-left-content">
+                    <p class="news-location-label" id="newsLocationLabel">AERONAS AEROCRAFT</p>
+                    <h1 class="news-main-title" id="newsMainTitle">Latest News</h1>
+                    <p class="news-main-description" id="newsMainDescription">Stay updated with our latest developments, achievements, and industry insights.</p>
+                    <button class="news-explore-btn" id="newsExploreBtn">
+                        Explore <span class="arrow-icon">→</span>
+                    </button>
                 </div>
-            </section>
+            </div>
 
-            <section class="news-categories-section" id="newsCategoriesSection">
-                <div class="news-categories-grid" id="newsCategoriesGrid">
+            <!-- Right Panel: News Cards List -->
+            <div class="news-right-panel">
+                <h2 class="news-right-title">Hot News</h2>
+                <div class="news-cards-list" id="newsCategoriesGrid">
                     <!-- News cards will be loaded dynamically from Firestore or local data -->
                     <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">
                         Loading news...
                     </div>
                 </div>
-            </section>
-            
-            <!-- Fullscreen News View -->
-            <div class="news-fullscreen-view" id="newsFullscreenView">
-                <button class="news-close-btn" id="newsCloseBtn">×</button>
-                <div class="news-fullscreen-content">
-                    <div class="news-fullscreen-image" id="newsFullscreenImage"></div>
-                    <div class="news-fullscreen-text-wrapper">
-                        <div class="news-fullscreen-text" id="newsFullscreenText"></div>
+            </div>
+        </div>
+        
+        <!-- Mobile Hero Section -->
+        <div class="news-mobile-hero" id="newsMobileHero">
+            <div class="news-mobile-hero-bg" id="newsMobileHeroBg"></div>
+            <div class="news-mobile-hero-content">
+                <span class="news-trending-badge" id="newsTrendingBadge">TRENDING</span>
+                <h1 class="news-mobile-hero-title" id="newsMobileHeroTitle">Latest News</h1>
+                <div class="news-mobile-author-info">
+                    <div class="news-author-avatar">
+                        <img src="assets/images/Logo-Icon-Only.png" alt="Author" onerror="this.style.display='none';">
                     </div>
+                    <div class="news-author-details">
+                        <span class="news-author-name">Aeronas Aerocraft</span>
+                        <span class="news-author-time" id="newsAuthorTime">Just now</span>
+                    </div>
+                    <div class="news-mobile-actions">
+                        <button class="news-action-btn" aria-label="Bookmark">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </button>
+                        <button class="news-action-btn" aria-label="Share">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                <polyline points="16 6 12 2 8 6"></polyline>
+                                <line x1="12" y1="2" x2="12" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile News List -->
+        <div class="news-mobile-list" id="newsMobileList">
+            <div class="news-mobile-cards" id="newsMobileCards">
+                <!-- News cards will be loaded dynamically -->
+                <div style="text-align: center; padding: 40px; color: rgba(0,0,0,0.5);">
+                    Loading news...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fullscreen News View -->
+        <div class="news-fullscreen-view" id="newsFullscreenView">
+            <button class="news-close-btn" id="newsCloseBtn">×</button>
+            <div class="news-fullscreen-content">
+                <div class="news-fullscreen-image" id="newsFullscreenImage"></div>
+                <div class="news-fullscreen-text-wrapper">
+                    <div class="news-fullscreen-text" id="newsFullscreenText"></div>
                 </div>
             </div>
         </div>
@@ -169,12 +220,80 @@
         import { newsData } from './assets/js/news-data.js';
         
         // Dynamic background image change on hover
-        const newsBackground = document.getElementById('newsBackground');
-        const newsCategoriesGrid = document.querySelector('.news-categories-grid');
+        const newsBackgroundImage = document.getElementById('newsBackgroundImage');
+        const newsCategoriesGrid = document.getElementById('newsCategoriesGrid');
+        const newsMainTitle = document.getElementById('newsMainTitle');
+        const newsMainDescription = document.getElementById('newsMainDescription');
+        const newsLocationLabel = document.getElementById('newsLocationLabel');
+        
+        // Store news data for auto-rotation
+        let allNewsData = [];
+        let heroRotationInterval = null;
+        
+        // Function to update hero section with random news
+        function updateHeroWithRandomNews(newsArray) {
+            if (!newsArray || newsArray.length === 0) return;
+            
+            const isMobile = window.innerWidth <= 768;
+            const randomIndex = Math.floor(Math.random() * newsArray.length);
+            const randomNews = newsArray[randomIndex];
+            
+            if (isMobile) {
+                // Update mobile hero
+                renderMobileHero(randomNews);
+            } else {
+                // Update desktop hero
+                const randomImage = cleanImagePath(randomNews.image || randomNews.imageUrl || '');
+                if (randomImage) {
+                    updateBackground(randomImage);
+                }
+                if (newsMainTitle) {
+                    newsMainTitle.style.transition = 'opacity 0.5s ease';
+                    newsMainTitle.style.opacity = '0';
+                    setTimeout(() => {
+                        newsMainTitle.textContent = randomNews.title || 'Latest News';
+                        newsMainTitle.style.opacity = '1';
+                    }, 250);
+                }
+                if (newsMainDescription) {
+                    newsMainDescription.style.transition = 'opacity 0.5s ease';
+                    newsMainDescription.style.opacity = '0';
+                    setTimeout(() => {
+                        const desc = randomNews.description || randomNews.content || 'Stay updated with our latest developments, achievements, and industry insights.';
+                        newsMainDescription.textContent = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
+                        newsMainDescription.style.opacity = '1';
+                    }, 250);
+                }
+            }
+        }
+        
+        // Start auto-rotation for hero section
+        function startHeroRotation(newsArray) {
+            // Clear existing interval
+            if (heroRotationInterval) {
+                clearInterval(heroRotationInterval);
+            }
+            
+            // Rotate hero every 5 seconds
+            heroRotationInterval = setInterval(() => {
+                if (allNewsData && allNewsData.length > 0) {
+                    updateHeroWithRandomNews(allNewsData);
+                }
+            }, 5000); // 5 seconds
+        }
+        
+        // Stop hero rotation
+        function stopHeroRotation() {
+            if (heroRotationInterval) {
+                clearInterval(heroRotationInterval);
+                heroRotationInterval = null;
+            }
+        }
         
         // Function to update background image
         function updateBackground(imagePath) {
-            if (newsBackground && imagePath) {
+            const newsBackgroundImage = document.getElementById('newsBackgroundImage');
+            if (newsBackgroundImage && imagePath) {
                 // Clean image path - ensure it uses cleanImagePath if available, otherwise clean it here
                 let cleanPath = imagePath.trim();
                 
@@ -225,16 +344,8 @@
                     }
                 }
                 
-                // Create or update style element for background
-                let style = document.getElementById('news-bg-dynamic');
-                if (!style) {
-                    style = document.createElement('style');
-                    style.id = 'news-bg-dynamic';
-                    document.head.appendChild(style);
-                }
-                // Escape single quotes in path
-                const escapedPath = cleanPath.replace(/'/g, "\\'");
-                style.textContent = `.news-background-wrapper::after { background-image: url('${escapedPath}') !important; background-size: cover !important; background-position: center !important; transition: background-image 2s ease-in-out !important; }`;
+                // Update background image directly
+                newsBackgroundImage.style.backgroundImage = `url('${cleanPath.replace(/'/g, "\\'")}')`;
                 // Background updated successfully
             }
         }
@@ -363,32 +474,99 @@
             isPaused = false;
         }
         
+        // Function to format time ago
+        function formatTimeAgo(dateString) {
+            if (!dateString) return 'Just now';
+            
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+                
+                if (diffMins < 1) return 'Just now';
+                if (diffMins < 60) return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
+                if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
+                if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+                
+                // Format as date if older
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // Function to render mobile hero
+        function renderMobileHero(news) {
+            const mobileHeroBg = document.getElementById('newsMobileHeroBg');
+            const mobileHeroTitle = document.getElementById('newsMobileHeroTitle');
+            const authorTime = document.getElementById('newsAuthorTime');
+            
+            if (!news) return;
+            
+            const imagePath = cleanImagePath(news.image || news.imageUrl || '');
+            
+            if (mobileHeroBg && imagePath) {
+                mobileHeroBg.style.backgroundImage = `url('${imagePath.replace(/'/g, "\\'")}')`;
+            }
+            
+            if (mobileHeroTitle) {
+                mobileHeroTitle.textContent = news.title || 'Latest News';
+            }
+            
+            if (authorTime) {
+                authorTime.textContent = formatTimeAgo(news.dateSort || news.date || '');
+            }
+        }
+        
         // Function to render news cards
         function renderNewsCards(newsArray) {
-            if (!newsCategoriesGrid) {
+            const isMobile = window.innerWidth <= 768;
+            const newsMobileCards = document.getElementById('newsMobileCards');
+            
+            if (!newsCategoriesGrid && !newsMobileCards) {
                 console.error('News categories grid not found');
                 return;
             }
             
             if (!newsArray || newsArray.length === 0) {
-                newsCategoriesGrid.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1 / -1;">
-                        <p>No news articles found.</p>
-                        <p style="font-size: 14px; margin-top: 10px;">Please add news articles through the admin dashboard.</p>
-                    </div>
-                `;
+                if (newsCategoriesGrid) {
+                    newsCategoriesGrid.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5); grid-column: 1 / -1;">
+                            <p>No news articles found.</p>
+                            <p style="font-size: 14px; margin-top: 10px;">Please add news articles through the admin dashboard.</p>
+                        </div>
+                    `;
+                }
+                if (newsMobileCards) {
+                    newsMobileCards.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: rgba(0,0,0,0.5);">
+                            <p>No news articles found.</p>
+                            <p style="font-size: 14px; margin-top: 10px;">Please add news articles through the admin dashboard.</p>
+                        </div>
+                    `;
+                }
                 return;
             }
             
             // Clear existing cards
-            newsCategoriesGrid.innerHTML = '';
+            if (newsCategoriesGrid) newsCategoriesGrid.innerHTML = '';
+            if (newsMobileCards) newsMobileCards.innerHTML = '';
             
             // Sort by date (newest first)
             const sortedNews = [...newsArray].sort((a, b) => {
                 return new Date(b.dateSort) - new Date(a.dateSort);
             });
             
-            // Render cards
+            // Render mobile hero with random news item
+            if (isMobile && sortedNews.length > 0) {
+                const randomIndex = Math.floor(Math.random() * sortedNews.length);
+                renderMobileHero(sortedNews[randomIndex]);
+            }
+            
+            // Render cards in new format
             sortedNews.forEach((news, index) => {
                 const isActive = index === 0; // First card is active by default
                 const card = document.createElement('div');
@@ -434,7 +612,7 @@
                     console.warn(`News ${news.id} (${news.title}): No image path found!`);
                 }
                 
-                card.className = `news-category-card ${isActive ? 'active' : ''}`;
+                card.className = `news-card-item ${isActive ? 'active' : ''}`;
                 card.id = `news-${news.id}`;
                 card.setAttribute('data-bg', imagePath);
                 card.setAttribute('data-date', news.dateSort || news.date || '');
@@ -442,16 +620,22 @@
                 card.setAttribute('data-description', news.description || news.content || 'No description available');
                 card.setAttribute('data-image', imagePath);
                 
+                // Format date for display
+                const displayDate = news.date || 'No date';
+                
                 card.innerHTML = `
-                    <h3>${news.title || 'Untitled'}</h3>
-                    <p>Date : ${news.date || 'No date'}</p>
-                    <div class="news-popup-content">
-                        <div class="news-popup-image">
-                            <img src="${imagePath}" alt="${news.title || 'News image'}" onerror="this.style.display='none';">
-                        </div>
-                        <div class="news-popup-text">
-                            <p>${news.description || news.content || 'No description available'}</p>
-                        </div>
+                    <div class="news-card-image">
+                        <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+                    </div>
+                    <div class="news-card-content">
+                        <h3 class="news-card-title">${news.title || 'Untitled'}</h3>
+                        <p class="news-card-date">${displayDate}</p>
+                        <a href="#" class="news-card-more">More info <span>→</span></a>
+                    </div>
+                    <div class="news-card-bookmark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
                     </div>
                 `;
                 
@@ -461,25 +645,74 @@
                     console.error(`News ${news.id}: No image path found!`);
                 }
                 
-                newsCategoriesGrid.appendChild(card);
+                // Append to appropriate container
+                if (isMobile && newsMobileCards) {
+                    // Create mobile card format
+                    const mobileCard = document.createElement('div');
+                    mobileCard.className = 'news-mobile-card';
+                    mobileCard.id = `news-mobile-${news.id}`;
+                    mobileCard.setAttribute('data-bg', imagePath);
+                    mobileCard.setAttribute('data-date', news.dateSort || news.date || '');
+                    mobileCard.setAttribute('data-title', news.title || 'Untitled');
+                    mobileCard.setAttribute('data-description', news.description || news.content || 'No description available');
+                    mobileCard.setAttribute('data-image', imagePath);
+                    
+                    // Format time ago
+                    const timeAgo = formatTimeAgo(news.dateSort || news.date || '');
+                    
+                    mobileCard.innerHTML = `
+                        <div class="news-mobile-card-image">
+                            <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+                        </div>
+                        <div class="news-mobile-card-content">
+                            <h3 class="news-mobile-card-title">${news.title || 'Untitled'}</h3>
+                            <span class="news-mobile-card-time">${timeAgo}</span>
+                            <div class="news-mobile-card-actions">
+                                <button class="news-action-btn" aria-label="Bookmark">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                                <button class="news-action-btn" aria-label="Share">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    newsMobileCards.appendChild(mobileCard);
+                } else if (!isMobile && newsCategoriesGrid) {
+                    newsCategoriesGrid.appendChild(card);
+                }
             });
             
-            // Start auto-slide for desktop (will set random initial background)
-            if (window.innerWidth > 768) {
-                startAutoSlide(sortedNews);
-                // Set initial random background immediately
-                if (newsImages.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * newsImages.length);
-                    currentRandomImage = newsImages[randomIndex];
-                    updateBackground(currentRandomImage);
+            // Set initial background and content from random news item (desktop)
+            if (!isMobile && sortedNews.length > 0) {
+                const randomIndex = Math.floor(Math.random() * sortedNews.length);
+                const randomNews = sortedNews[randomIndex];
+                if (randomNews.image) {
+                    const randomImage = cleanImagePath(randomNews.image || randomNews.imageUrl || '');
+                    if (randomImage) {
+                        updateBackground(randomImage);
+                    }
                 }
-            } else if (window.innerWidth > 768 && sortedNews.length > 0 && sortedNews[0].image) {
-                // Fallback: use first image if auto-slide didn't set it
-                updateBackground(sortedNews[0].image);
+                if (newsMainTitle) {
+                    newsMainTitle.textContent = randomNews.title || 'Latest News';
+                }
+                if (newsMainDescription) {
+                    newsMainDescription.textContent = randomNews.description || randomNews.content || 'Stay updated with our latest developments, achievements, and industry insights.';
+                }
             }
             
+            // Store news data and start auto-rotation
+            allNewsData = sortedNews;
+            startHeroRotation(sortedNews);
+            
             // Setup event listeners for cards
-            setupCardListeners();
+            setupCardListeners(sortedNews);
             
             // Handle URL parameter
             const urlParams = new URLSearchParams(window.location.search);
@@ -506,10 +739,9 @@
         }
         
         // Setup card event listeners
-        function setupCardListeners() {
-            const categoryCards = document.querySelectorAll('.news-category-card');
-            const newsHeroSection = document.getElementById('newsHeroSection');
-            const newsCategoriesSection = document.getElementById('newsCategoriesSection');
+        function setupCardListeners(sortedNewsArray = []) {
+            const isMobile = window.innerWidth <= 768;
+            const categoryCards = isMobile ? document.querySelectorAll('.news-mobile-card') : document.querySelectorAll('.news-card-item');
             const newsFullscreenView = document.getElementById('newsFullscreenView');
             const newsCloseBtn = document.getElementById('newsCloseBtn');
             const newsFullscreenImage = document.getElementById('newsFullscreenImage');
@@ -521,68 +753,136 @@
             }
 
         categoryCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                    const newsHeroTitle = document.getElementById('newsHeroTitle');
+            if (!isMobile) {
+                card.addEventListener('mouseenter', () => {
+                    // Pause auto-slide on hover
+                    pauseAutoSlide();
+                    
+                    const bgImage = card.getAttribute('data-bg');
                     const cardTitle = card.getAttribute('data-title') || '';
+                    const cardDescription = card.getAttribute('data-description') || '';
                     
-                    // Update title text - ONLY on mobile (mobile layout sahaja)
-                    if (isMobileDevice() && newsHeroTitle && cardTitle) {
-                        newsHeroTitle.style.transition = 'opacity 0.3s ease';
-                        newsHeroTitle.style.opacity = '0';
+                    // Update background image
+                    if (bgImage) {
+                        updateBackground(bgImage);
+                    }
+                    
+                    // Update left panel content
+                    if (newsMainTitle && cardTitle) {
+                        newsMainTitle.style.transition = 'opacity 0.3s ease';
+                        newsMainTitle.style.opacity = '0';
                         setTimeout(() => {
-                            newsHeroTitle.textContent = cardTitle.toUpperCase();
-                            newsHeroTitle.style.opacity = '1';
-                        }, 200);
+                            newsMainTitle.textContent = cardTitle;
+                            newsMainTitle.style.opacity = '1';
+                        }, 150);
                     }
                     
-                    // Desktop: background changes, title stays "NEWS"
-                    if (!isMobileDevice()) {
-                        // Pause auto-slide on hover
-                        pauseAutoSlide();
-                        
-                const bgImage = card.getAttribute('data-bg');
-                if (bgImage) {
-                    updateBackground(bgImage);
-                }
-                        
-                // Remove active class from all cards
-                categoryCards.forEach(c => c.classList.remove('active'));
-                // Add active class to hovered card
-                card.classList.add('active');
+                    if (newsMainDescription && cardDescription) {
+                        newsMainDescription.style.transition = 'opacity 0.3s ease';
+                        newsMainDescription.style.opacity = '0';
+                        setTimeout(() => {
+                            newsMainDescription.textContent = cardDescription.length > 150 ? cardDescription.substring(0, 150) + '...' : cardDescription;
+                            newsMainDescription.style.opacity = '1';
+                        }, 150);
                     }
+                    
+                    // Remove active class from all cards
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    // Add active class to hovered card
+                    card.classList.add('active');
                 });
-                
+            }
+            
+            if (!isMobile) {
                 card.addEventListener('mouseleave', () => {
-                    // Reset news hero title - ONLY on mobile
-                    if (isMobileDevice()) {
-                        const newsHeroTitle = document.getElementById('newsHeroTitle');
-                        if (newsHeroTitle) {
-                            newsHeroTitle.style.transition = 'opacity 0.3s ease';
-                            newsHeroTitle.style.opacity = '0';
+                    // Resume auto-slide when mouse leaves
+                    resumeAutoSlide();
+                    // Show a random image when resuming
+                    if (newsImages.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * newsImages.length);
+                        currentRandomImage = newsImages[randomIndex];
+                        updateBackground(currentRandomImage);
+                    }
+                    
+                    // Reset to default content (random news item or default)
+                    if (sortedNewsArray && sortedNewsArray.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * sortedNewsArray.length);
+                        const randomNews = sortedNewsArray[randomIndex];
+                        if (newsMainTitle) {
+                            newsMainTitle.style.transition = 'opacity 0.3s ease';
+                            newsMainTitle.style.opacity = '0';
                             setTimeout(() => {
-                                newsHeroTitle.textContent = 'NEWS';
-                                newsHeroTitle.style.opacity = '1';
-                            }, 200);
+                                newsMainTitle.textContent = randomNews.title || 'Latest News';
+                                newsMainTitle.style.opacity = '1';
+                            }, 150);
                         }
-                    } else {
-                        // Resume auto-slide on desktop when mouse leaves
-                        resumeAutoSlide();
-                        // Immediately show a random image when resuming
-                        if (newsImages.length > 0) {
-                            const randomIndex = Math.floor(Math.random() * newsImages.length);
-                            currentRandomImage = newsImages[randomIndex];
-                            updateBackground(currentRandomImage);
+                        if (newsMainDescription) {
+                            newsMainDescription.style.transition = 'opacity 0.3s ease';
+                            newsMainDescription.style.opacity = '0';
+                            setTimeout(() => {
+                                const desc = randomNews.description || randomNews.content || 'Stay updated with our latest developments, achievements, and industry insights.';
+                                newsMainDescription.textContent = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
+                                newsMainDescription.style.opacity = '1';
+                            }, 150);
+                        }
+                        // Also update background image
+                        if (randomNews.image) {
+                            const randomImage = cleanImagePath(randomNews.image || randomNews.imageUrl || '');
+                            if (randomImage) {
+                                updateBackground(randomImage);
+                            }
                         }
                     }
                 });
+            }
 
-                // Click handler untuk fullscreen view
+                // Prevent "More info" link navigation
+                const moreInfoLink = card.querySelector('.news-card-more');
+                if (moreInfoLink) {
+                    moreInfoLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        card.click(); // Trigger card click
+                    });
+                }
+                
+                // Click handler untuk fullscreen view (desktop) atau update hero (mobile)
                 card.addEventListener('click', () => {
+                    if (isMobile) {
+                        // Mobile: Update hero section
+                        const bgImage = card.getAttribute('data-bg');
+                        const cardTitle = card.getAttribute('data-title') || '';
+                        const cardDate = card.getAttribute('data-date') || '';
+                        
+                        const mobileHeroBg = document.getElementById('newsMobileHeroBg');
+                        const mobileHeroTitle = document.getElementById('newsMobileHeroTitle');
+                        const authorTime = document.getElementById('newsAuthorTime');
+                        
+                        if (mobileHeroBg && bgImage) {
+                            mobileHeroBg.style.backgroundImage = `url('${bgImage.replace(/'/g, "\\'")}')`;
+                        }
+                        
+                        if (mobileHeroTitle) {
+                            mobileHeroTitle.textContent = cardTitle;
+                        }
+                        
+                        if (authorTime) {
+                            authorTime.textContent = formatTimeAgo(cardDate);
+                        }
+                        
+                        // Scroll to top to show hero
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return;
+                    }
+                    
+                    // Desktop: Show fullscreen view
                     // Get news data from card attributes
                     const cardTitle = card.getAttribute('data-title') || '';
                     const cardDescription = card.getAttribute('data-description') || '';
                     let cardImage = card.getAttribute('data-image') || card.getAttribute('data-bg') || '';
-                    const cardDate = card.querySelector('p') ? card.querySelector('p').textContent : '';
+                    const cardDateAttr = card.getAttribute('data-date') || '';
+                    const cardDateElement = card.querySelector('.news-card-date');
+                    const cardDate = cardDateElement ? cardDateElement.textContent.replace('📅', '').trim() : cardDateAttr;
                     
                     // Clean cardImage path - use same logic as renderNewsCards
                     if (cardImage) {
@@ -621,34 +921,24 @@
                     console.log('Image path:', cardImage);
                     console.log('Has image:', !!cardImage);
                     
-                    // For mobile: always show fullscreen, with or without image
-                    // For desktop: only show if image exists
-                    if (cardImage || isMobileDevice()) {
-                        // Move title to side (desktop only)
-                        if (!isMobileDevice()) {
-                            newsHeroSection.classList.add('moved-to-side');
-                            newsCategoriesSection.classList.add('moved-down');
-                        }
-                        
-                        // Show fullscreen view dengan layout: image kiri, text kanan
-                        if (cardImage) {
-                            newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="console.error('Image failed to load:', '${cardImage}'); this.style.display='none'; this.parentElement.style.backgroundColor='#2a2a2a';">`;
-                        } else {
-                            // No image - show dark gray background
-                            console.warn('No image path for news:', cardTitle);
-                            newsFullscreenImage.innerHTML = '';
-                            newsFullscreenImage.style.backgroundColor = '#2a2a2a';
-                        }
-                        newsFullscreenText.innerHTML = `
-                            <h2 class="news-fullscreen-title">${cardTitle}</h2>
-                            ${cardDate ? `<p class="news-fullscreen-date">${cardDate}</p>` : ''}
-                            <div class="news-fullscreen-description">${cardDescription}</div>
-                        `;
-                        newsFullscreenView.classList.add('active');
-                        
-                        // Prevent scroll on body
-                        document.body.style.overflow = 'hidden';
+                    // Show fullscreen view dengan layout: image kiri, text kanan
+                    if (cardImage) {
+                        newsFullscreenImage.innerHTML = `<img src="${cardImage}" alt="${cardTitle}" onerror="console.error('Image failed to load:', '${cardImage}'); this.style.display='none'; this.parentElement.style.backgroundColor='#2a2a2a';">`;
+                    } else {
+                        // No image - show dark gray background
+                        console.warn('No image path for news:', cardTitle);
+                        newsFullscreenImage.innerHTML = '';
+                        newsFullscreenImage.style.backgroundColor = '#2a2a2a';
                     }
+                    newsFullscreenText.innerHTML = `
+                        <h2 class="news-fullscreen-title">${cardTitle}</h2>
+                        ${cardDate ? `<p class="news-fullscreen-date">${cardDate}</p>` : ''}
+                        <div class="news-fullscreen-description">${cardDescription}</div>
+                    `;
+                    newsFullscreenView.classList.add('active');
+                    
+                    // Prevent scroll on body
+                    document.body.style.overflow = 'hidden';
                 });
             });
 
@@ -656,11 +946,6 @@
             if (newsCloseBtn) {
                 newsCloseBtn.addEventListener('click', () => {
                     newsFullscreenView.classList.remove('active');
-                    // Only move sections on desktop
-                    if (!isMobileDevice()) {
-                        newsHeroSection.classList.remove('moved-to-side');
-                        newsCategoriesSection.classList.remove('moved-down');
-                    }
                     document.body.style.overflow = '';
                     // Reset image container background
                     newsFullscreenImage.style.backgroundColor = '';
@@ -671,11 +956,6 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && newsFullscreenView.classList.contains('active')) {
                     newsFullscreenView.classList.remove('active');
-                    // Only move sections on desktop
-                    if (!isMobileDevice()) {
-                        newsHeroSection.classList.remove('moved-to-side');
-                        newsCategoriesSection.classList.remove('moved-down');
-                    }
                     document.body.style.overflow = '';
                     // Reset image container background
                     newsFullscreenImage.style.backgroundColor = '';
@@ -701,6 +981,11 @@
             }
         }
         
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            stopHeroRotation();
+        });
+        
         // Handle window resize
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
@@ -708,11 +993,25 @@
                 loadNews();
             } else {
                 stopAutoSlide();
+                // Reload news for mobile layout
+                loadNews();
             }
         });
         
         // Initialize
         loadNews();
+        
+        // Explore button click handler
+        const newsExploreBtn = document.getElementById('newsExploreBtn');
+        if (newsExploreBtn) {
+            newsExploreBtn.addEventListener('click', () => {
+                // Scroll to news cards
+                const newsRightPanel = document.querySelector('.news-right-panel');
+                if (newsRightPanel) {
+                    newsRightPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
     </script>
 
     <script>
