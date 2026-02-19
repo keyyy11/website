@@ -360,54 +360,43 @@
         function cleanImagePath(imagePath) {
             if (!imagePath) return '';
             
-            // If path contains Windows absolute path, convert to relative
-            if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
-                const filename = imagePath.split(/[/\\]/).pop();
-                const cleanFilename = filename.split('?')[0].split('#')[0];
-                
-                // Map filename to correct image file
-                const imageMap = {
-                    'UTeM-Aeronas.jpeg': 'UTEM.jpeg',
-                    'UTEM.jpeg': 'UTEM.jpeg',
-                    'KKTM.jpeg': 'KKTM.jpeg',
-                    'USIM.jpeg': 'USIM.jpeg',
-                    'UTHM.jpeg': 'UTHM.jpeg',
-                    'GMI.jpeg': 'GMI.jpeg',
-                    'CHEMTRON.jpeg': 'CHEMTRON.jpeg',
-                    'tengku.jpeg': 'tengku.jpeg'
-                };
-                
-                const correctFilename = imageMap[cleanFilename] || cleanFilename;
-                imagePath = `assets/images/${correctFilename}`;
-            }
+            let cleanPath = imagePath.trim();
             
             // Remove file:// protocol if present
-            if (imagePath.includes('file://')) {
-                imagePath = imagePath.replace(/^file:\/\/\/?/, '');
-                const filename = imagePath.split(/[/\\]/).pop();
+            if (cleanPath.includes('file://')) {
+                cleanPath = cleanPath.replace(/^file:\/\/\/?/, '');
+            }
+            
+            // Remove absolute Windows paths (C:\ or C:/)
+            if (cleanPath.includes('C:\\') || cleanPath.includes('C:/') || (cleanPath.includes('\\') && !cleanPath.startsWith('http'))) {
+                const filename = cleanPath.split(/[/\\]/).pop();
                 const cleanFilename = filename.split('?')[0].split('#')[0];
-                imagePath = `assets/images/${cleanFilename}`;
+                cleanPath = `assets/images/${cleanFilename}`;
             }
             
-            // Ensure path is relative (starts with assets/)
-            if (imagePath && !imagePath.startsWith('assets/') && !imagePath.startsWith('/assets/') && !imagePath.startsWith('./assets/') && !imagePath.startsWith('http') && !imagePath.startsWith('file://')) {
-                if (!imagePath.includes('/')) {
-                    imagePath = `assets/images/${imagePath}`;
-                } else {
-                    const filename = imagePath.split(/[/\\]/).pop();
-                    const cleanFilename = filename.split('?')[0].split('#')[0];
-                    imagePath = `assets/images/${cleanFilename}`;
-                }
+            // Remove quotes if present
+            cleanPath = cleanPath.replace(/['"]/g, '');
+            
+            // If path already starts with assets/, keep it as is (just remove ./ if present)
+            if (cleanPath.startsWith('assets/') || cleanPath.startsWith('./assets/')) {
+                cleanPath = cleanPath.replace(/^\.\//, '');
+                return cleanPath;
             }
             
-            // Final cleanup - ensure no absolute paths
-            if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\') || imagePath.includes('file://')) {
-                const filename = imagePath.split(/[/\\]/).pop();
-                const cleanFilename = filename.split('?')[0].split('#')[0];
-                imagePath = `assets/images/${cleanFilename}`;
+            // If it's an HTTP/HTTPS URL, keep it as is
+            if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://') || cleanPath.startsWith('//')) {
+                return cleanPath;
             }
             
-            return imagePath;
+            // If it's a plain filename (no slashes), add assets/images/ prefix
+            if (!cleanPath.includes('/') && !cleanPath.includes('\\')) {
+                return `assets/images/${cleanPath.split('?')[0].split('#')[0]}`;
+            }
+            
+            // If it has a path but doesn't start with assets/, extract filename
+            const filename = cleanPath.split(/[/\\]/).pop();
+            const cleanFilename = filename.split('?')[0].split('#')[0];
+            return `assets/images/${cleanFilename}`;
         }
         
         function startAutoSlide(newsArray) {
@@ -573,35 +562,39 @@
                 // Get image path from Firestore
                 let imagePath = news.image || news.imageUrl || '';
                 
-                // Only clean path if it's not already correct
+                // Clean image path to ensure it's correct
                 if (imagePath) {
                     imagePath = imagePath.trim();
                     
-                    // If path already correct (starts with assets/), keep it as is
+                    // Remove file:// protocol if present
+                    if (imagePath.includes('file://')) {
+                        imagePath = imagePath.replace(/^file:\/\/\/?/, '');
+                    }
+                    
+                    // Remove absolute Windows paths (C:\ or C:/)
+                    if (imagePath.includes('C:\\') || imagePath.includes('C:/') || (imagePath.includes('\\') && !imagePath.startsWith('http'))) {
+                        const filename = imagePath.split(/[/\\]/).pop();
+                        const cleanFilename = filename.split('?')[0].split('#')[0];
+                        imagePath = `assets/images/${cleanFilename}`;
+                    }
+                    
+                    // Remove quotes if present
+                    imagePath = imagePath.replace(/['"]/g, '');
+                    
+                    // If path already starts with assets/, keep it as is (just remove ./ if present)
                     if (imagePath.startsWith('assets/') || imagePath.startsWith('./assets/')) {
-                        // Just remove ./ if present
                         imagePath = imagePath.replace(/^\.\//, '');
-                    } else if (imagePath.startsWith('http') || imagePath.startsWith('//')) {
+                    } else if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('//')) {
                         // Keep HTTP/HTTPS URLs as is
                         // Do nothing
+                    } else if (!imagePath.includes('/') && !imagePath.includes('\\')) {
+                        // Plain filename (no slashes) - add assets/images/ prefix
+                        imagePath = `assets/images/${imagePath.split('?')[0].split('#')[0]}`;
                     } else {
-                        // Need to clean: handle absolute paths, file://, or plain filenames
-                        if (imagePath.includes('file://')) {
-                            imagePath = imagePath.replace(/^file:\/\/\/?/, '');
-                        }
-                        
-                        // Remove absolute Windows paths
-                        if (imagePath.includes('C:\\') || imagePath.includes('C:/') || imagePath.includes('\\')) {
-                            const filename = imagePath.split(/[/\\]/).pop();
-                            imagePath = `assets/images/${filename.split('?')[0].split('#')[0]}`;
-                        } else if (!imagePath.includes('/')) {
-                            // Plain filename - add assets/images/ prefix
-                            imagePath = `assets/images/${imagePath.split('?')[0].split('#')[0]}`;
-                        } else {
-                            // Has path but not starting with assets/ - extract filename
-                            const filename = imagePath.split(/[/\\]/).pop();
-                            imagePath = `assets/images/${filename.split('?')[0].split('#')[0]}`;
-                        }
+                        // Has path but doesn't start with assets/ - extract filename
+                        const filename = imagePath.split(/[/\\]/).pop();
+                        const cleanFilename = filename.split('?')[0].split('#')[0];
+                        imagePath = `assets/images/${cleanFilename}`;
                     }
                 }
                 
@@ -884,36 +877,9 @@
                     const cardDateElement = card.querySelector('.news-card-date');
                     const cardDate = cardDateElement ? cardDateElement.textContent.replace('📅', '').trim() : cardDateAttr;
                     
-                    // Clean cardImage path - use same logic as renderNewsCards
+                    // Clean cardImage path using cleanImagePath function
                     if (cardImage) {
-                        cardImage = cardImage.trim();
-                        
-                        // If path already correct (starts with assets/), keep it as is
-                        if (cardImage.startsWith('assets/') || cardImage.startsWith('./assets/')) {
-                            // Just remove ./ if present
-                            cardImage = cardImage.replace(/^\.\//, '');
-                        } else if (cardImage.startsWith('http') || cardImage.startsWith('//')) {
-                            // Keep HTTP/HTTPS URLs as is
-                            // Do nothing
-                        } else {
-                            // Need to clean: handle absolute paths, file://, or plain filenames
-                            if (cardImage.includes('file://')) {
-                                cardImage = cardImage.replace(/^file:\/\/\/?/, '');
-                            }
-                            
-                            // Remove absolute Windows paths
-                            if (cardImage.includes('C:\\') || cardImage.includes('C:/') || cardImage.includes('\\')) {
-                                const filename = cardImage.split(/[/\\]/).pop();
-                                cardImage = `assets/images/${filename.split('?')[0].split('#')[0]}`;
-                            } else if (!cardImage.includes('/')) {
-                                // Plain filename - add assets/images/ prefix
-                                cardImage = `assets/images/${cardImage.split('?')[0].split('#')[0]}`;
-                            } else {
-                                // Has path but not starting with assets/ - extract filename
-                                const filename = cardImage.split(/[/\\]/).pop();
-                                cardImage = `assets/images/${filename.split('?')[0].split('#')[0]}`;
-                            }
-                        }
+                        cardImage = cleanImagePath(cardImage);
                     }
                     
                     // Debug: Check image path

@@ -96,6 +96,22 @@
                         <div class="stat-label">Total postings</div>
                     </div>
                 </div>
+                <div class="admin-stat-card" style="cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Total Visitors</h3>
+                        <div class="stat-number" id="totalVisitorsCount">0</div>
+                        <div class="stat-label">All time visitors</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card" style="cursor: pointer; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3>Today's Visitors</h3>
+                        <div class="stat-number" id="todayVisitorsCount">0</div>
+                        <div class="stat-label">Visitors today</div>
+                    </div>
+                </div>
                 <!-- <div class="admin-stat-card" data-navigate="events" style="cursor: pointer;">
                     <div class="stat-icon">📅</div>
                     <div class="stat-content">
@@ -395,6 +411,7 @@
                     // loadEvents(); // DISABLED
                     loadApplications();
                     loadContactMessages();
+                    loadVisitorStats();
             }
         });
         } else {
@@ -1046,6 +1063,49 @@
             }
         }
 
+        // Function to clean image path before saving
+        function cleanImagePathForSave(imagePath) {
+            if (!imagePath) return '';
+            
+            let cleanPath = imagePath.trim();
+            
+            // Remove file:// protocol if present
+            if (cleanPath.includes('file://')) {
+                cleanPath = cleanPath.replace(/^file:\/\/\/?/, '');
+            }
+            
+            // Remove absolute Windows paths (C:\ or C:/)
+            if (cleanPath.includes('C:\\') || cleanPath.includes('C:/') || cleanPath.includes('\\')) {
+                const filename = cleanPath.split(/[/\\]/).pop();
+                const cleanFilename = filename.split('?')[0].split('#')[0];
+                cleanPath = `assets/images/${cleanFilename}`;
+            }
+            
+            // Remove quotes if present
+            cleanPath = cleanPath.replace(/['"]/g, '');
+            
+            // If path already starts with assets/, keep it as is (just remove ./ if present)
+            if (cleanPath.startsWith('assets/') || cleanPath.startsWith('./assets/')) {
+                cleanPath = cleanPath.replace(/^\.\//, '');
+                return cleanPath;
+            }
+            
+            // If it's an HTTP/HTTPS URL, keep it as is
+            if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://') || cleanPath.startsWith('//')) {
+                return cleanPath;
+            }
+            
+            // If it's a plain filename (no slashes), add assets/images/ prefix
+            if (!cleanPath.includes('/') && !cleanPath.includes('\\')) {
+                return `assets/images/${cleanPath.split('?')[0].split('#')[0]}`;
+            }
+            
+            // If it has a path but doesn't start with assets/, extract filename
+            const filename = cleanPath.split(/[/\\]/).pop();
+            const cleanFilename = filename.split('?')[0].split('#')[0];
+            return `assets/images/${cleanFilename}`;
+        }
+
         // Add/Update news form
         document.getElementById('newsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1059,13 +1119,16 @@
             const title = document.getElementById('newsTitle').value.trim();
             const date = document.getElementById('newsDate').value.trim();
             const dateSort = document.getElementById('newsDateSort').value;
-            const image = document.getElementById('newsImage').value.trim();
+            let image = document.getElementById('newsImage').value.trim();
             const description = document.getElementById('newsDescription').value.trim();
 
             if (!newsId || !title || !date || !dateSort || !image || !description) {
                 alert('Please fill in all fields');
                 return;
             }
+
+            // Clean image path before saving
+            image = cleanImagePathForSave(image);
 
             try {
                 const newsData = {
@@ -1543,6 +1606,52 @@ Read: ${msg.read ? 'Yes' : 'No'}
                 alert('Error updating status: ' + error.message);
             }
         }
+
+        // Load visitor statistics
+        async function loadVisitorStats() {
+            if (!db) {
+                console.error('Firestore not initialized');
+                return;
+            }
+
+            try {
+                // Get total visitors
+                const totalStatsRef = doc(db, 'visitorStats', 'total');
+                const totalStatsSnap = await getDoc(totalStatsRef);
+                
+                if (totalStatsSnap.exists()) {
+                    const totalCount = totalStatsSnap.data().count || 0;
+                    document.getElementById('totalVisitorsCount').textContent = totalCount.toLocaleString();
+                } else {
+                    document.getElementById('totalVisitorsCount').textContent = '0';
+                }
+
+                // Get today's visitors
+                const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                const todayRef = doc(db, 'visitorStats', `daily_${today}`);
+                const todaySnap = await getDoc(todayRef);
+                
+                if (todaySnap.exists()) {
+                    const todayCount = todaySnap.data().count || 0;
+                    document.getElementById('todayVisitorsCount').textContent = todayCount.toLocaleString();
+                } else {
+                    document.getElementById('todayVisitorsCount').textContent = '0';
+                }
+
+                console.log('Visitor stats loaded successfully');
+            } catch (error) {
+                console.error('Error loading visitor stats:', error);
+                document.getElementById('totalVisitorsCount').textContent = '0';
+                document.getElementById('todayVisitorsCount').textContent = '0';
+            }
+        }
+
+        // Refresh visitor stats every 30 seconds
+        setInterval(() => {
+            if (db) {
+                loadVisitorStats();
+            }
+        }, 30000);
     </script>
 </body>
 </html>

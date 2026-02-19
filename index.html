@@ -471,15 +471,32 @@
             
             console.log(`Rendering ${newsArray.length} news items`);
             
-            // Randomize news array
-            const shuffledNews = [...newsArray].sort(() => Math.random() - 0.5);
+            // Sort news by date (newest first) instead of randomizing
+            const sortedNews = [...newsArray].sort((a, b) => {
+                const dateA = new Date(a.dateSort || a.date || '1970-01-01');
+                const dateB = new Date(b.dateSort || b.date || '1970-01-01');
+                return dateB - dateA; // Newest first
+            });
             
             // Clear grid
             grid.innerHTML = '';
             
-            // Render cards (max 6 cards) - randomly selected
-            const newsToShow = shuffledNews.slice(0, 6);
+            // Render cards (max 6 cards) - show newest first
+            const newsToShow = sortedNews.slice(0, 6);
             console.log(`Showing ${newsToShow.length} news cards`);
+            
+            // Determine which news are "newest" (top 3 or within 30 days)
+            const now = new Date();
+            const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+            const newestNewsIds = new Set();
+            
+            // Mark top 3 as newest, or any news within 30 days
+            newsToShow.forEach((news, index) => {
+                const newsDate = new Date(news.dateSort || news.date || '1970-01-01');
+                if (index < 3 || newsDate >= thirtyDaysAgo) {
+                    newestNewsIds.add(news.id);
+                }
+            });
             
             // Helper function to clean image path
             function cleanImagePath(imagePath, newsId, title) {
@@ -549,15 +566,37 @@
                 // Truncate description if too long
                 const shortDescription = description.length > 100 ? description.substring(0, 100) + '...' : description;
                 
+                // Format date for display
+                let displayDate = '';
+                if (news.date) {
+                    displayDate = news.date;
+                } else if (news.dateSort) {
+                    // Format dateSort (YYYY-MM-DD) to readable format
+                    const dateObj = new Date(news.dateSort);
+                    if (!isNaN(dateObj.getTime())) {
+                        const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+                                       'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+                        const day = dateObj.getDate();
+                        const month = months[dateObj.getMonth()];
+                        const year = dateObj.getFullYear();
+                        displayDate = `${day} ${month} ${year}`;
+                    }
+                }
+                
+                // Check if this is a newest news (show badge)
+                const isNewest = newestNewsIds.has(news.id);
+                const badgeHtml = isNewest ? '<span class="latest-news-badge latest-news-badge-new">NEW</span>' : '';
+                
                 // Create card HTML
                 const cardHtml = `
                     <a href="news.html?news=${news.id}" class="latest-news-card">
                         <div class="latest-news-card-image">
                             <img src="${imagePath || 'assets/images/logo.png'}" alt="${title}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
-                            <span class="latest-news-badge">Update</span>
+                            ${badgeHtml}
                         </div>
                         <div class="latest-news-card-content">
                             <h3 class="latest-news-card-title">${title}</h3>
+                            ${displayDate ? `<p class="latest-news-card-date">${displayDate}</p>` : ''}
                             <p class="latest-news-card-description">${shortDescription}</p>
                         </div>
                     </a>
@@ -1678,5 +1717,8 @@
             setInterval(nextSlide, 5000);
         })();
     </script>
+    
+    <!-- Visitor Tracking -->
+    <script src="assets/js/visitor-tracking.js"></script>
 </body>
 </html>
