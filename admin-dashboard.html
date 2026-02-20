@@ -1081,12 +1081,21 @@
                 cleanPath = `assets/images/${cleanFilename}`;
             }
             
-            // Remove quotes if present
-            cleanPath = cleanPath.replace(/['"]/g, '');
+            // Remove quotes if present (but preserve spaces in filename)
+            cleanPath = cleanPath.replace(/^['"]|['"]$/g, '');
+            
+            // Decode URL encoding if present
+            try {
+                cleanPath = decodeURIComponent(cleanPath);
+            } catch (e) {
+                // If decode fails, use original
+            }
             
             // If path already starts with assets/, keep it as is (just remove ./ if present)
             if (cleanPath.startsWith('assets/') || cleanPath.startsWith('./assets/')) {
                 cleanPath = cleanPath.replace(/^\.\//, '');
+                // Ensure it doesn't have double slashes
+                cleanPath = cleanPath.replace(/\/+/g, '/');
                 return cleanPath;
             }
             

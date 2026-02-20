@@ -356,6 +356,25 @@
         let isPaused = false;
         let currentRandomImage = null;
         
+        // Helper function to handle image loading errors
+        function handleImageError(imgElement, imagePath, newsId) {
+            console.error(`Failed to load image for news ${newsId}: ${imagePath}`);
+            imgElement.style.display = 'none';
+            imgElement.parentElement.style.backgroundColor = '#2a2a2a';
+            imgElement.parentElement.style.display = 'flex';
+            imgElement.parentElement.style.alignItems = 'center';
+            imgElement.parentElement.style.justifyContent = 'center';
+            
+            // Show error indicator
+            if (!imgElement.parentElement.querySelector('.image-error-indicator')) {
+                const errorIndicator = document.createElement('div');
+                errorIndicator.className = 'image-error-indicator';
+                errorIndicator.style.cssText = 'color: #888; font-size: 12px; text-align: center; padding: 20px;';
+                errorIndicator.textContent = 'Image not found';
+                imgElement.parentElement.appendChild(errorIndicator);
+            }
+        }
+        
         // Helper function to clean image path (same as renderNewsCards)
         function cleanImagePath(imagePath) {
             if (!imagePath) return '';
@@ -374,12 +393,21 @@
                 cleanPath = `assets/images/${cleanFilename}`;
             }
             
-            // Remove quotes if present
-            cleanPath = cleanPath.replace(/['"]/g, '');
+            // Remove quotes if present (but preserve spaces in filename)
+            cleanPath = cleanPath.replace(/^['"]|['"]$/g, '');
+            
+            // Decode URL encoding if present
+            try {
+                cleanPath = decodeURIComponent(cleanPath);
+            } catch (e) {
+                // If decode fails, use original
+            }
             
             // If path already starts with assets/, keep it as is (just remove ./ if present)
             if (cleanPath.startsWith('assets/') || cleanPath.startsWith('./assets/')) {
                 cleanPath = cleanPath.replace(/^\.\//, '');
+                // Ensure it doesn't have double slashes
+                cleanPath = cleanPath.replace(/\/+/g, '/');
                 return cleanPath;
             }
             
@@ -578,12 +606,21 @@
                         imagePath = `assets/images/${cleanFilename}`;
                     }
                     
-                    // Remove quotes if present
-                    imagePath = imagePath.replace(/['"]/g, '');
+                    // Remove quotes if present (but preserve spaces in filename)
+                    imagePath = imagePath.replace(/^['"]|['"]$/g, '');
+                    
+                    // Decode URL encoding if present
+                    try {
+                        imagePath = decodeURIComponent(imagePath);
+                    } catch (e) {
+                        // If decode fails, use original
+                    }
                     
                     // If path already starts with assets/, keep it as is (just remove ./ if present)
                     if (imagePath.startsWith('assets/') || imagePath.startsWith('./assets/')) {
                         imagePath = imagePath.replace(/^\.\//, '');
+                        // Ensure it doesn't have double slashes
+                        imagePath = imagePath.replace(/\/+/g, '/');
                     } else if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('//')) {
                         // Keep HTTP/HTTPS URLs as is
                         // Do nothing
@@ -596,13 +633,16 @@
                         const cleanFilename = filename.split('?')[0].split('#')[0];
                         imagePath = `assets/images/${cleanFilename}`;
                     }
+                    
+                    // Final cleanup: remove any leading/trailing spaces
+                    imagePath = imagePath.trim();
                 }
                 
-                // Debug log
+                // Debug log with original and cleaned path
                 if (imagePath) {
-                    console.log(`News ${news.id} (${news.title}): Image path = ${imagePath}`);
+                    console.log(`News ${news.id} (${news.title}): Original path = "${news.image || news.imageUrl || ''}", Cleaned path = "${imagePath}"`);
                 } else {
-                    console.warn(`News ${news.id} (${news.title}): No image path found!`);
+                    console.warn(`News ${news.id} (${news.title}): No image path found! Original: "${news.image || news.imageUrl || ''}"`);
                 }
                 
                 card.className = `news-card-item ${isActive ? 'active' : ''}`;
@@ -618,7 +658,7 @@
                 
                 card.innerHTML = `
                     <div class="news-card-image">
-                        <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+                        <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="handleImageError(this, '${imagePath || ''}', '${news.id}');">
                     </div>
                     <div class="news-card-content">
                         <h3 class="news-card-title">${news.title || 'Untitled'}</h3>
@@ -655,7 +695,7 @@
                     
                     mobileCard.innerHTML = `
                         <div class="news-mobile-card-image">
-                            <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="this.style.display='none'; this.parentElement.style.backgroundColor='#e0e0e0';">
+                            <img src="${imagePath || 'assets/images/logo.png'}" alt="${news.title || 'News image'}" onerror="handleImageError(this, '${imagePath || ''}', '${news.id}');">
                         </div>
                         <div class="news-mobile-card-content">
                             <h3 class="news-mobile-card-title">${news.title || 'Untitled'}</h3>
