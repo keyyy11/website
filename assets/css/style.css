@@ -10324,11 +10324,11 @@ body#compliancePage .site-footer {
 }
 
 .heritage-intro-img-1 {
-  background-image: url("../images/heritage102.jpeg");
+  background-image: url("../images/16.jpeg");
 }
 
 .heritage-intro-img-2 {
-  background-image: url("../images/contact us background.jpeg");
+  background-image: url("../images/19.jpeg");
 }
 
 /* Heritage History Section */
@@ -14614,4 +14614,313 @@ body.menu-open {
       linear-gradient(to right,  transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%),
       linear-gradient(to bottom, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
   }
+}
+
+
+/* ============================================
+   HERITAGE — rebuilt 2026-09-23
+   Was: a building photo as the hero, then eight
+   full-height slabs each with a full-bleed
+   background, only three images cycling between
+   them (one of which was a personal photo with
+   emoji in its filename). 9,805px of near
+   identical blocks.
+   Now: a collage hero of real company material,
+   and a single readable timeline.
+   ============================================ */
+
+.heritage-hero-section.ht-hero {
+  background-image:
+    linear-gradient(to bottom, rgba(4,6,12,.55) 0%, rgba(4,6,12,.2) 40%, rgba(10,13,26,.95) 100%),
+    url("../images/heritage-collage.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* ---- timeline ---- */
+.ht { padding: 96px 0 120px; position: relative; z-index: 1; }
+.ht-inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+.ht-eyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: #C87A3F;
+}
+.ht-title {
+  margin: 0 0 64px;
+  font-size: clamp(30px, 4.4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #F2F5F8;
+}
+
+.ht-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+/* the spine */
+.ht-list::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  transform: translateX(-.5px);
+  background: linear-gradient(to bottom, transparent, rgba(200,122,63,.55) 8%, rgba(200,122,63,.55) 92%, transparent);
+}
+
+.ht-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 56px;
+  align-items: center;
+  margin-bottom: 52px;
+}
+.ht-item:last-child { margin-bottom: 0; }
+
+.ht-marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px; height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: #C87A3F;
+  box-shadow: 0 0 0 4px rgba(200,122,63,.16);
+}
+
+.ht-figure { margin: 0; overflow: hidden; border-radius: 2px; }
+.ht-figure img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  filter: saturate(.6) brightness(.95) contrast(1.04);
+  transition: filter .4s ease, transform .4s ease;
+}
+.ht-item:hover .ht-figure img { filter: saturate(.8) brightness(.95); transform: scale(1.02); }
+
+.ht-year {
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 700;
+  line-height: 1;
+  color: #FFFFFF;
+  font-variant-numeric: tabular-nums;
+}
+.ht-cat {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #C87A3F;
+}
+.ht-head {
+  margin: 14px 0 10px;
+  font-size: 19px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: #F2F5F8;
+}
+.ht-text p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.68;
+  color: rgba(242,245,248,.62);
+}
+.ht-text p:last-child { margin-bottom: 0; }
+
+/* alternate sides: odd entries put the image left, even put it right */
+.ht-item.is-left  .ht-figure { grid-column: 1; }
+.ht-item.is-left  .ht-body   { grid-column: 2; }
+.ht-item.is-right .ht-figure { grid-column: 2; }
+.ht-item.is-right .ht-body   { grid-column: 1; text-align: right; }
+
+@media (max-width: 860px) {
+  .ht { padding: 64px 0 80px; }
+  .ht-inner { padding: 0 20px; }
+  .ht-title { margin-bottom: 40px; }
+  .ht-list::before { left: 9px; }
+  .ht-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-left: 34px;
+    margin-bottom: 40px;
+  }
+  .ht-marker { left: 9px; top: 10px; margin-left: -5.5px; }
+  .ht-item.is-left  .ht-figure,
+  .ht-item.is-right .ht-figure { grid-column: 1; grid-row: 1; }
+  .ht-item.is-left  .ht-body,
+  .ht-item.is-right .ht-body   { grid-column: 1; grid-row: 2; text-align: left; }
+  .ht-figure img { height: 200px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ht-figure img { transition: none; }
+  .ht-item:hover .ht-figure img { transform: none; }
+}
+
+/* Three of these are line art or a deliberately unlit hangar - measured mean
+   luminance 30-52 against 128-181 for the photographs. Without a lift they
+   read as empty panels in the timeline. */
+.ht-figure img.is-dark {
+  filter: saturate(.6) brightness(1.55) contrast(1.18);
+}
+.ht-item:hover .ht-figure img.is-dark {
+  filter: saturate(.85) brightness(1.7) contrast(1.2);
+}
+
+/* ============================================
+   HERITAGE TIMELINE — referenced from the ZIL
+   history site. Two grounds alternating rather
+   than one dark run, oversized era statements,
+   monochrome archival photography with a caption
+   under each, editorial asymmetry.
+   ============================================ */
+
+.hx { position: relative; z-index: 1; }
+
+/* ---- lead ---- */
+.hx-lead {
+  background: var(--ao-page, #0a0d1a);
+  padding: 120px 40px 96px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.hx-lead-eyebrow {
+  margin: 0 0 22px;
+  font-size: 11px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: #C87A3F;
+}
+.hx-lead-title {
+  margin: 0 0 26px;
+  font-size: clamp(44px, 8vw, 104px);
+  line-height: .94;
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #F4F6F8;
+}
+.hx-lead-note {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(244,246,248,.5);
+}
+
+/* ---- one era ---- */
+.hx-era { padding: 96px 40px; }
+.hx-era.hx-dark  { background: var(--ao-page, #0a0d1a); }
+.hx-era.hx-paper { background: #C6B79C; }          /* kraft, as the reference */
+
+.hx-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 0 72px;
+  align-items: center;
+}
+.hx-era.hx-flip .hx-figure { order: 2; }
+.hx-era.hx-flip .hx-body   { order: 1; }
+
+/* ---- photography ---- */
+.hx-figure { margin: 0; }
+.hx-figure img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  /* archival: monochrome, as the reference treats its historical plates */
+  filter: grayscale(1) contrast(1.08) brightness(.92);
+  transition: filter .5s ease;
+}
+.hx-figure img.is-dark { filter: grayscale(1) contrast(1.18) brightness(1.5); }
+.hx-era:hover .hx-figure img { filter: grayscale(.25) contrast(1.06) brightness(.98); }
+.hx-era:hover .hx-figure img.is-dark { filter: grayscale(.25) contrast(1.18) brightness(1.55); }
+
+.hx-figure figcaption {
+  margin-top: 12px;
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.hx-dark  .hx-figure figcaption { color: rgba(244,246,248,.42); }
+.hx-paper .hx-figure figcaption { color: rgba(24,20,14,.52); }
+
+/* ---- the era statement ---- */
+.hx-index {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: .16em;
+  font-variant-numeric: tabular-nums;
+}
+.hx-index span { opacity: .45; }
+.hx-dark  .hx-index { color: #C87A3F; }
+.hx-paper .hx-index { color: #8A4F1E; }
+
+.hx-year {
+  margin: 0;
+  font-size: clamp(40px, 6.4vw, 86px);
+  line-height: .92;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+.hx-dark  .hx-year { color: #FFFFFF; }
+.hx-paper .hx-year { color: #171310; }
+
+.hx-cat {
+  margin: 12px 0 0;
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+.hx-dark  .hx-cat { color: #C87A3F; }
+.hx-paper .hx-cat { color: #8A4F1E; }
+
+.hx-head {
+  margin: 22px 0 14px;
+  font-size: clamp(19px, 2.1vw, 26px);
+  line-height: 1.24;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  max-width: 22ch;
+}
+.hx-dark  .hx-head { color: #F4F6F8; }
+.hx-paper .hx-head { color: #171310; }
+
+.hx-text p {
+  margin: 0 0 12px;
+  font-size: 14.5px;
+  line-height: 1.72;
+  max-width: 46ch;
+}
+.hx-text p:last-child { margin-bottom: 0; }
+.hx-dark  .hx-text p { color: rgba(244,246,248,.58); }
+.hx-paper .hx-text p { color: rgba(24,20,14,.68); }
+
+/* ---- responsive ---- */
+@media (max-width: 900px) {
+  .hx-lead { padding: 80px 22px 56px; }
+  .hx-era { padding: 56px 22px; }
+  .hx-inner { grid-template-columns: 1fr; gap: 28px; }
+  .hx-era.hx-flip .hx-figure,
+  .hx-era .hx-figure { order: 1; }
+  .hx-era.hx-flip .hx-body,
+  .hx-era .hx-body { order: 2; }
+  .hx-figure img { height: 260px; }
+  .hx-head { max-width: none; }
+  .hx-text p { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-figure img { transition: none; }
 }
