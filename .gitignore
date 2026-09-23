@@ -22,3 +22,7 @@ npm-debug.log*
 # Dependencies
 node_modules/
 
+
+# BA-42 figures. Deliberately NOT committed: adding this file to the repo is
+# what releases them. Keep it local until launch day.
+assets/data/ba42-specs.json

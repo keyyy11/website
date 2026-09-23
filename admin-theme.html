@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appearance – Aeronas Group</title>
+    <link rel="icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+      /* Appearance panel. Self-contained so it cannot disturb the public site. */
+      .ap-shell{max-width:1080px;margin:0 auto;padding:28px 24px 80px;color:#F5F5F7}
+      .ap-gate{display:flex;align-items:center;justify-content:center;min-height:70vh;color:#8FA0B4;
+        font-size:15px;letter-spacing:.02em}
+      .ap-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+        flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:18px;margin-bottom:26px}
+      .ap-head h1{font-size:26px;margin:0 0 4px;letter-spacing:.01em}
+      .ap-head p{margin:0;color:#8FA0B4;font-size:14px}
+      .ap-who{font-size:12.5px;color:#8FA0B4}
+      .ap-who a{color:#4FC3F7}
+      .ap-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:26px;align-items:start}
+      @media (max-width:900px){.ap-grid{grid-template-columns:1fr}}
+      .ap-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);
+        border-radius:14px;padding:20px 22px}
+      .ap-card h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#8FA0B4;
+        margin:0 0 16px;font-weight:600}
+      .ap-row{display:flex;align-items:center;gap:14px;padding:11px 0;
+        border-bottom:1px solid rgba(255,255,255,.07)}
+      .ap-row:last-child{border-bottom:0}
+      .ap-row label{flex:1;font-size:14px}
+      .ap-row .hint{display:block;color:#6B7C93;font-size:12px;margin-top:2px}
+      .ap-row input[type=color]{width:44px;height:32px;padding:0;border:1px solid rgba(255,255,255,.18);
+        border-radius:6px;background:none;cursor:pointer}
+      .ap-row input[type=text]{width:96px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
+        background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.16);color:#F5F5F7;
+        border-radius:6px;padding:7px 8px}
+      .ap-presets{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+      .ap-preset{border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.3);color:#F5F5F7;
+        border-radius:10px;padding:9px 13px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:9px}
+      .ap-preset:hover{border-color:#4FC3F7}
+      .ap-preset .sw{width:30px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.2)}
+      .ap-bgopts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+      .ap-bgopt{border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px;cursor:pointer;
+        font-size:13px;text-align:center;background:rgba(0,0,0,.3)}
+      .ap-bgopt.on{border-color:#4FC3F7;background:rgba(79,195,247,.14)}
+      .ap-actions{display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap}
+      .ap-btn{border:0;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;font-weight:600}
+      .ap-save{background:#4FC3F7;color:#05060A}
+      .ap-save:disabled{opacity:.5;cursor:default}
+      .ap-reset{background:transparent;color:#A1B8CF;border:1px solid rgba(255,255,255,.18)}
+      .ap-msg{font-size:13px;color:#3DDC97}
+      .ap-msg.err{color:#FF4D4D}
+      .ap-preview{border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;
+        position:sticky;top:24px}
+      .ap-preview .bar{padding:9px 14px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+        color:#8FA0B4;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08)}
+      .ap-stage{padding:30px 24px;min-height:300px;display:flex;flex-direction:column;gap:16px}
+      .ap-stage .ttl{font-size:22px;font-weight:700;letter-spacing:.02em}
+      .ap-stage .txt{font-size:13.5px;line-height:1.6;opacity:.75}
+      .ap-stage .cta{align-self:flex-start;border-radius:999px;padding:10px 22px;font-size:13px;
+        font-weight:600;color:#fff}
+      .ap-stage .tile{border-radius:10px;padding:14px;font-size:12.5px;opacity:.9}
+      .ap-note{margin-top:18px;font-size:12.5px;color:#6B7C93;line-height:1.6}
+    </style>
+</head>
+<body class="theme-admin">
+
+  <div class="ap-gate" id="apGate">Checking your sign-in&hellip;</div>
+
+  <div class="ap-shell" id="apShell" hidden>
+    <div class="ap-head">
+      <div>
+        <h1>Appearance</h1>
+        <p>Changes the colours and background across every page of the public site.</p>
+      </div>
+      <div class="ap-who">
+        Signed in as <strong id="apUser">&mdash;</strong> &middot;
+        <a href="admin-dashboard.html">Dashboard</a> &middot;
+        <a href="#" id="apSignOut">Sign out</a>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div>
+        <div class="ap-card">
+          <h2>Presets</h2>
+          <div class="ap-presets" id="apPresets"></div>
+        </div>
+
+        <div class="ap-card" style="margin-top:20px">
+          <h2>Colours</h2>
+          <div id="apColours"></div>
+        </div>
+
+        <div class="ap-card" style="margin-top:20px">
+          <h2>Background treatment</h2>
+          <div class="ap-bgopts" id="apBgOpts"></div>
+        </div>
+
+        <div class="ap-actions">
+          <button class="ap-btn ap-save" id="apSave">Save and publish</button>
+          <button class="ap-btn ap-reset" id="apReset">Restore defaults</button>
+          <span class="ap-msg" id="apMsg"></span>
+        </div>
+
+        <p class="ap-note">
+          Saving writes to <code>siteSettings/theme</code> and takes effect for every
+          visitor on their next page load. Visitors never see this page.
+        </p>
+      </div>
+
+      <div class="ap-preview">
+        <div class="bar">Live preview</div>
+        <div class="ap-stage" id="apStage">
+          <div class="ttl">AERONAS GROUP</div>
+          <div class="txt">Malaysia&rsquo;s first light aircraft manufacturer, engineered to
+            international certification, performance and safety standards.</div>
+          <div class="cta" id="apCta">Get started</div>
+          <div class="tile" id="apTile">Card surface &mdash; news, specifications, story panels</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAuth, onAuthStateChanged, signOut }
+    from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+  import { getFirestore, doc, getDoc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+  const app = initializeApp({
+    apiKey: "AIzaSyBU-ZNBFukfPWsuD2JYwIuHPshVYeSIWew",
+    authDomain: "aeronas-aerocraft.firebaseapp.com",
+    projectId: "aeronas-aerocraft",
+    storageBucket: "aeronas-aerocraft.firebasestorage.app",
+    messagingSenderId: "576218545628",
+    appId: "1:576218545628:web:6e7483b743b4c2e0336319"
+  });
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const DEFAULTS = {
+    void: '#05060a', page: '#0a0d1a', accent: '#e60505',
+    accentDeep: '#c50404', panel: '#1a1a1a', panel2: '#2a2a2a',
+    backgroundStyle: 'solid'
+  };
+
+  const FIELDS = [
+    ['page',       'Page background',   'The main surface behind everything'],
+    ['void',       'Deep background',   'Headers, video wells, darkest areas'],
+    ['accent',     'Accent',            'Buttons, links, highlights'],
+    ['accentDeep', 'Accent pressed',    'Hover and active states'],
+    ['panel',      'Card surface',      'News cards, story panels'],
+    ['panel2',     'Card surface raised','Inner tiles and hover states']
+  ];
+
+  const PRESETS = [
+    ['Aeronas dark',  { page:'#0a0d1a', void:'#05060a', accent:'#e60505', accentDeep:'#c50404', panel:'#1a1a1a', panel2:'#2a2a2a' }],
+    ['Midnight blue', { page:'#0b1424', void:'#060c17', accent:'#4FC3F7', accentDeep:'#2DB2FF', panel:'#132133', panel2:'#1b2c42' }],
+    ['Carbon',        { page:'#121212', void:'#000000', accent:'#e60505', accentDeep:'#c50404', panel:'#1e1e1e', panel2:'#2a2a2a' }],
+    ['Deep teal',     { page:'#071a1c', void:'#030f10', accent:'#00C2A8', accentDeep:'#009e89', panel:'#0f2a2d', panel2:'#16383c' }]
+  ];
+
+  const BG_STYLES = [
+    ['solid',    'Solid'],
+    ['gradient', 'Accent glow, top'],
+    ['glow',     'Two-point glow'],
+    ['grid',     'Fine grid']
+  ];
+
+  let state = { ...DEFAULTS };
+
+  const $ = id => document.getElementById(id);
+
+  // ---- gate ---------------------------------------------------------------
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = 'admin-login.html'; return; }
+    $('apUser').textContent = user.email || 'admin';
+    $('apGate').hidden = true;
+    $('apShell').hidden = false;
+    load();
+  });
+
+  $('apSignOut').addEventListener('click', e => {
+    e.preventDefault();
+    signOut(auth).then(() => window.location.href = 'admin-login.html');
+  });
+
+  // ---- build controls -----------------------------------------------------
+  function buildColours() {
+    $('apColours').innerHTML = FIELDS.map(([key, label, hint]) => `
+      <div class="ap-row">
+        <label for="c_${key}">${label}<span class="hint">${hint}</span></label>
+        <input type="text" id="t_${key}" value="${state[key]}" spellcheck="false">
+        <input type="color" id="c_${key}" value="${state[key]}" aria-label="${label}">
+      </div>`).join('');
+
+    FIELDS.forEach(([key]) => {
+      const c = $('c_' + key), t = $('t_' + key);
+      c.addEventListener('input', () => { state[key] = c.value; t.value = c.value; paint(); });
+      t.addEventListener('change', () => {
+        const v = t.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) { state[key] = v; c.value = v; paint(); }
+        else { t.value = state[key]; }
+      });
+    });
+  }
+
+  function buildPresets() {
+    $('apPresets').innerHTML = PRESETS.map(([name, p], i) => `
+      <button class="ap-preset" data-i="${i}">
+        <span class="sw" style="background:linear-gradient(90deg, ${p.page} 50%, ${p.accent} 50%)"></span>
+        ${name}
+      </button>`).join('');
+    $('apPresets').addEventListener('click', e => {
+      const b = e.target.closest('.ap-preset'); if (!b) return;
+      state = { ...state, ...PRESETS[+b.dataset.i][1] };
+      buildColours(); paint();
+    });
+  }
+
+  function buildBgOpts() {
+    $('apBgOpts').innerHTML = BG_STYLES.map(([v, label]) =>
+      `<div class="ap-bgopt${state.backgroundStyle === v ? ' on' : ''}" data-v="${v}">${label}</div>`).join('');
+    $('apBgOpts').addEventListener('click', e => {
+      const o = e.target.closest('.ap-bgopt'); if (!o) return;
+      state.backgroundStyle = o.dataset.v;
+      buildBgOpts(); paint();
+    });
+  }
+
+  // ---- preview ------------------------------------------------------------
+  function hexA(hex, a) {
+    let h = hex.replace('#', '');
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    const n = parseInt(h, 16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+  }
+
+  function stageBg() {
+    const s = state.backgroundStyle;
+    if (s === 'gradient') return `radial-gradient(ellipse at 50% 0%, ${hexA(state.accent,.10)} 0%, transparent 60%), ${state.page}`;
+    if (s === 'glow')     return `radial-gradient(circle at 20% 20%, ${hexA(state.accent,.12)} 0%, transparent 45%), radial-gradient(circle at 80% 70%, ${hexA('#4FC3F7',.10)} 0%, transparent 45%), ${state.page}`;
+    if (s === 'grid')     return `linear-gradient(${hexA('#ffffff',.03)} 1px, transparent 1px) 0 0/32px 32px, linear-gradient(90deg, ${hexA('#ffffff',.03)} 1px, transparent 1px) 0 0/32px 32px, ${state.page}`;
+    return state.page;
+  }
+
+  function paint() {
+    $('apStage').style.background = stageBg();
+    $('apCta').style.background = state.accent;
+    $('apTile').style.background = state.panel;
+    $('apTile').style.border = '1px solid ' + state.panel2;
+    $('apSave').disabled = false;
+    $('apMsg').textContent = '';
+  }
+
+  // ---- load / save --------------------------------------------------------
+  async function load() {
+    buildPresets();
+    try {
+      const snap = await getDoc(doc(db, 'siteSettings', 'theme'));
+      if (snap.exists()) state = { ...DEFAULTS, ...snap.data() };
+    } catch (err) {
+      msg('Could not load the saved theme: ' + err.message, true);
+    }
+    buildColours(); buildBgOpts(); paint();
+    $('apSave').disabled = true;
+  }
+
+  function msg(text, isErr) {
+    const m = $('apMsg');
+    m.textContent = text;
+    m.className = 'ap-msg' + (isErr ? ' err' : '');
+  }
+
+  $('apSave').addEventListener('click', async () => {
+    $('apSave').disabled = true;
+    msg('Saving…');
+    const payload = { ...state, updatedAt: serverTimestamp(), updatedBy: auth.currentUser?.email || null };
+    try {
+      await setDoc(doc(db, 'siteSettings', 'theme'), payload, { merge: true });
+      try { localStorage.setItem('aeronasTheme', JSON.stringify(state)); } catch (e) {}
+      msg('Saved. Visitors see this on their next page load.');
+    } catch (err) {
+      msg('Save failed: ' + err.message, true);
+      $('apSave').disabled = false;
+    }
+  });
+
+  $('apReset').addEventListener('click', () => {
+    state = { ...DEFAULTS };
+    buildColours(); buildBgOpts(); paint();
+    msg('Defaults restored in the preview. Press Save to publish them.');
+  });
+</script>
+</body>
+</html>
