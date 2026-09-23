@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Aeronas Aerocraft</title>
+    <title>Aeronas Group</title>
     <link rel="icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="shortcut icon" type="image/png" href="assets/images/Logo-Icon-Only.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/theme.js"></script>
+    <style>
+      /* Location line under the hero logo. Move into style.css when convenient. */
+      .hero-location {
+        text-align: center;
+        margin: -22px 0 28px 0;
+        font-size: 15px;
+        letter-spacing: 0.34em;
+        text-indent: 0.34em;
+        opacity: 0.72;
+      }
+      @media (max-width: 768px) {
+        .hero-location { font-size: 12px; letter-spacing: 0.26em; text-indent: 0.26em; margin: -14px 0 20px 0; }
+      }
+    </style>
     <script>
         // Suppress touch event warnings by ensuring passive listeners
         (function() {
@@ -61,7 +76,7 @@
         <div class="header-left">
             <a href="index.html" class="brand-mark">
                 <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo">
-                <span class="brand-text">Aeronas Aerocraft</span>
+                <span class="brand-text">Aeronas Group</span>
             </a>
         </div>
 
@@ -75,7 +90,7 @@
             <div class="mobile-nav-logo">
                 <a href="index.html" class="brand-mark">
                     <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="logo">
-                    <span class="brand-text">Aeronas Aerocraft</span>
+                    <span class="brand-text">Aeronas Group</span>
                 </a>
             </div>
             <a href="index.html">Home</a>
@@ -105,9 +120,10 @@
         <!-- Hero Section -->
         <section class="hero-industrial">
             <div class="hero-inner hero-centered">
-                <img src="assets/images/Asset2@2x.png" alt="Aeronas Aerocraft" class="hero-title-image">
+                <img src="assets/images/aeronas-group-white.svg" alt="Aeronas Group" class="hero-title-image">
+                <p class="hero-location">JOHOR BAHRU</p>
                 <p class="hero-subtitle hero-subtitle-centered">
-                    AERONAS is a full-scale light aircraft manufacturer driving the transformation of Malaysia's aerospace landscape. Backed by proprietary Aircraft Manufacturing Technology (AMT) and an FAA-certified Type Certificate Part 23, AERONAS is positioned as a game changer and catalyst for the regional and global aviation industry.
+                    AERONAS GROUP is a full-scale light aircraft manufacturer driving the transformation of Malaysia's aerospace landscape. Backed by proprietary Aircraft Manufacturing Technology (AMT) and an FAA-certified Type Certificate Part 23, AERONAS GROUP is positioned as a game changer and catalyst for the regional and global aviation industry.
                 </p>
                 <div class="hero-actions">
                     <a href="#video-section" class="primary-cta" id="getStartedBtn">Get started</a>
@@ -146,10 +162,10 @@
             </div>
             <div class="social-icons-text">
                 <div class="home-manufacture-image" aria-hidden="true">
-                    <img src="assets/images/100.jpeg" alt="Aeronas aircraft manufacturing">
+                    <img src="assets/images/100-blend.jpg" alt="Aeronas Group aircraft manufacturing">
                 </div>
                 <h2>Malaysia's First Aircraft Manufacturer</h2>
-                <p>Aeronas Aerocraft is Malaysia’s first small aircraft manufacturer, executing a focused strategy to build a globally competitive aerospace company engineered to international certification, performance, and safety standards. We operate with industrial discipline across advanced aeronautical engineering, R&amp;D, and manufacturing, moving fast, making data-driven decisions, and challenging legacy aerospace models. Our objective is clear: deliver efficient, reliable, and commercially scalable aircraft while establishing national aerospace capability that competes on a global level.</p>
+                <p>Aeronas Group is Malaysia’s first small aircraft manufacturer, executing a focused strategy to build a globally competitive aerospace company engineered to international certification, performance, and safety standards. We operate with industrial discipline across advanced aeronautical engineering, R&amp;D, and manufacturing, moving fast, making data-driven decisions, and challenging legacy aerospace models. Our objective is clear: deliver efficient, reliable, and commercially scalable aircraft while establishing national aerospace capability that competes on a global level.</p>
             </div>
         </section>
 
@@ -164,12 +180,12 @@
                 <div class="video-dark-overlay" id="videoDarkOverlay"></div>
                 <div class="video-controls">
                     <button type="button" class="video-control-btn" id="playPauseBtn" aria-label="Play/Pause">
-                        <span class="play-icon">▶️</span>
-                        <span class="pause-icon" style="display: none;">⏸️</span>
+                        <span class="play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                        <span class="pause-icon" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg></span>
                     </button>
                     <button type="button" class="video-control-btn" id="soundBtn" aria-label="Toggle sound">
-                        <span class="mute-icon">🔇</span>
-                        <span class="unmute-icon" style="display: none;">🔊</span>
+                        <span class="mute-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3l3 3-1.4 1.4-3-3-3 3L10.7 15l3-3-3-3L12.1 7.6l3 3 3-3L19.5 9l-3 3z"/></svg></span>
+                        <span class="unmute-icon" style="display: none;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4zm11.5 3a4 4 0 0 0-2-3.46v6.92A4 4 0 0 0 15.5 12zm-2 -7.7v2.06A6 6 0 0 1 13.5 18.6v2.06a8 8 0 0 0 0-15.42z"/></svg></span>
                     </button>
                 </div>
             </div>
@@ -203,7 +219,7 @@
                             <div class="home-story-overlay">
                                 <h3>BUILT ON ENGINEERING.<br>DRIVEN BY STANDARDS.</h3>
                                 <p>
-                                    Aeronas Aerocraft is a Malaysian light aircraft manufacturer committed to developing reliable, compliant, and future-ready aviation solutions.
+                                    Aeronas Group is a Malaysian light aircraft manufacturer committed to developing reliable, compliant, and future-ready aviation solutions.
                                     Our focus is not rapid market entry, but disciplined engineering, regulatory alignment, and long-term manufacturing capability—ensuring every aircraft meets the expectations of professional operators and institutional stakeholders.
                                 </p>
                             </div>
@@ -238,7 +254,7 @@
             <div class="footer-col footer-brand">
                 <div class="footer-logo">
                     <img src="assets/images/Logo-Icon-Only.png" alt="Logo" class="footer-logo-img">
-                    <span class="footer-brand-text">Aeronas Aerocraft</span>
+                    <span class="footer-brand-text">Aeronas Group</span>
             </div>
                 <p class="footer-description">Leading aerospace innovation and excellence in aircraft manufacturing, technology, and compliance solutions.</p>
                 <div class="footer-social">
@@ -305,7 +321,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2025 Aeronas Aerocraft. All rights reserved.</p>
+            <p>© 2025 Aeronas Group. All rights reserved.</p>
         </div>
     </footer>
 
@@ -646,11 +662,20 @@
             const scrollPosition = window.pageYOffset;
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-            
-            // Calculate opacity: 0 at top, up to 0.3 at bottom
-            const opacity = Math.min(scrollPercentage * 0.3, 0.3);
-            scrollDarkOverlay.style.opacity = opacity;
+            const scrollPercentage = Math.min(Math.max(
+                scrollPosition / Math.max(1, documentHeight - windowHeight), 0), 1);
+
+            // Timed to the page's own sections rather than arbitrary numbers:
+            //   0.10  the covered-aircraft photo is coming into view
+            //   0.22  that photo is centred - the transition is visibly running
+            //   0.39  the full-bleed video starts
+            //   0.42  ground is fully black, and stays there for the rest
+            // So the darkening begins at the manufacture section and is done by
+            // the time the edge-to-edge media takes over.
+            const START = 0.10, END = 0.42;
+            const t = Math.min(Math.max((scrollPercentage - START) / (END - START), 0), 1);
+            const eased = t * t * (3 - 2 * t);
+            scrollDarkOverlay.style.opacity = (eased * 0.92).toFixed(4);
         }, { passive: true });
                 const newsImageMap = {
                     'kktm': 'assets/images/KKTM.jpeg',
@@ -1399,11 +1424,20 @@
             const scrollPosition = window.pageYOffset;
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
-            
-            // Calculate opacity: 0 at top, up to 0.3 at bottom
-            const opacity = Math.min(scrollPercentage * 0.3, 0.3);
-            scrollDarkOverlay.style.opacity = opacity;
+            const scrollPercentage = Math.min(Math.max(
+                scrollPosition / Math.max(1, documentHeight - windowHeight), 0), 1);
+
+            // Timed to the page's own sections rather than arbitrary numbers:
+            //   0.10  the covered-aircraft photo is coming into view
+            //   0.22  that photo is centred - the transition is visibly running
+            //   0.39  the full-bleed video starts
+            //   0.42  ground is fully black, and stays there for the rest
+            // So the darkening begins at the manufacture section and is done by
+            // the time the edge-to-edge media takes over.
+            const START = 0.10, END = 0.42;
+            const t = Math.min(Math.max((scrollPercentage - START) / (END - START), 0), 1);
+            const eased = t * t * (3 - 2 * t);
+            scrollDarkOverlay.style.opacity = (eased * 0.92).toFixed(4);
         }, { passive: true });
 
         // Smooth scroll to video section and popup effect
