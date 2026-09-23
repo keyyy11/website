@@ -14701,7 +14701,7 @@ body.menu-open {
   height: 260px;
   object-fit: cover;
   display: block;
-  filter: saturate(.55) brightness(.82) contrast(1.04);
+  filter: saturate(.6) brightness(.95) contrast(1.04);
   transition: filter .4s ease, transform .4s ease;
 }
 .ht-item:hover .ht-figure img { filter: saturate(.8) brightness(.95); transform: scale(1.02); }
@@ -14763,4 +14763,14 @@ body.menu-open {
 @media (prefers-reduced-motion: reduce) {
   .ht-figure img { transition: none; }
   .ht-item:hover .ht-figure img { transform: none; }
+}
+
+/* Three of these are line art or a deliberately unlit hangar - measured mean
+   luminance 30-52 against 128-181 for the photographs. Without a lift they
+   read as empty panels in the timeline. */
+.ht-figure img.is-dark {
+  filter: saturate(.6) brightness(1.55) contrast(1.18);
+}
+.ht-item:hover .ht-figure img.is-dark {
+  filter: saturate(.85) brightness(1.7) contrast(1.2);
 }
