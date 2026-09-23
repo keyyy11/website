@@ -1069,55 +1069,66 @@
         }
 
         // Function to clean image path before saving
+        /* Normalise an image path typed or pasted into the news form.
+           Order matters: quotes and protocols come off BEFORE any path
+           detection. Windows "Copy as path" wraps the value in double quotes,
+           and the previous version split the path first, so the closing quote
+           survived into the filename. */
         function cleanImagePathForSave(imagePath) {
             if (!imagePath) return '';
-            
-            let cleanPath = imagePath.trim();
-            
-            // Remove file:// protocol if present
-            if (cleanPath.includes('file://')) {
-                cleanPath = cleanPath.replace(/^file:\/\/\/?/, '');
+
+            let p = String(imagePath).trim();
+
+            // 1. strip wrapping quotes first - this is what Copy as path adds
+            p = p.replace(/^["']+/, '').replace(/["']+$/, '').trim();
+
+            // 2. strip file:// protocol
+            p = p.replace(/^file:\/\/\/?/i, '');
+
+            // 3. decode percent-encoding, if it is valid
+            try { p = decodeURIComponent(p); } catch (e) { /* leave as-is */ }
+
+            // 4. remote URLs are kept whole
+            if (/^(https?:)?\/\//i.test(p)) return p;
+
+            // 5. anything else is reduced to a filename under assets/images/.
+            //    Covers C:\..., \server\share\..., ../foo, ./assets/x, bare name.
+            var filename = p.split(/[\\/]/).pop().split('?')[0].split('#')[0].trim();
+            filename = filename.replace(/^["']+/, '').replace(/["']+$/, '');
+
+            return filename ? 'assets/images/' + filename : '';
+        }
+
+        /* Reports what is wrong with a path, or null if it looks usable.
+           Runs before the existence check so the message is specific. */
+        function describeImagePathProblem(original, cleaned) {
+            if (!cleaned) return 'The image path is empty.';
+            if (/^(https?:)?\/\//i.test(cleaned)) return null;
+
+            if (!/^assets\/images\/[^\/]+$/.test(cleaned)) {
+                return 'Expected a path like assets/images/name.jpeg, got: ' + cleaned;
             }
-            
-            // Remove absolute Windows paths (C:\ or C:/)
-            if (cleanPath.includes('C:\\') || cleanPath.includes('C:/') || cleanPath.includes('\\')) {
-                const filename = cleanPath.split(/[/\\]/).pop();
-                const cleanFilename = filename.split('?')[0].split('#')[0];
-                cleanPath = `assets/images/${cleanFilename}`;
+            if (!/\.(jpe?g|png|webp|gif|avif|svg)$/i.test(cleaned)) {
+                return 'That does not end in an image extension: ' + cleaned;
             }
-            
-            // Remove quotes if present (but preserve spaces in filename)
-            cleanPath = cleanPath.replace(/^['"]|['"]$/g, '');
-            
-            // Decode URL encoding if present
+            if (/^["']|[A-Za-z]:\|^\\/.test(String(original).trim()) ) {
+                /* it was a local path - cleaned fine, just say so */
+                return null;
+            }
+            return null;
+        }
+
+        /* The real guard: confirm the file is actually on the site. This is
+           what would have caught the eight records that pointed at someone's
+           C: drive - every one of them resolved to nothing. */
+        async function imageExists(path) {
+            if (/^(https?:)?\/\//i.test(path)) return true;   // cannot HEAD cross-origin reliably
             try {
-                cleanPath = decodeURIComponent(cleanPath);
+                const r = await fetch('/' + path.replace(/^\/+/, ''), { method: 'HEAD', cache: 'no-store' });
+                return r.ok;
             } catch (e) {
-                // If decode fails, use original
+                return false;
             }
-            
-            // If path already starts with assets/, keep it as is (just remove ./ if present)
-            if (cleanPath.startsWith('assets/') || cleanPath.startsWith('./assets/')) {
-                cleanPath = cleanPath.replace(/^\.\//, '');
-                // Ensure it doesn't have double slashes
-                cleanPath = cleanPath.replace(/\/+/g, '/');
-                return cleanPath;
-            }
-            
-            // If it's an HTTP/HTTPS URL, keep it as is
-            if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://') || cleanPath.startsWith('//')) {
-                return cleanPath;
-            }
-            
-            // If it's a plain filename (no slashes), add assets/images/ prefix
-            if (!cleanPath.includes('/') && !cleanPath.includes('\\')) {
-                return `assets/images/${cleanPath.split('?')[0].split('#')[0]}`;
-            }
-            
-            // If it has a path but doesn't start with assets/, extract filename
-            const filename = cleanPath.split(/[/\\]/).pop();
-            const cleanFilename = filename.split('?')[0].split('#')[0];
-            return `assets/images/${cleanFilename}`;
         }
 
         // Add/Update news form
@@ -1143,6 +1154,31 @@
 
             // Clean image path before saving
             image = cleanImagePathForSave(image);
+            const rawImage = document.getElementById('newsImage').value;
+
+            // Validate, then confirm the file is really on the site. Eight live
+            // records once pointed at someone's C: drive because this step only
+            // rewrote the value and never checked whether it resolved.
+            const problem = describeImagePathProblem(rawImage, image);
+            if (problem) {
+                alert('Image path problem\n\n' + problem +
+                      '\n\nUse a path like assets/images/name.jpeg');
+                return;
+            }
+
+            const imgOk = await imageExists(image);
+            if (!imgOk) {
+                alert('That image is not on the site.\n\n' +
+                      'Looked for: /' + image + '\n\n' +
+                      'Upload the file to assets/images/ first, then save. ' +
+                      'Copying a path from File Explorer will not work \u2014 the ' +
+                      'file has to be in the repository.');
+                return;
+            }
+
+            if (rawImage.trim() !== image) {
+                console.log('Image path normalised:', rawImage, '->', image);
+            }
 
             try {
                 const newsData = {
