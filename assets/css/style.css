@@ -14774,3 +14774,153 @@ body.menu-open {
 .ht-item:hover .ht-figure img.is-dark {
   filter: saturate(.85) brightness(1.7) contrast(1.2);
 }
+
+/* ============================================
+   HERITAGE TIMELINE — referenced from the ZIL
+   history site. Two grounds alternating rather
+   than one dark run, oversized era statements,
+   monochrome archival photography with a caption
+   under each, editorial asymmetry.
+   ============================================ */
+
+.hx { position: relative; z-index: 1; }
+
+/* ---- lead ---- */
+.hx-lead {
+  background: var(--ao-page, #0a0d1a);
+  padding: 120px 40px 96px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.hx-lead-eyebrow {
+  margin: 0 0 22px;
+  font-size: 11px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: #C87A3F;
+}
+.hx-lead-title {
+  margin: 0 0 26px;
+  font-size: clamp(44px, 8vw, 104px);
+  line-height: .94;
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #F4F6F8;
+}
+.hx-lead-note {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(244,246,248,.5);
+}
+
+/* ---- one era ---- */
+.hx-era { padding: 96px 40px; }
+.hx-era.hx-dark  { background: var(--ao-page, #0a0d1a); }
+.hx-era.hx-paper { background: #C6B79C; }          /* kraft, as the reference */
+
+.hx-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 0 72px;
+  align-items: center;
+}
+.hx-era.hx-flip .hx-figure { order: 2; }
+.hx-era.hx-flip .hx-body   { order: 1; }
+
+/* ---- photography ---- */
+.hx-figure { margin: 0; }
+.hx-figure img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  /* archival: monochrome, as the reference treats its historical plates */
+  filter: grayscale(1) contrast(1.08) brightness(.92);
+  transition: filter .5s ease;
+}
+.hx-figure img.is-dark { filter: grayscale(1) contrast(1.18) brightness(1.5); }
+.hx-era:hover .hx-figure img { filter: grayscale(.25) contrast(1.06) brightness(.98); }
+.hx-era:hover .hx-figure img.is-dark { filter: grayscale(.25) contrast(1.18) brightness(1.55); }
+
+.hx-figure figcaption {
+  margin-top: 12px;
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.hx-dark  .hx-figure figcaption { color: rgba(244,246,248,.42); }
+.hx-paper .hx-figure figcaption { color: rgba(24,20,14,.52); }
+
+/* ---- the era statement ---- */
+.hx-index {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: .16em;
+  font-variant-numeric: tabular-nums;
+}
+.hx-index span { opacity: .45; }
+.hx-dark  .hx-index { color: #C87A3F; }
+.hx-paper .hx-index { color: #8A4F1E; }
+
+.hx-year {
+  margin: 0;
+  font-size: clamp(40px, 6.4vw, 86px);
+  line-height: .92;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+.hx-dark  .hx-year { color: #FFFFFF; }
+.hx-paper .hx-year { color: #171310; }
+
+.hx-cat {
+  margin: 12px 0 0;
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+}
+.hx-dark  .hx-cat { color: #C87A3F; }
+.hx-paper .hx-cat { color: #8A4F1E; }
+
+.hx-head {
+  margin: 22px 0 14px;
+  font-size: clamp(19px, 2.1vw, 26px);
+  line-height: 1.24;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  max-width: 22ch;
+}
+.hx-dark  .hx-head { color: #F4F6F8; }
+.hx-paper .hx-head { color: #171310; }
+
+.hx-text p {
+  margin: 0 0 12px;
+  font-size: 14.5px;
+  line-height: 1.72;
+  max-width: 46ch;
+}
+.hx-text p:last-child { margin-bottom: 0; }
+.hx-dark  .hx-text p { color: rgba(244,246,248,.58); }
+.hx-paper .hx-text p { color: rgba(24,20,14,.68); }
+
+/* ---- responsive ---- */
+@media (max-width: 900px) {
+  .hx-lead { padding: 80px 22px 56px; }
+  .hx-era { padding: 56px 22px; }
+  .hx-inner { grid-template-columns: 1fr; gap: 28px; }
+  .hx-era.hx-flip .hx-figure,
+  .hx-era .hx-figure { order: 1; }
+  .hx-era.hx-flip .hx-body,
+  .hx-era .hx-body { order: 2; }
+  .hx-figure img { height: 260px; }
+  .hx-head { max-width: none; }
+  .hx-text p { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-figure img { transition: none; }
+}
